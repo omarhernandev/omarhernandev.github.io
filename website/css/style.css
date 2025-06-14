@@ -818,10 +818,11 @@ body.dark-mode .page {
 
 .main__caption {
   letter-spacing: 0.12em;
-  color: var(--text-color);
+  color: white;
   font-weight: 500;
   margin-bottom: 1rem;
   transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 body.dark-mode .main__caption {
@@ -847,8 +848,9 @@ body.dark-mode .main__title {
   max-width: 33.375rem;
   line-height: 150%;
   letter-spacing: 0.02em;
-  color: var(--text-color);
+  color: white;
   transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 body.dark-mode .main__text {
