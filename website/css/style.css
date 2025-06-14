@@ -787,7 +787,7 @@ body.dark-mode .page {
   position: relative; /* Make container relative for absolute positioned video */
   overflow: hidden; /* Ensure video stays within hero */
   min-height: 100vh;
-  background: #000; /* Fallback background color */
+  background: url("/images/Home/Home-Hero.jpg") center / cover no-repeat; /* Fallback background image */
 }
 
 /* Background hero video */
@@ -800,7 +800,6 @@ body.dark-mode .page {
   object-fit: cover;
   z-index: 1; /* Above background but below content */
   pointer-events: none; /* Allow interactions through video */
-  background: url("/images/Home/Home-Hero.jpg") center / cover no-repeat; /* Fallback image */
 }
 
 .main__container {
