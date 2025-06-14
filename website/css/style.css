@@ -784,8 +784,22 @@ body.dark-mode .page {
 /* *****************HOME**************** */
 
 .main {
+  position: relative; /* Make container relative for absolute positioned video */
+  overflow: hidden; /* Ensure video stays within hero */
   background: url("/images/Home/Home-Hero.jpg") center / cover no-repeat;
   min-height: 100vh;
+}
+
+/* Background hero video */
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1; /* Behind content */
+  pointer-events: none; /* Allow interactions through video */
 }
 
 .main__container {
