@@ -1,0 +1,32 @@
+I have uploaded my official **logo** and **favicon** as context files. Please do the following to fully integrate these branding assets across my website:
+
+1. **Favicon Integration:**
+   - Set the uploaded favicon as the site's favicon using the appropriate `<link rel="icon" href="...">` in the HTML `<head>`.
+   - Ensure it renders on all pages and browser tabs.
+
+2. **Logo Integration:**
+   - Insert the uploaded logo into the top-left corner of the navigation bar across all pages.
+   - Make it responsive and clickable, linking back to the homepage.
+   - Include an alternate version for mobile views if necessary.
+
+3. **Typography Matching:**
+   - Analyze the font style used in the logo and apply a visually matching font (likely Poppins, Satoshi, or Montserrat) to:
+     - Headings (`<h1>`, `<h2>`)
+     - Navigation menu
+     - Taglines and section headers
+   - Apply letter spacing, font weight, and size rules to match the elegance of the logo (bold headers, lighter body text, wide tracking for taglines).
+
+4. **CSS Styling Updates:**
+   - Create or update a shared CSS file (or Tailwind config) to reflect this typography and branding across the entire site.
+   - Use fallback fonts for browser compatibility (`'Poppins', 'Helvetica Neue', sans-serif'`).
+   - Apply cohesive color accents that match the logo (deep blue, gold, dark gray).
+
+5. **Dark Mode Compatibility:**
+   - Ensure that both logo and favicon look good in light and dark mode themes.
+   - Adjust text contrast accordingly for readability and brand alignment.
+
+6. **Optimize for All Devices:**
+   - Confirm that the logo and favicon render properly across desktop, tablet, and mobile.
+   - Ensure loading performance is optimized (compress if needed).
+
+Goal: I want the favicon, logo, and all typography on my site to feel **unified, elegant, and on-brand**, reflecting my personal identity (Omar Hernandez). All visual elements should scale well and feel intentional.
