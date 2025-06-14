@@ -70,7 +70,7 @@
         </div>
         <!-- Background video hero -->
         <video class="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true" style="display: block; visibility: visible;">
-          <source src="videos/home-hero-vid.mp4" type="video/mp4" />
+          <source src="website/videos/home-hero-vid.mp4" type="video/mp4" />
           <p>Your browser does not support the video tag.</p>
         </video>
       </section>
@@ -181,6 +181,27 @@
     </footer>
   </div>
   <script src="js/script.js"></script>
+  <script>
+    // Debug video loading
+    document.addEventListener('DOMContentLoaded', function() {
+      const video = document.querySelector('.hero-video');
+      if (video) {
+        console.log('Video element found:', video);
+        console.log('Video src:', video.querySelector('source').src);
+        
+        video.addEventListener('loadstart', () => console.log('Video: Load started'));
+        video.addEventListener('loadeddata', () => console.log('Video: Data loaded'));
+        video.addEventListener('canplay', () => console.log('Video: Can play'));
+        video.addEventListener('playing', () => console.log('Video: Playing'));
+        video.addEventListener('error', (e) => console.error('Video: Error', e));
+        
+        // Force load attempt
+        video.load();
+      } else {
+        console.error('Video element not found!');
+      }
+    });
+  </script>
 </body>
 
 </html>
