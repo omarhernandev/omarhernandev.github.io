@@ -109,8 +109,203 @@
     }
   }
 
-  // Initialize when DOM is ready
+      // Safari video autoplay fix
+    function initSafariVideoFix() {
+      var video = document.querySelector('.main__video');
+      if (!video) return;
+      
+      // Safari-specific video initialization
+      var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      
+      if (isSafari || isIOS) {
+        console.log('Safari/iOS detected, applying video fixes');
+        
+        // Force video to load
+        video.load();
+        
+        // Try to play video with multiple attempts
+        var playAttempts = 0;
+        var maxAttempts = 3;
+        
+        function attemptPlay() {
+          playAttempts++;
+          console.log('Safari video play attempt:', playAttempts);
+          
+          var playPromise = video.play();
+          
+          if (playPromise !== undefined) {
+            playPromise.then(function() {
+              console.log('Safari video autoplay successful');
+            }).catch(function(error) {
+              console.warn('Safari video autoplay failed:', error);
+              
+              if (playAttempts < maxAttempts) {
+                setTimeout(attemptPlay, 1000);
+              } else {
+                console.log('Safari video autoplay failed after', maxAttempts, 'attempts');
+                // Fallback: show a play button or static image
+                video.poster = '../images/Home/Home-Hero.png';
+              }
+            });
+          }
+        }
+        
+        // Wait for video metadata to load before attempting play
+        video.addEventListener('loadedmetadata', function() {
+          console.log('Safari video metadata loaded');
+          setTimeout(attemptPlay, 500);
+        });
+        
+        // Additional Safari-specific event listeners
+        video.addEventListener('canplaythrough', function() {
+          console.log('Safari video can play through');
+          if (video.paused) {
+            attemptPlay();
+          }
+        });
+        
+        // Handle Safari video stalling
+        video.addEventListener('stalled', function() {
+          console.log('Safari video stalled, reloading');
+          video.load();
+        });
+        
+                 // Handle Safari video errors
+         video.addEventListener('error', function(e) {
+           console.error('Safari video error:', e);
+           // Fallback to poster image
+           video.poster = '../images/Home/Home-Hero.png';
+         });
+         
+         // Add click handler for manual play (Safari fallback)
+         var videoContainer = document.querySelector('.main');
+         if (videoContainer) {
+           videoContainer.addEventListener('click', function() {
+             if (video.paused) {
+               console.log('Manual video play triggered');
+               video.play().catch(function(error) {
+                 console.warn('Manual video play failed:', error);
+               });
+             }
+           });
+         }
+       }
+       
+       // Universal video play attempt (for all browsers)
+       setTimeout(function() {
+         if (video.paused) {
+           console.log('Universal video play attempt');
+           video.play().catch(function(error) {
+             console.warn('Universal video play failed:', error);
+           });
+         }
+       }, 1000);
+     }
+
+    // Hero image is now handled via HTML/CSS - no JavaScript animation needed
+
+    // Decryption Animation for Name
+    function initDecryptAnimation() {
+      var decryptElement = document.querySelector('.decrypt-text');
+      if (!decryptElement) return;
+
+      var targetText = decryptElement.getAttribute('data-text') || 'Omar Hernandez';
+      var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+      var decryptDuration = 2000; // 2 seconds total
+      var charRevealDelay = 150; // Delay between each character lock-in
+      
+      // Chrome mobile detection and optimization
+      var isChromeMobile = /Chrome/.test(navigator.userAgent) && /Mobile/.test(navigator.userAgent);
+      if (isChromeMobile) {
+        // Optimize for Chrome mobile performance
+        decryptElement.style.willChange = 'transform';
+        decryptElement.style.webkitTransform = 'translateZ(0)';
+        decryptElement.style.transform = 'translateZ(0)';
+      }
+      
+      // Create individual character spans
+      decryptElement.innerHTML = '';
+      var charElements = [];
+      
+      for (var i = 0; i < targetText.length; i++) {
+        var charSpan = document.createElement('span');
+        charSpan.className = 'char decrypting';
+        charSpan.textContent = targetText[i] === ' ' ? '\u00A0' : getRandomChar(); // Use non-breaking space for spaces
+        
+        // Chrome mobile optimization for individual characters
+        if (isChromeMobile) {
+          charSpan.style.webkitTransform = 'translateZ(0)';
+          charSpan.style.transform = 'translateZ(0)';
+          charSpan.style.webkitBackfaceVisibility = 'hidden';
+          charSpan.style.backfaceVisibility = 'hidden';
+        }
+        
+        charElements.push(charSpan);
+        decryptElement.appendChild(charSpan);
+      }
+      
+      function getRandomChar() {
+        return chars[Math.floor(Math.random() * chars.length)];
+      }
+      
+      // Start the decryption animation
+      var startTime = Date.now();
+      var lockedChars = 0;
+      
+      function animate() {
+        var elapsed = Date.now() - startTime;
+        var progress = Math.min(elapsed / decryptDuration, 1);
+        
+        // Determine how many characters should be locked by now
+        var shouldBeLocked = Math.floor(progress * targetText.length);
+        
+        // Lock characters that should be locked
+        while (lockedChars < shouldBeLocked && lockedChars < targetText.length) {
+          var charElement = charElements[lockedChars];
+          charElement.textContent = targetText[lockedChars] === ' ' ? '\u00A0' : targetText[lockedChars];
+          removeClass(charElement, 'decrypting');
+          addClass(charElement, 'locked');
+          lockedChars++;
+        }
+        
+        // Update still-decrypting characters with random chars
+        for (var i = lockedChars; i < charElements.length; i++) {
+          if (targetText[i] !== ' ') { // Don't randomize spaces
+            charElements[i].textContent = getRandomChar();
+          }
+        }
+        
+        // Continue animation if not complete
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          // Ensure all characters are properly locked
+          for (var i = 0; i < charElements.length; i++) {
+            var charElement = charElements[i];
+            charElement.textContent = targetText[i] === ' ' ? '\u00A0' : targetText[i];
+            removeClass(charElement, 'decrypting');
+            addClass(charElement, 'locked');
+          }
+        }
+      }
+      
+      // Start animation after a brief delay to ensure page is loaded
+      setTimeout(function() {
+        animate();
+      }, 500);
+    }
+
+    // Initialize when DOM is ready
   ready(function() {
+    
+    // Initialize decryption animation
+    initDecryptAnimation();
+    
+    // Hero image is now handled via HTML/CSS - no JavaScript needed
+    
+    // Remove Safari video fixes (no longer needed)
+    // initSafariVideoFix();
     
     // Mobile menu toggle with cross-browser support
     var menuToggle = document.querySelector(".icon-menu");
@@ -122,6 +317,21 @@
           event.returnValue = false; // IE8 and below
         }
         toggleClass(document.body, "menu-open");
+      });
+    }
+
+    // Mobile menu close button functionality
+    var menuCloseButton = document.querySelector(".menu-close-button");
+    if (menuCloseButton) {
+      addEvent(menuCloseButton, 'click', function(event) {
+        if (event.preventDefault) {
+          event.preventDefault();
+        } else {
+          event.returnValue = false; // IE8 and below
+        }
+        
+        // Close the mobile menu by removing the menu-open class
+        removeClass(document.body, "menu-open");
       });
     }
 
@@ -311,7 +521,7 @@
         "Full-stack Developer",
         "AI Developer",
         "Cloud Engineer",
-        "Machine Learning Intern",
+        "Machine Learning Engineer",
         "Neuroscience Researcher",
         "Python Developer",
         "ETL Architect",

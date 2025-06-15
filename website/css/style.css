@@ -594,6 +594,12 @@ body.dark-mode .project-tool {
   transition: all 0.3s ease;
 }
 
+/* Home page specific header styling - black background to match hero image */
+.home-page .header {
+  background: #000000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
 .header__container {
   display: flex;
   align-items: center;
@@ -680,6 +686,82 @@ body.dark-mode .menu__link:hover {
   align-items: center;
   gap: 0.624rem;
   height: 100%;
+}
+
+.menu-logo {
+  display: none;
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 1001;
+}
+
+.menu-logo img {
+  height: 5rem;
+  width: auto;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+  transition: all 0.3s ease;
+}
+
+body.dark-mode .menu-logo img {
+  filter: brightness(1.2) drop-shadow(0 0 8px rgba(57, 255, 20, 0.3));
+}
+
+.menu-close-button {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  padding: 0.75rem;
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1001;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-close-button svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: currentColor;
+  transition: all 0.3s ease;
+}
+
+.menu-close-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ff4444;
+  transform: scale(1.1);
+}
+
+body.dark-mode .menu-close-button {
+  color: var(--text-primary-dark);
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+}
+
+body.dark-mode .menu-close-button:hover {
+  background-color: rgba(57, 255, 20, 0.1);
+  color: #ff4444;
+  box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+}
+
+/* Show logo and close button only in mobile menu */
+@media (max-width: 47.999rem) {
+  .menu-logo {
+    display: block;
+  }
+  
+  .menu-close-button {
+    display: flex;
+  }
 }
 
 .theme-toggle-button {
@@ -784,22 +866,36 @@ body.dark-mode .page {
 /* *****************HOME**************** */
 
 .main {
-  position: relative; /* Make container relative for absolute positioned video */
-  overflow: hidden; /* Ensure video stays within hero */
-  min-height: 100vh;
-  background: url("/images/Home/Home-Hero.jpg") center / cover no-repeat; /* Fallback background image */
+  position: relative;
+  overflow: hidden;
+  min-height: 85vh;
+  background: #0d1b2a;
 }
 
-/* Background hero video */
-.hero-video {
+.main__image {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 1; /* Above background but below content */
-  pointer-events: none; /* Allow interactions through video */
+  z-index: 0;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  /* Ensure image stretches edge-to-edge */
+  display: block;
+}
+
+/* Dark mode image filter */
+body.dark-mode .main__image {
+  filter: brightness(0.7) contrast(1.1) hue-rotate(90deg);
+}
+
+/* Remove old canvas and video styles */
+.main__canvas,
+.main__video {
+  display: none;
 }
 
 .main__container {
@@ -808,15 +904,57 @@ body.dark-mode .page {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding-top: 19.188rem;
+  padding: 2rem 2rem 3rem;
   /* Ensure consistent spacing across browsers */
-  min-height: calc(100vh - 90px);
-  min-height: calc(100dvh - 90px);
+  min-height: calc(75vh - 90px);
+  min-height: calc(75dvh - 90px);
   position: relative;
-  z-index: 2; /* Above video */
+  z-index: 2;
+  margin-top: -5vh;
+}
+
+/* Subtle overlay for better content readability */
+.main__container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.main__content {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
+  width: 100%;
+  animation: glassAppear 1.2s ease-out;
+  overflow: visible;
+}
+
+@keyframes glassAppear {
+  0% { 
+    opacity: 0; 
+    transform: translateY(30px) scale(0.95);
+    backdrop-filter: blur(0px);
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1);
+    backdrop-filter: blur(20px);
+  }
 }
 
 .main__caption {
+  font-size: 1.5rem;
   letter-spacing: 0.12em;
   color: white;
   font-weight: 500;
@@ -825,22 +963,96 @@ body.dark-mode .page {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
+body.dark-mode .main {
+  background: #0a0a0a;
+}
+
+
+
+body.dark-mode .main__content {
+  background: rgba(57, 255, 20, 0.08);
+  border: 1px solid rgba(57, 255, 20, 0.2);
+  box-shadow: 0 8px 32px rgba(57, 255, 20, 0.2);
+}
+
 body.dark-mode .main__caption {
   color: var(--text-secondary-dark);
   text-shadow: 0 0 8px rgba(122, 247, 115, 0.4);
 }
 
 .main__title {
-  font-size: 5.5rem;
+  font-size: 4.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
   color: var(--accent-color);
   transition: all 0.3s ease;
+  white-space: nowrap;
+  overflow: visible;
+  letter-spacing: -0.05em;
 }
 
 body.dark-mode .main__title {
   color: var(--text-primary-dark);
   text-shadow: 0 0 20px rgba(57, 255, 20, 0.7);
+}
+
+/* Decryption Animation Styles */
+.decrypt-text {
+  font-family: 'Share Tech Mono', 'IBM Plex Mono', 'Courier New', monospace;
+  font-weight: inherit;
+  letter-spacing: 0.1em;
+  position: relative;
+  display: inline-block;
+}
+
+.decrypt-text .char {
+  display: inline-block;
+  opacity: 1;
+  transition: all 0.1s ease;
+}
+
+.decrypt-text .char.decrypting {
+  animation: flicker 0.1s infinite alternate;
+}
+
+.decrypt-text .char.locked {
+  animation: none;
+  opacity: 1;
+}
+
+/* Subtle flicker effect for decrypting characters */
+@keyframes flicker {
+  0% { 
+    opacity: 0.8;
+    text-shadow: 0 0 5px currentColor;
+  }
+  100% { 
+    opacity: 1;
+    text-shadow: 0 0 8px currentColor;
+  }
+}
+
+/* Dark mode flicker enhancement */
+body.dark-mode .decrypt-text .char.decrypting {
+  animation: flickerDark 0.1s infinite alternate;
+}
+
+@keyframes flickerDark {
+  0% { 
+    opacity: 0.8;
+    text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+  }
+  100% { 
+    opacity: 1;
+    text-shadow: 0 0 12px rgba(57, 255, 20, 0.8);
+  }
+}
+
+/* Ensure the decryption text inherits the main title styling */
+.main__title .decrypt-text {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 /* Typewriter Effect Styles */
@@ -889,18 +1101,83 @@ body.dark-mode .typewriter-cursor {
 }
 
 /* Responsive adjustments */
+@media (max-width: 1200px) {
+  .main__title {
+    font-size: 4rem;
+  }
+}
+
 @media (max-width: 900px) {
+  .main__content {
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    max-width: 95vw;
+  }
+  
+  .main__title {
+    font-size: 3rem;
+  }
+  
   .main__typewriter {
     font-size: 2rem;
     min-height: 2.8rem;
   }
 }
 
+@media (max-width: 700px) {
+  .main__content {
+    padding: 2.5rem 1.5rem;
+    border-radius: 16px;
+    max-width: 96vw;
+  }
+  
+  .main__title {
+    font-size: 2.5rem;
+  }
+  
+  .main__typewriter {
+    font-size: 1.8rem;
+    min-height: 2.5rem;
+  }
+}
+
 @media (max-width: 600px) {
+  .main__content {
+    padding: 2.5rem 1.5rem;
+    border-radius: 16px;
+    max-width: 98vw;
+  }
+  
+  .main__title {
+    font-size: 2rem;
+  }
+  
   .main__typewriter {
     font-size: 1.5rem;
     min-height: 2.2rem;
     margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main__title {
+    font-size: 1.8rem;
+  }
+  
+  .main__content {
+    padding: 2rem 1rem;
+    max-width: 99vw;
+  }
+}
+
+@media (max-width: 400px) {
+  .main__title {
+    font-size: 1.5rem;
+  }
+  
+  .main__content {
+    padding: 1.5rem 0.8rem;
+    max-width: 99vw;
   }
 }
 
@@ -2998,23 +3275,23 @@ body.dark-mode .contact-form .send-message-button:hover {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding-top: 19.188rem;
+  padding-top: 16rem;
   /* Ensure consistent spacing across browsers */
-  min-height: calc(100vh - 90px);
-  min-height: calc(100dvh - 90px);
+  min-height: calc(85vh - 90px);
+  min-height: calc(85dvh - 90px);
 }
 
 @media (max-width: 900px) {
   .main__container {
-    min-height: calc(100vh - 70px);
-    min-height: calc(100dvh - 70px);
+    min-height: calc(85vh - 70px);
+    min-height: calc(85dvh - 70px);
   }
 }
 
 @media (max-width: 600px) {
   .main__container {
-    min-height: calc(100vh - 56px);
-    min-height: calc(100dvh - 56px);
+    min-height: calc(85vh - 56px);
+    min-height: calc(85dvh - 56px);
   }
 }
 
@@ -4138,23 +4415,23 @@ body.dark-mode .contact-form .send-message-button:hover {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding-top: 19.188rem;
+  padding-top: 16rem;
   /* Ensure consistent spacing across browsers */
-  min-height: calc(100vh - 90px);
-  min-height: calc(100dvh - 90px);
+  min-height: calc(85vh - 90px);
+  min-height: calc(85dvh - 90px);
 }
 
 @media (max-width: 900px) {
   .main__container {
-    min-height: calc(100vh - 70px);
-    min-height: calc(100dvh - 70px);
+    min-height: calc(85vh - 70px);
+    min-height: calc(85dvh - 70px);
   }
 }
 
 @media (max-width: 600px) {
   .main__container {
-    min-height: calc(100vh - 56px);
-    min-height: calc(100dvh - 56px);
+    min-height: calc(85vh - 56px);
+    min-height: calc(85dvh - 56px);
   }
 }
 
@@ -4505,4 +4782,88 @@ body.dark-mode .main__social-link:hover {
   color: var(--bg-dark);
   box-shadow: 0 8px 30px rgba(57, 255, 20, 0.6);
   text-shadow: none;
+}
+
+/* Chrome Mobile Optimizations */
+@media screen and (max-width: 900px) {
+  /* Chrome mobile specific fixes for better rendering */
+  .main__content {
+    min-width: 0;
+    word-wrap: break-word;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Force hardware acceleration on Chrome mobile */
+    will-change: transform;
+  }
+  
+  .main__title {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform;
+    /* Ensure text renders properly on Chrome mobile */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Ensure decryption text works on Chrome mobile */
+  .decrypt-text {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Chrome mobile text rendering optimization */
+    text-rendering: optimizeLegibility;
+  }
+  
+  .decrypt-text .char {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Ensure individual characters render properly */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  
+  /* Chrome mobile viewport fixes */
+  .main__container {
+    /* Use Chrome's preferred viewport units */
+    min-height: calc(100vh - 70px) !important;
+    min-height: calc(100svh - 70px) !important;
+  }
+  
+  /* Chrome mobile image rendering */
+  .main__image {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Optimize image rendering on Chrome mobile */
+    image-rendering: -webkit-optimize-contrast;
+  }
+  
+  /* Chrome mobile header fixes */
+  .header {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Ensure header stays fixed properly on Chrome mobile */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  /* Chrome mobile menu fixes */
+  .menu__body {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Ensure mobile menu renders properly */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
+/* Chrome Mobile Specific Viewport Height Fix */
+@media screen and (max-width: 600px) {
+  .main__container {
+    /* Chrome mobile prefers svh over vh for better accuracy */
+    min-height: calc(100svh - 56px) !important;
+    min-height: calc(100vh - 56px) !important;
+  }
 }
