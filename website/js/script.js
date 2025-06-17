@@ -770,6 +770,166 @@
     // Initialize random quote display
     initRandomQuote();
 
+    // Projects section scroll enhancement
+    function initProjectsScroll() {
+      var scrollContainer = document.querySelector('.projects__scroll-container');
+      if (!scrollContainer) return;
+      
+      var isDragging = false;
+      var startX = 0;
+      var scrollLeft = 0;
+      var velocity = 0;
+      var lastX = 0;
+      var lastTime = 0;
+      
+      // Mouse/touch drag scrolling
+      function startDrag(e) {
+        isDragging = true;
+        startX = (e.pageX || e.touches[0].pageX) - scrollContainer.offsetLeft;
+        scrollLeft = scrollContainer.scrollLeft;
+        lastX = startX;
+        lastTime = Date.now();
+        velocity = 0;
+        
+        addClass(scrollContainer, 'dragging');
+        scrollContainer.style.cursor = 'grabbing';
+        
+        // Prevent text selection
+        e.preventDefault();
+      }
+      
+      function stopDrag(e) {
+        if (!isDragging) return;
+        
+        isDragging = false;
+        removeClass(scrollContainer, 'dragging');
+        scrollContainer.style.cursor = '';
+        
+        // Apply momentum scrolling
+        var momentumDuration = Math.min(Math.abs(velocity) * 100, 2000);
+        var targetScroll = scrollContainer.scrollLeft + velocity * momentumDuration / 60;
+        
+        if (momentumDuration > 0) {
+          smoothScrollTo(scrollContainer, targetScroll, momentumDuration);
+        }
+      }
+      
+      function drag(e) {
+        if (!isDragging) return;
+        
+        e.preventDefault();
+        var currentX = (e.pageX || e.touches[0].pageX) - scrollContainer.offsetLeft;
+        var currentTime = Date.now();
+        var deltaX = currentX - startX;
+        var deltaTime = currentTime - lastTime;
+        
+        scrollContainer.scrollLeft = scrollLeft - deltaX;
+        
+        // Calculate velocity for momentum
+        if (deltaTime > 0) {
+          velocity = (currentX - lastX) / deltaTime * 16; // 60fps
+        }
+        
+        lastX = currentX;
+        lastTime = currentTime;
+      }
+      
+      // Mouse events
+      addEvent(scrollContainer, 'mousedown', startDrag);
+      addEvent(document, 'mouseup', stopDrag);
+      addEvent(document, 'mousemove', drag);
+      
+      // Touch events for mobile
+      addEvent(scrollContainer, 'touchstart', startDrag);
+      addEvent(document, 'touchend', stopDrag);
+      addEvent(document, 'touchmove', drag);
+      
+      // Keyboard navigation
+      addEvent(scrollContainer, 'keydown', function(e) {
+        var cardWidth = 350 + 30; // card width + gap
+        var scrollAmount = cardWidth;
+        
+        switch(e.keyCode) {
+          case 37: // Left arrow
+            e.preventDefault();
+            smoothScrollTo(scrollContainer, scrollContainer.scrollLeft - scrollAmount, 300);
+            break;
+          case 39: // Right arrow
+            e.preventDefault();
+            smoothScrollTo(scrollContainer, scrollContainer.scrollLeft + scrollAmount, 300);
+            break;
+          case 36: // Home
+            e.preventDefault();
+            smoothScrollTo(scrollContainer, 0, 500);
+            break;
+          case 35: // End
+            e.preventDefault();
+            smoothScrollTo(scrollContainer, scrollContainer.scrollWidth - scrollContainer.clientWidth, 500);
+            break;
+        }
+      });
+      
+      // Smooth scroll helper function
+      function smoothScrollTo(element, target, duration) {
+        var start = element.scrollLeft;
+        var change = target - start;
+        var startTime = performance.now ? performance.now() : Date.now();
+        
+        function animateScroll(currentTime) {
+          var elapsed = currentTime - startTime;
+          var progress = Math.min(elapsed / duration, 1);
+          
+          // Easing function (ease-out-cubic)
+          var easeProgress = 1 - Math.pow(1 - progress, 3);
+          
+          element.scrollLeft = start + change * easeProgress;
+          
+          if (progress < 1) {
+            if (window.requestAnimationFrame) {
+              requestAnimationFrame(animateScroll);
+            } else {
+              setTimeout(function() {
+                animateScroll(Date.now());
+              }, 16);
+            }
+          }
+        }
+        
+        if (window.requestAnimationFrame) {
+          requestAnimationFrame(animateScroll);
+        } else {
+          animateScroll(Date.now());
+        }
+      }
+      
+      // Add scroll indicators (optional)
+      var projectsSection = document.querySelector('.projects');
+      if (projectsSection && scrollContainer.scrollWidth > scrollContainer.clientWidth) {
+        var scrollIndicator = document.createElement('div');
+        scrollIndicator.className = 'projects__scroll-indicator';
+        scrollIndicator.innerHTML = '<span>← Scroll for more projects →</span>';
+        scrollIndicator.style.cssText = 'text-align: center; padding: 10px; font-size: 0.9rem; opacity: 0.7; transition: opacity 0.3s ease;';
+        projectsSection.appendChild(scrollIndicator);
+        
+        // Hide indicator after first scroll
+        var hasScrolled = false;
+        addEvent(scrollContainer, 'scroll', function() {
+          if (!hasScrolled && scrollContainer.scrollLeft > 50) {
+            hasScrolled = true;
+            scrollIndicator.style.opacity = '0';
+            setTimeout(function() {
+              if (scrollIndicator.parentNode) {
+                scrollIndicator.parentNode.removeChild(scrollIndicator);
+              }
+            }, 300);
+          }
+        });
+      }
+    }
+    
+    // Initialize projects scroll functionality
+    initProjectsScroll();
+
   });
 
 })();
