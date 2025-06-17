@@ -6398,3 +6398,345 @@ body.dark-mode .achievement-card:focus-within {
     max-height: 110px;
   }
 }
+
+/* Non-Profit Affiliations Section */
+.nonprofits {
+  padding: 80px 0;
+  background: var(--background-color);
+}
+
+body.dark-mode .nonprofits {
+  background: var(--dark-background-color);
+}
+
+.nonprofits__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.nonprofits__header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.nonprofits__title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-color);
+}
+
+body.dark-mode .nonprofits__title {
+  color: var(--dark-text-color);
+}
+
+.nonprofits__subtitle {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+body.dark-mode .nonprofits__subtitle {
+  color: var(--dark-text-secondary);
+}
+
+.nonprofits__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  align-items: start;
+}
+
+.nonprofits__item {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s ease;
+}
+
+.nonprofits__item.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nonprofit-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 40px 30px;
+  text-align: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+body.dark-mode .nonprofit-card {
+  background: var(--dark-card-background);
+  border-color: var(--dark-border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.nonprofit-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .nonprofit-card:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.nonprofit-card__logo {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+body.dark-mode .nonprofit-card__logo {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nonprofit-card:hover .nonprofit-card__logo {
+  transform: scale(1.05);
+}
+
+body.dark-mode .nonprofit-card:hover .nonprofit-card__logo {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.nonprofit-card__logo img {
+  max-width: 70px;
+  max-height: 70px;
+  object-fit: contain;
+  transition: all 0.3s ease;
+}
+
+.nonprofit-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nonprofit-card__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-color);
+  line-height: 1.4;
+}
+
+body.dark-mode .nonprofit-card__title {
+  color: var(--dark-text-color);
+}
+
+.nonprofit-card__description {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+body.dark-mode .nonprofit-card__description {
+  color: var(--dark-text-secondary);
+}
+
+/* Responsive Design for Non-Profits */
+@media (max-width: 1200px) {
+  .nonprofits__container {
+    padding: 0 30px;
+  }
+
+  .nonprofits__grid {
+    gap: 25px;
+  }
+
+  .nonprofit-card {
+    padding: 35px 25px;
+  }
+
+  .nonprofit-card__logo {
+    width: 85px;
+    height: 85px;
+  }
+
+  .nonprofit-card__logo img {
+    max-width: 65px;
+    max-height: 65px;
+  }
+}
+
+@media (max-width: 900px) {
+  .nonprofits {
+    padding: 60px 0;
+  }
+
+  .nonprofits__container {
+    padding: 0 20px;
+  }
+
+  .nonprofits__header {
+    margin-bottom: 50px;
+  }
+
+  .nonprofits__title {
+    font-size: 2.2rem;
+  }
+
+  .nonprofits__subtitle {
+    font-size: 1.1rem;
+  }
+
+  .nonprofits__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .nonprofit-card {
+    padding: 30px 20px;
+  }
+
+  .nonprofit-card__title {
+    font-size: 1.15rem;
+  }
+
+  .nonprofit-card__description {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nonprofits {
+    padding: 50px 0;
+  }
+
+  .nonprofits__container {
+    padding: 0 15px;
+  }
+
+  .nonprofits__title {
+    font-size: 2rem;
+  }
+
+  .nonprofits__subtitle {
+    font-size: 1rem;
+  }
+
+  .nonprofits__grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .nonprofit-card {
+    padding: 30px 25px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .nonprofit-card__logo {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 20px;
+  }
+
+  .nonprofit-card__logo img {
+    max-width: 70px;
+    max-height: 70px;
+  }
+
+  .nonprofit-card__title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .nonprofit-card__description {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nonprofits {
+    padding: 40px 0;
+  }
+
+  .nonprofits__container {
+    padding: 0 15px;
+  }
+
+  .nonprofits__title {
+    font-size: 1.8rem;
+  }
+
+  .nonprofits__subtitle {
+    font-size: 0.95rem;
+  }
+
+  .nonprofit-card {
+    padding: 25px 20px;
+  }
+
+  .nonprofit-card__logo {
+    width: 80px;
+    height: 80px;
+  }
+
+  .nonprofit-card__logo img {
+    max-width: 60px;
+    max-height: 60px;
+  }
+
+  .nonprofit-card__title {
+    font-size: 1.1rem;
+  }
+
+  .nonprofit-card__description {
+    font-size: 0.9rem;
+  }
+}
+
+/* Accessibility and Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .nonprofits__item {
+    transition: none;
+  }
+
+  .nonprofit-card {
+    transition: none;
+  }
+
+  .nonprofit-card:hover {
+    transform: none;
+  }
+
+  .nonprofit-card__logo,
+  .nonprofit-card:hover .nonprofit-card__logo,
+  .nonprofit-card__logo img {
+    transition: none;
+    transform: none;
+  }
+}
+
+.nonprofit-card:focus-within {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+body.dark-mode .nonprofit-card:focus-within {
+  outline-color: var(--dark-accent-color);
+}
+
+.nonprofit-card,
+.nonprofit-card * {
+  box-sizing: border-box;
+}

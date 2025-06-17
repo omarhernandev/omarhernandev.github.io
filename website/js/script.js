@@ -1082,6 +1082,113 @@
       console.log('Achievements section initialized with', document.querySelectorAll('.achievements__item').length, 'items');
     }
 
+    // Non-Profit Affiliations section scroll animations
+    function initNonProfitAnimations() {
+      var nonprofitItems = document.querySelectorAll('.nonprofits__item');
+      if (!nonprofitItems.length) return;
+
+      // Check if user prefers reduced motion
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      // Intersection Observer for scroll animations
+      var nonprofitObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var item = entry.target;
+            var nonprofitNumber = parseInt(item.getAttribute('data-nonprofit')) || 0;
+            
+            if (prefersReducedMotion) {
+              // Immediate animation for reduced motion preference
+              addClass(item, 'animate-in');
+            } else {
+              // Staggered animation with 100ms delay between each card
+              setTimeout(function() {
+                addClass(item, 'animate-in');
+              }, nonprofitNumber * 100);
+            }
+            
+            // Stop observing this item once animated
+            nonprofitObserver.unobserve(item);
+          }
+        });
+      }, {
+        threshold: 0.2, // Trigger when 20% of the element is visible
+        rootMargin: '0px 0px -50px 0px' // Trigger slightly before the element comes into view
+      });
+
+      // Start observing all nonprofit items
+      nonprofitItems.forEach(function(item) {
+        nonprofitObserver.observe(item);
+      });
+
+      // Fallback for browsers without Intersection Observer support
+      if (!window.IntersectionObserver) {
+        console.log('Intersection Observer not supported, applying immediate animations');
+        nonprofitItems.forEach(function(item, index) {
+          if (prefersReducedMotion) {
+            addClass(item, 'animate-in');
+          } else {
+            setTimeout(function() {
+              addClass(item, 'animate-in');
+            }, index * 100);
+          }
+        });
+      }
+
+      // Handle window resize for responsive behavior
+      addEvent(window, 'resize', function() {
+        // Debounce resize events for performance
+        clearTimeout(window.nonprofitsResizeTimeout);
+        window.nonprofitsResizeTimeout = setTimeout(function() {
+          // Re-trigger animations if items are in viewport after resize
+          nonprofitItems.forEach(function(item) {
+            if (hasClass(item, 'animate-in')) {
+              var rect = item.getBoundingClientRect();
+              var isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+              
+              if (!isInViewport) {
+                removeClass(item, 'animate-in');
+                nonprofitObserver.observe(item);
+              }
+            }
+          });
+        }, 250);
+      });
+    }
+
+    // Enhanced scroll performance for nonprofits
+    function optimizeNonProfitPerformance() {
+      var nonprofitCards = document.querySelectorAll('.nonprofit-card');
+      
+      // Add performance optimizations
+      nonprofitCards.forEach(function(card) {
+        // Enable hardware acceleration
+        card.style.transform = 'translateZ(0)';
+        card.style.backfaceVisibility = 'hidden';
+        card.style.perspective = '1000px';
+        
+        // Optimize hover animations
+        addEvent(card, 'mouseenter', function() {
+          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            card.style.willChange = 'transform, box-shadow';
+          }
+        });
+        
+        addEvent(card, 'mouseleave', function() {
+          card.style.willChange = 'auto';
+        });
+      });
+    }
+
+    // Initialize non-profit section when DOM is ready
+    if (document.querySelector('.nonprofits')) {
+      initNonProfitAnimations();
+      optimizeNonProfitPerformance();
+      
+      // Log initialization for debugging
+      console.log('Non-Profit section initialized with', document.querySelectorAll('.nonprofits__item').length, 'items');
+    }
+
     // Listen for reduced motion preference changes
     if (window.matchMedia) {
       var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -1094,6 +1201,11 @@
             // Apply immediate animations if preference changes to reduced motion
             var achievementItems = document.querySelectorAll('.achievements__item:not(.animate-in)');
             achievementItems.forEach(function(item) {
+              addClass(item, 'animate-in');
+            });
+            
+            var nonprofitItems = document.querySelectorAll('.nonprofits__item:not(.animate-in)');
+            nonprofitItems.forEach(function(item) {
               addClass(item, 'animate-in');
             });
           }
