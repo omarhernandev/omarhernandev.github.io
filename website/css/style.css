@@ -596,8 +596,29 @@ body.dark-mode .project-tool {
 
 /* Home page specific header styling - black background to match hero image */
 .home-page .header {
-  background: #000000;
+  background: #000000 !important;
+  background-color: #000000 !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  /* Safari-specific fixes */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Additional Safari fix for home page header background */
+.home-page .header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #000000;
+  z-index: -1;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .header__container {
@@ -686,6 +707,17 @@ body.dark-mode .menu__link:hover {
   align-items: center;
   gap: 0.624rem;
   height: 100%;
+}
+
+/* Mobile header spacing adjustments */
+@media (max-width: 600px) {
+  .header__container {
+    padding: 0 1.5rem !important; /* Increase padding for better spacing */
+  }
+  
+  .actions-header {
+    gap: 1rem !important; /* Increase gap between icons */
+  }
 }
 
 .menu-logo {
@@ -870,6 +902,8 @@ body.dark-mode .page {
   overflow: hidden;
   min-height: 85vh;
   background: #0d1b2a;
+  margin-top: -90px;
+  padding-top: 90px;
 }
 
 .main__image {
@@ -911,6 +945,11 @@ body.dark-mode .main__image {
   position: relative;
   z-index: 2;
   margin-top: -5vh;
+}
+
+/* Ensure main container on contact page also has relative positioning for wisdom pointer */
+.main__container_pages {
+  position: relative;
 }
 
 /* Subtle overlay for better content readability */
@@ -1003,6 +1042,24 @@ body.dark-mode .main__title {
   letter-spacing: 0.1em;
   position: relative;
   display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+/* Hover and focus states for accessibility */
+.decrypt-text:hover {
+  transform: scale(1.02);
+}
+
+.decrypt-text:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 4px;
+}
+
+body.dark-mode .decrypt-text:focus {
+  outline: 2px solid rgba(57, 255, 20, 0.6);
 }
 
 .decrypt-text .char {
@@ -1012,7 +1069,7 @@ body.dark-mode .main__title {
 }
 
 .decrypt-text .char.decrypting {
-  animation: flicker 0.1s infinite alternate;
+  animation: flicker 0.2s infinite alternate;
 }
 
 .decrypt-text .char.locked {
@@ -1034,7 +1091,7 @@ body.dark-mode .main__title {
 
 /* Dark mode flicker enhancement */
 body.dark-mode .decrypt-text .char.decrypting {
-  animation: flickerDark 0.1s infinite alternate;
+  animation: flickerDark 0.2s infinite alternate;
 }
 
 @keyframes flickerDark {
@@ -1208,11 +1265,129 @@ body.dark-mode .main__text {
   transition: all 0.3s ease;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   font-style: italic;
+  cursor: pointer;
+  position: relative;
+  
+  /* Glass morphism effect matching home page content box */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem 1.75rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  animation: glassAppear 1.2s ease-out;
+}
+
+.main__quote:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 body.dark-mode .main__quote {
   color: #CCCCCC;
   text-shadow: 0 0 5px rgba(204, 204, 204, 0.2);
+  /* Dark mode glass effect matching home page content box */
+  background: rgba(57, 255, 20, 0.08);
+  border: 1px solid rgba(57, 255, 20, 0.2);
+  box-shadow: 0 8px 32px rgba(57, 255, 20, 0.2);
+}
+
+body.dark-mode .main__quote:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 50px rgba(57, 255, 20, 0.4);
+  border-color: rgba(57, 255, 20, 0.4);
+  background: rgba(57, 255, 20, 0.12);
+  text-shadow: 0 0 8px rgba(204, 204, 204, 0.4);
+}
+
+/* Fun "Click for more wisdom" pointer */
+.wisdom-pointer {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: 'Share Tech Mono', 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 1.1rem;
+  color: var(--accent-color);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  opacity: 1;
+  animation: wisdomBounce 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 100;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  /* Debug styles to make it super visible */
+  text-shadow: 0 0 10px currentColor;
+}
+
+.wisdom-pointer::after {
+  content: '👆';
+  font-size: 1.2rem;
+  animation: pointBounce 1.5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+/* Hide pointer when quote box is hovered */
+.main__quote:hover .wisdom-pointer,
+.main__quote:focus .wisdom-pointer {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-10px);
+}
+
+/* Dark mode styling for wisdom pointer */
+body.dark-mode .wisdom-pointer {
+  color: var(--text-primary-dark);
+  text-shadow: 0 0 8px rgba(57, 255, 20, 0.5);
+}
+
+/* Bouncing animations */
+@keyframes wisdomBounce {
+  0%, 100% { 
+    transform: translateY(0px);
+  }
+  50% { 
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pointBounce {
+  0%, 100% { 
+    transform: rotate(-15deg) scale(1);
+  }
+  50% { 
+    transform: rotate(-25deg) scale(1.1);
+  }
+}
+
+/* Responsive adjustments for wisdom pointer */
+@media (max-width: 900px) {
+  .wisdom-pointer {
+    bottom: -70px;
+    font-size: 0.9rem;
+  }
+  
+  .wisdom-pointer::after {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .wisdom-pointer {
+    bottom: -60px;
+    font-size: 0.8rem;
+  }
+  
+  .wisdom-pointer::after {
+    font-size: 1rem;
+  }
 }
 
 .main__button {
@@ -1283,6 +1458,8 @@ body.dark-mode .main__button:hover {
 .about__title {
   margin-bottom: 1.5rem;
   color: var(--accent-color);
+  font-size: 1.5rem;
+  font-weight: 700;
   transition: all 0.3s ease;
 }
 
@@ -1344,6 +1521,8 @@ body.dark-mode .about__button {
   text-align: center;
   margin-bottom: 5rem;
   color: var(--accent-color);
+  font-size: 1.5rem;
+  font-weight: 700;
   transition: all 0.3s ease;
 }
 
@@ -1642,34 +1821,69 @@ body.dark-mode .footer__logo img {
 /* ****************CONTACT PAGE****************/
 
 .page__main.main_contact {
-  background: url("/images/Contact/Contact-Hero.jpg") center / cover no-repeat;
+  background: #000000 url("/images/Contact/Contact-Hero.jpg") center / cover no-repeat;
+  background-color: #000000;
   min-height: 50vh;
+  /* Optimizations for consistent cross-browser rendering */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+  /* Ensure immediate background coverage */
+  background-attachment: scroll;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
+/* Enhanced Contact Container for Perfect Symmetry */
 .contact__container {
   display: flex;
-  justify-content: space-between;
-  gap: 6rem;
-  padding-top: 8.75rem;
-  padding-bottom: 8.75rem;
-  max-width: 72.624rem;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4rem;
+  padding: 6rem 2rem;
+  max-width: 1200px;
   margin: 0 auto;
-  padding-left: 0.938rem;
-  padding-right: 0.938rem;
+  min-height: 80vh;
 }
 
+/* Left Column - Services Pitch */
 .contact__contacts {
   flex: 1;
-  max-width: 28rem;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 }
 
+/* Right Column - Contact Form */
 .contact__info {
   flex: 1;
-  max-width: 34rem;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem;
+}
+
+/* Dark mode enhancements */
+body.dark-mode .contact__contacts {
+  background: rgba(0, 255, 0, 0.02);
+  border-color: rgba(0, 255, 0, 0.1);
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.05);
 }
 
 .contact__title {
   margin-bottom: 3rem;
+  margin-top: 0;
   font-weight: 600;
   line-height: 110%;
   font-size: 2.5rem;
@@ -3180,7 +3394,7 @@ body.dark-mode .contact-form label {
 }
 
 .contact-form textarea {
-  min-height: 8rem;
+  min-height: 5rem;
   resize: vertical;
 }
 
@@ -4865,5 +5079,206 @@ body.dark-mode .main__social-link:hover {
     /* Chrome mobile prefers svh over vh for better accuracy */
     min-height: calc(100svh - 56px) !important;
     min-height: calc(100vh - 56px) !important;
+  }
+}
+
+/* ====================================
+   CONTACT INVITE SECTION
+   ==================================== */
+
+/* Contact Invite Section */
+.contact-invite {
+  max-width: 100%;
+  margin-bottom: 0;
+  font-family: 'Share Tech Mono', 'IBM Plex Mono', 'Orbitron', 'Courier New', monospace, system-ui;
+  line-height: 1.6;
+}
+
+.contact-invite h3 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 3rem;
+  margin-top: 0;
+  text-align: center;
+  color: #d4a437;
+}
+
+body.dark-mode .contact-invite h3 {
+  color: #00ff00;
+}
+
+.contact-invite p {
+  margin-bottom: 1.25rem;
+  text-align: left;
+  color: #d4a437;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+body.dark-mode .contact-invite p {
+  color: #00ff00;
+}
+
+.contact-invite--black .bullet {
+  color: #d4a437;
+  font-weight: bold;
+  margin-right: 0.75rem;
+  font-size: 1.2em;
+  display: inline-block;
+  transform: scale(1.2);
+}
+
+body.dark-mode .contact-invite--black .bullet {
+  color: #00ff00;
+}
+
+.contact-invite__divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #d4a437, transparent);
+  margin: 1.5rem 0;
+  opacity: 0.6;
+}
+
+body.dark-mode .contact-invite__divider {
+  background: linear-gradient(90deg, transparent, #00ff00, transparent);
+  opacity: 0.8;
+}
+
+.contact-invite__social {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+}
+
+.contact-invite__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(212, 164, 55, 0.1);
+  border: 1px solid #d4a437;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.contact-invite__social-link:hover {
+  background: rgba(212, 164, 55, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 164, 55, 0.3);
+}
+
+.contact-invite__social-link svg {
+  width: 24px;
+  height: 24px;
+  color: #d4a437;
+  transition: all 0.3s ease;
+}
+
+.contact-invite__social-link:hover svg {
+  color: #d4a437;
+  transform: scale(1.1);
+}
+
+body.dark-mode .contact-invite__social-link {
+  background: rgba(0, 255, 0, 0.1);
+  border-color: #00ff00;
+}
+
+body.dark-mode .contact-invite__social-link:hover {
+  background: rgba(0, 255, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3);
+}
+
+body.dark-mode .contact-invite__social-link svg {
+  color: #00ff00;
+}
+
+body.dark-mode .contact-invite__social-link:hover svg {
+  color: #00ff00;
+}
+
+/* Responsive improvements */
+@media (max-width: 900px) {
+  .contact__container {
+    flex-direction: column;
+    gap: 3rem;
+    padding: 4rem 1.5rem;
+    min-height: auto;
+    align-items: center;
+  }
+  
+  .contact__contacts,
+  .contact__info {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .contact__contacts {
+    order: 1;
+    padding: 2rem;
+  }
+  
+  .contact__info {
+    order: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .contact-form {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .contact-invite h3 {
+    font-size: 2.2rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .contact__container {
+    padding: 3rem 1rem;
+    gap: 2rem;
+    align-items: center;
+  }
+  
+  .contact__contacts {
+    padding: 1.5rem;
+  }
+  
+  .contact__info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .contact-form {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+  }
+  
+  .contact-invite__social {
+    justify-content: center;
+    gap: 0.75rem;
+  }
+  
+  .contact-invite__social-link {
+    width: 44px;
+    height: 44px;
+  }
+  
+  .contact-invite__social-link svg {
+    width: 22px;
+    height: 22px;
   }
 }

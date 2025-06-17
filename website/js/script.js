@@ -212,8 +212,10 @@
 
       var targetText = decryptElement.getAttribute('data-text') || 'Omar Hernandez';
       var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
-      var decryptDuration = 2000; // 2 seconds total
-      var charRevealDelay = 150; // Delay between each character lock-in
+      var decryptDuration = 2500; // 2.5 seconds for more natural decoding experience
+      var isAnimating = false; // Flag to prevent animation overlap
+      var animationTimeout = null; // For debouncing
+      var charElements = [];
       
       // Chrome mobile detection and optimization
       var isChromeMobile = /Chrome/.test(navigator.userAgent) && /Mobile/.test(navigator.userAgent);
@@ -224,63 +226,124 @@
         decryptElement.style.transform = 'translateZ(0)';
       }
       
-      // Create individual character spans
-      decryptElement.innerHTML = '';
-      var charElements = [];
+      // Add accessibility attributes
+      decryptElement.setAttribute('aria-label', targetText);
+      decryptElement.setAttribute('role', 'text');
       
-      for (var i = 0; i < targetText.length; i++) {
-        var charSpan = document.createElement('span');
-        charSpan.className = 'char decrypting';
-        charSpan.textContent = targetText[i] === ' ' ? '\u00A0' : getRandomChar(); // Use non-breaking space for spaces
+      // Initialize character spans
+      function initCharSpans() {
+        decryptElement.innerHTML = '';
+        charElements = [];
         
-        // Chrome mobile optimization for individual characters
-        if (isChromeMobile) {
-          charSpan.style.webkitTransform = 'translateZ(0)';
-          charSpan.style.transform = 'translateZ(0)';
-          charSpan.style.webkitBackfaceVisibility = 'hidden';
-          charSpan.style.backfaceVisibility = 'hidden';
+        for (var i = 0; i < targetText.length; i++) {
+          var charSpan = document.createElement('span');
+          charSpan.className = 'char locked';
+          charSpan.textContent = targetText[i] === ' ' ? '\u00A0' : targetText[i];
+          
+          // Chrome mobile optimization for individual characters
+          if (isChromeMobile) {
+            charSpan.style.webkitTransform = 'translateZ(0)';
+            charSpan.style.transform = 'translateZ(0)';
+            charSpan.style.webkitBackfaceVisibility = 'hidden';
+            charSpan.style.backfaceVisibility = 'hidden';
+          }
+          
+          charElements.push(charSpan);
+          decryptElement.appendChild(charSpan);
         }
-        
-        charElements.push(charSpan);
-        decryptElement.appendChild(charSpan);
       }
       
       function getRandomChar() {
         return chars[Math.floor(Math.random() * chars.length)];
       }
       
-      // Start the decryption animation
-      var startTime = Date.now();
-      var lockedChars = 0;
-      
-      function animate() {
-        var elapsed = Date.now() - startTime;
-        var progress = Math.min(elapsed / decryptDuration, 1);
+      // Main decryption animation function
+      function startDecryptAnimation() {
+        // Prevent overlapping animations
+        if (isAnimating) return;
         
-        // Determine how many characters should be locked by now
-        var shouldBeLocked = Math.floor(progress * targetText.length);
+        isAnimating = true;
+        var startTime = Date.now();
+        var lockedChars = 0;
         
-        // Lock characters that should be locked
-        while (lockedChars < shouldBeLocked && lockedChars < targetText.length) {
-          var charElement = charElements[lockedChars];
-          charElement.textContent = targetText[lockedChars] === ' ' ? '\u00A0' : targetText[lockedChars];
-          removeClass(charElement, 'decrypting');
-          addClass(charElement, 'locked');
-          lockedChars++;
-        }
-        
-        // Update still-decrypting characters with random chars
-        for (var i = lockedChars; i < charElements.length; i++) {
-          if (targetText[i] !== ' ') { // Don't randomize spaces
+        // Reset all characters to decrypting state
+        for (var i = 0; i < charElements.length; i++) {
+          if (targetText[i] !== ' ') {
+            removeClass(charElements[i], 'locked');
+            addClass(charElements[i], 'decrypting');
             charElements[i].textContent = getRandomChar();
           }
         }
         
-        // Continue animation if not complete
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          // Ensure all characters are properly locked
+        function animate() {
+          var elapsed = Date.now() - startTime;
+          var progress = Math.min(elapsed / decryptDuration, 1);
+          
+          // Determine how many characters should be locked by now
+          var shouldBeLocked = Math.floor(progress * targetText.length);
+          
+          // Lock characters that should be locked
+          while (lockedChars < shouldBeLocked && lockedChars < targetText.length) {
+            var charElement = charElements[lockedChars];
+            charElement.textContent = targetText[lockedChars] === ' ' ? '\u00A0' : targetText[lockedChars];
+            removeClass(charElement, 'decrypting');
+            addClass(charElement, 'locked');
+            lockedChars++;
+          }
+          
+          // Update still-decrypting characters with random chars
+          for (var i = lockedChars; i < charElements.length; i++) {
+            if (targetText[i] !== ' ') { // Don't randomize spaces
+              charElements[i].textContent = getRandomChar();
+            }
+          }
+          
+          // Continue animation if not complete
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            // Ensure all characters are properly locked
+            for (var i = 0; i < charElements.length; i++) {
+              var charElement = charElements[i];
+              charElement.textContent = targetText[i] === ' ' ? '\u00A0' : targetText[i];
+              removeClass(charElement, 'decrypting');
+              addClass(charElement, 'locked');
+            }
+            isAnimating = false;
+          }
+        }
+        
+        // Reset locked character counter
+        lockedChars = 0;
+        animate();
+      }
+      
+      // Initialize character spans
+      initCharSpans();
+      
+      // Add hover functionality with debouncing
+      addEvent(decryptElement, 'mouseenter', function() {
+        // Clear any pending animation timeout
+        if (animationTimeout) {
+          clearTimeout(animationTimeout);
+        }
+        
+        // Debounce hover events to prevent rapid triggering
+        animationTimeout = setTimeout(function() {
+          startDecryptAnimation();
+        }, 100);
+      });
+      
+      // Ensure name stays decoded on mouse leave
+      addEvent(decryptElement, 'mouseleave', function() {
+        // Clear any pending animation timeout
+        if (animationTimeout) {
+          clearTimeout(animationTimeout);
+          animationTimeout = null;
+        }
+        
+        // If animation is not running, ensure all characters are properly locked
+        if (!isAnimating) {
           for (var i = 0; i < charElements.length; i++) {
             var charElement = charElements[i];
             charElement.textContent = targetText[i] === ' ' ? '\u00A0' : targetText[i];
@@ -288,11 +351,28 @@
             addClass(charElement, 'locked');
           }
         }
-      }
+      });
       
-      // Start animation after a brief delay to ensure page is loaded
+      // Focus/blur events for keyboard accessibility
+      addEvent(decryptElement, 'focus', function() {
+        if (animationTimeout) {
+          clearTimeout(animationTimeout);
+        }
+        animationTimeout = setTimeout(function() {
+          startDecryptAnimation();
+        }, 100);
+      });
+      
+      addEvent(decryptElement, 'blur', function() {
+        if (animationTimeout) {
+          clearTimeout(animationTimeout);
+          animationTimeout = null;
+        }
+      });
+      
+      // Initial page load animation - start after a brief delay
       setTimeout(function() {
-        animate();
+        startDecryptAnimation();
       }, 500);
     }
 
@@ -605,9 +685,9 @@
     // Initialize typewriter effect
     initTypewriter();
 
-    // Random Inspirational Quote Display
+    // Interactive Quote Cycling System
     function initRandomQuote() {
-      var quoteElement = document.getElementById('inspirational-quote');
+      var quoteElement = document.querySelector('.main__quote');
       if (!quoteElement) return;
 
       var quotes = [
@@ -622,18 +702,69 @@
         "That brain of mine is something more than merely mortal, as time will show. – Ada Lovelace",
         "The microprocessor is not just an invention; it is a new way of thinking. – Federico Faggin",
         "Love and compassion are necessities, not luxuries. Without them, humanity cannot survive. – Dalai Lama",
-        "The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom. – Isaac Asimov"
+        "The saddest aspect of life right now is that science gathers knowledge faster than society gathers wisdom. – Isaac Asimov",
+        "Innovation distinguishes between a leader and a follower. – Steve Jobs",
+        "The best way to predict the future is to invent it. – Alan Kay",
+        "Any sufficiently advanced technology is indistinguishable from magic. – Arthur C. Clarke",
+        "First, solve the problem. Then, write the code. – John Johnson",
+        "Code is like humor. When you have to explain it, it's bad. – Cory House",
+        "The only way to learn a new programming language is by writing programs in it. – Dennis Ritchie"
       ];
 
-      // Select a random quote
-      var randomIndex = Math.floor(Math.random() * quotes.length);
-      var selectedQuote = quotes[randomIndex];
+      var currentQuoteIndex = Math.floor(Math.random() * quotes.length);
+      var isAnimating = false;
+
+      function displayQuote(index) {
+        if (isAnimating) return;
+        
+        isAnimating = true;
+        var selectedQuote = quotes[index];
+        
+        // Add fade out effect
+        quoteElement.style.opacity = '0';
+        quoteElement.style.transform = 'translateY(10px)';
+        
+        setTimeout(function() {
+          // Update the quote text
+          quoteElement.textContent = selectedQuote;
+          
+          // Update aria-label for accessibility
+          quoteElement.setAttribute('aria-label', 'Inspirational quote: ' + selectedQuote + '. Click to see next quote.');
+          
+          // Add fade in effect
+          quoteElement.style.opacity = '1';
+          quoteElement.style.transform = 'translateY(0)';
+          
+          setTimeout(function() {
+            isAnimating = false;
+          }, 300);
+        }, 150);
+      }
+
+      function nextQuote() {
+        if (isAnimating) return;
+        currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+        displayQuote(currentQuoteIndex);
+      }
+
+      // Display initial quote
+      displayQuote(currentQuoteIndex);
       
-      // Display the quote
-      quoteElement.textContent = selectedQuote;
+      // Add click event listener for cycling quotes
+      addEvent(quoteElement, 'click', nextQuote);
       
-      // Update aria-label with the selected quote
-      quoteElement.setAttribute('aria-label', 'inspirational quote: ' + selectedQuote);
+      // Add keyboard support for accessibility
+      quoteElement.setAttribute('tabindex', '0');
+      quoteElement.setAttribute('role', 'button');
+      quoteElement.setAttribute('title', 'Click to see next inspirational quote');
+      
+      addEvent(quoteElement, 'keydown', function(event) {
+        // Support Enter and Space keys
+        if (event.keyCode === 13 || event.keyCode === 32) {
+          event.preventDefault();
+          nextQuote();
+        }
+      });
     }
 
     // Initialize random quote display
