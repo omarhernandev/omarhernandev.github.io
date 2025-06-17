@@ -9,6 +9,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#163440" />
   <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
+  
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="/images/favicon.ico" />
   <title>Home | Omar Hernandez</title>
@@ -71,7 +72,7 @@
           <div class="main__content">
             <h2 class="main__caption">Welcome, I am</h2>
             <h3 class="main__title">
-              <span class="decrypt-text" data-text="Omar Hernandez" tabindex="0" aria-label="Omar Hernandez" role="button" title="Hover or focus to see decoding animation"></span>
+              <span class="decrypt-text" data-text="Omar Hernandez" tabindex="0" aria-label="Omar Hernandez" role="button" title="Hover to see decoding animation"></span>
             </h3>
             <div class="main__typewriter" role="text" aria-label="Job title typewriter animation">
               <span id="typewriter-text" class="typewriter-text"></span>
@@ -110,71 +111,56 @@
           </div>
         </div>
       </section>
-      <section class="page__services services">
-        <div class="services__container">
-          <h2 class="services__title title">Peek Into My Work</h2>
-          <div class="services__row">
-            <div class="services__column">
-              <div class="services__item item-services">
-                <a class="item-services__top" href="#">
-                  <div class="item-services__image">
-                    <img src="../images/Home/Home-Service-1.png" alt="First Service" />
-                  </div>
-                  <h3 class="item-services__title">First Service</h3>
-                </a>
-                <div class="item-services__text">
-                  Craft a brief description outlining the essence of your first service.
-                </div>
-                <a href="#" class="item-services__button button">CTA Button</a>
-              </div>
-            </div>
-            <div class="services__column">
-              <div class="services__item item-services">
-                <a class="item-services__top" href="#">
-                  <div class="item-services__image">
-                    <img src="../images/Home/Home-Service-2.png" alt="Second Service" />
-                  </div>
-                  <h3 class="item-services__title">Second Service</h3>
-                </a>
-                <div class="item-services__text">
-                  Write a concise statement highlighting the core features of your second service.
-                </div>
-                <a href="#" class="item-services__button button">CTA Button</a>
-              </div>
-            </div>
-            <div class="services__column">
-              <div class="services__item item-services">
-                <a class="item-services__top" href="#">
-                  <div class="item-services__image">
-                    <img src="../images/Home/Home-Service-3.png" alt="Third Service" />
-                  </div>
-                  <h3 class="item-services__title">First Service</h3>
-                </a>
-                <div class="item-services__text">
-                  Provide a succinct overview key offerings of your third service.
-                </div>
-                <a href="#" class="item-services__button button">CTA Button</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section class="page__projects projects">
+      <section class="page__services projects">
         <div class="projects__container">
-          <h2 class="projects__title title">Peek Into My Projects</h2>
+          <h2 class="projects__title title">Peek Into My Work</h2>
           <div class="projects__scroll-container" role="region" aria-label="Horizontally scrollable project cards" tabindex="0">
             <div class="projects__row">
               <div class="projects__column">
                 <div class="projects__item item-projects">
                   <div class="item-projects__image">
-                    <div class="project-img gloss-effect" aria-hidden="true"></div>
+                    <div class="project-img gloss-effect">
+                      <img src="../images/Home/DTI-project.webp" alt="DTI Brain Imaging for Neuroplasticity Study" />
+                    </div>
                   </div>
                   <div class="item-projects__content">
-                    <h3 class="item-projects__title">Cosmic Dashboard</h3>
+                    <h3 class="item-projects__title">Neuroplasticity: Stroke Recovery</h3>
                     <div class="item-projects__text">
-                      An interactive data visualization tool that presents complex information in an intuitive, space-themed interface.
+                      A comprehensive data analysis and predictive modeling system for stroke recovery patterns and patient outcomes.
                     </div>
-                    <a href="projects.html" class="item-projects__button button" aria-label="View Cosmic Dashboard project details">View Project</a>
+                    <a href="projects.html" class="item-projects__button button" aria-label="View Neuroplasticity: Stroke Recovery project details">View Project</a>
+                  </div>
+                </div>
+              </div>
+              <div class="projects__column">
+                <div class="projects__item item-projects">
+                  <div class="item-projects__image">
+                    <div class="project-img gloss-effect">
+                      <img src="../images/Home/stocks.jpg" alt="Apple Stock Analysis Charts and Data" />
+                    </div>
+                  </div>
+                  <div class="item-projects__content">
+                    <h3 class="item-projects__title">R Statistics: Apple Stock Analysis</h3>
+                    <div class="item-projects__text">
+                      Advanced and comprehensive time series analysis and machine learning models for predicting Apple stock price movements and market trends from 1985-2025.
+                    </div>
+                                          <a href="projects.html" class="item-projects__button button" aria-label="View R Statistics: Apple Stock Analysis project details">View Project</a>
+                  </div>
+                </div>
+              </div>
+              <div class="projects__column">
+                <div class="projects__item item-projects">
+                  <div class="item-projects__image">
+                    <div class="project-img gloss-effect">
+                      <img src="../images/Home/histology.webp" alt="Digital Pathology Histology Slides for Cancer Modeling" />
+                    </div>
+                  </div>
+                  <div class="item-projects__content">
+                    <h3 class="item-projects__title">Digital Pathology: Cancer Modeling</h3>
+                    <div class="item-projects__text">
+                      Computational biology models for cancer progression analysis and treatment response prediction using machine learning algorithms.
+                    </div>
+                    <a href="projects.html" class="item-projects__button button" aria-label="View Cancer Modeling project details">View Project</a>
                   </div>
                 </div>
               </div>
@@ -184,11 +170,11 @@
                     <div class="project-img gloss-effect" aria-hidden="true"></div>
                   </div>
                   <div class="item-projects__content">
-                    <h3 class="item-projects__title">Orbital E-Commerce</h3>
+                    <h3 class="item-projects__title">Financial Reporting: Automated Invoices</h3>
                     <div class="item-projects__text">
-                      A responsive online store with smooth animations and a seamless checkout process inspired by planetary orbits.
+                      Automated financial reporting system that generates, processes, and tracks invoices with real-time analytics and payment integration.
                     </div>
-                    <a href="projects.html" class="item-projects__button button" aria-label="View Orbital E-Commerce project details">View Project</a>
+                    <a href="projects.html" class="item-projects__button button" aria-label="View Financial Reporting: Automated Invoices project details">View Project</a>
                   </div>
                 </div>
               </div>
@@ -198,11 +184,11 @@
                     <div class="project-img gloss-effect" aria-hidden="true"></div>
                   </div>
                   <div class="item-projects__content">
-                    <h3 class="item-projects__title">Nebula News App</h3>
+                    <h3 class="item-projects__title">Lead Tracking</h3>
                     <div class="item-projects__text">
-                      A mobile-first news application with dynamic content loading and a unique constellation-based navigation system.
+                      Comprehensive custom CRM system for lead management, conversion tracking, and sales pipeline optimization with automated follow-up workflows.
                     </div>
-                    <a href="projects.html" class="item-projects__button button" aria-label="View Nebula News App project details">View Project</a>
+                    <a href="projects.html" class="item-projects__button button" aria-label="View Lead Tracking project details">View Project</a>
                   </div>
                 </div>
               </div>
@@ -212,11 +198,11 @@
                     <div class="project-img gloss-effect" aria-hidden="true"></div>
                   </div>
                   <div class="item-projects__content">
-                    <h3 class="item-projects__title">Neural Network Visualizer</h3>
+                    <h3 class="item-projects__title">Data Privacy</h3>
                     <div class="item-projects__text">
-                      A real-time neural network training visualizer that makes machine learning concepts accessible through interactive graphics.
+                      Comprehensive data privacy and security framework ensuring TCPA compliance, HIPAA protections, and robust IPv4/IPv6 network security protocols.
                     </div>
-                    <a href="projects.html" class="item-projects__button button" aria-label="View Neural Network Visualizer project details">View Project</a>
+                    <a href="projects.html" class="item-projects__button button" aria-label="View Data Privacy project details">View Project</a>
                   </div>
                 </div>
               </div>
@@ -226,11 +212,11 @@
                     <div class="project-img gloss-effect" aria-hidden="true"></div>
                   </div>
                   <div class="item-projects__content">
-                    <h3 class="item-projects__title">Quantum Analytics</h3>
+                    <h3 class="item-projects__title">fMRI: Prosthetics Feasability Study</h3>
                     <div class="item-projects__text">
-                      Advanced predictive analytics platform leveraging quantum-inspired algorithms for complex data pattern recognition.
+                      Advanced functional neuroimaging analysis to assess brain-computer interface viability for next-generation prosthetic control systems and neural rehabilitation.
                     </div>
-                    <a href="projects.html" class="item-projects__button button" aria-label="View Quantum Analytics project details">View Project</a>
+                    <a href="projects.html" class="item-projects__button button" aria-label="View fMRI: Prosthetics Feasability Study project details">View Project</a>
                   </div>
                 </div>
               </div>
@@ -238,6 +224,107 @@
           </div>
         </div>
       </section>
+
+      <section class="page__achievements achievements">
+        <div class="achievements__container">
+          <div class="achievements__header">
+            <h2 class="achievements__title title">Achievements & Milestones</h2>
+            <p class="achievements__subtitle">Recognition of Excellence and Impact</p>
+          </div>
+          <div class="achievements__grid">
+            <div class="achievements__item achievement-card" data-achievement="1">
+              <div class="achievement-card__logo">
+                <img src="../images/achievements/nih.jpeg" alt="National Institute of Health Logo" />
+              </div>
+              <div class="achievement-card__content">
+                <h3 class="achievement-card__title">National Institute of Health Funded</h3>
+                <p class="achievement-card__description">NIH-funded researcher advancing healthcare innovation</p>
+              </div>
+            </div>
+            
+            <div class="achievements__item achievement-card" data-achievement="2">
+              <div class="achievement-card__logo">
+                <img src="../images/achievements/gms.png" alt="Gates Millennium Scholars Logo" />
+              </div>
+              <div class="achievement-card__content">
+                <h3 class="achievement-card__title">Gates Millennium Scholar</h3>
+                <p class="achievement-card__description">Gates Foundation scholar recognized for academic excellence</p>
+              </div>
+            </div>
+            
+            <div class="achievements__item achievement-card" data-achievement="3">
+              <div class="achievement-card__logo">
+                <img src="../images/achievements/hsf.png" alt="Hispanic Scholarship Fund Logo" />
+              </div>
+              <div class="achievement-card__content">
+                <h3 class="achievement-card__title">Hispanic Scholarship Fund Scholar</h3>
+                <p class="achievement-card__description">HSF scholar promoting diversity in STEM education</p>
+              </div>
+            </div>
+            
+            <div class="achievements__item achievement-card" data-achievement="4">
+              <div class="achievement-card__logo">
+                <img src="../images/achievements/sacnas.jpeg" alt="SACNAS Conference Logo" />
+              </div>
+              <div class="achievement-card__content">
+                <h3 class="achievement-card__title">STEM Research Presenter at SACNAS Conference</h3>
+                <p class="achievement-card__description">Research presenter at premier diversity in STEM conference</p>
+              </div>
+            </div>
+            
+            <div class="achievements__item achievement-card" data-achievement="5">
+              <div class="achievement-card__logo">
+                <img src="../images/achievements/Epic.jpeg" alt="Epic Systems Logo" />
+              </div>
+              <div class="achievement-card__content">
+                <h3 class="achievement-card__title">Epic Credentialed</h3>
+                <p class="achievement-card__description">Epic certified healthcare technology professional</p>
+              </div>
+            </div>
+            
+            <div class="achievements__item achievement-card" data-achievement="6">
+              <div class="achievement-card__logo">
+                <img src="../images/achievements/VA.jpeg" alt="Department of Veterans Affairs Logo" />
+              </div>
+              <div class="achievement-card__content">
+                <h3 class="achievement-card__title">VA Researcher</h3>
+                <p class="achievement-card__description">Department of Veterans Affairs research contributor</p>
+              </div>
+            </div>
+            
+            <div class="achievements__item achievement-card" data-achievement="7">
+              <div class="achievement-card__logo">
+                <img src="../images/achievements/kdsap.png" alt="KDSAP Project Logo" />
+              </div>
+              <div class="achievement-card__content">
+                <h3 class="achievement-card__title">KDSAP Project Manager</h3>
+                <p class="achievement-card__description">Project manager leading healthcare innovation initiatives</p>
+              </div>
+            </div>
+            
+            <div class="achievements__item achievement-card" data-achievement="8">
+              <div class="achievement-card__logo">
+                <img src="../images/achievements/hope.png" alt="Emory HOPE Project Logo" />
+              </div>
+              <div class="achievement-card__content">
+                <h3 class="achievement-card__title">Emory HOPE Project Manager</h3>
+                <p class="achievement-card__description">Project manager advancing community health programs</p>
+              </div>
+            </div>
+            
+            <div class="achievements__item achievement-card" data-achievement="9">
+              <div class="achievement-card__logo">
+                <img src="../images/achievements/emory-alumni.jpeg" alt="Emory Alumni Association Logo" />
+              </div>
+              <div class="achievement-card__content">
+                <h3 class="achievement-card__title">Emory Alumni Association Social Media Chair</h3>
+                <p class="achievement-card__description">Alumni engagement leader and communications specialist</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="page__outro outro outro_home">
         <div class="outro__container">
           <h2 class="outro__title title">Non-Profit Affiliations</h2>

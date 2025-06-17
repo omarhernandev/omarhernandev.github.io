@@ -212,7 +212,7 @@
 
       var targetText = decryptElement.getAttribute('data-text') || 'Omar Hernandez';
       var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
-      var decryptDuration = 2500; // 2.5 seconds for more natural decoding experience
+      var decryptDuration = 1500; // 1.5 seconds for faster decoding experience
       var isAnimating = false; // Flag to prevent animation overlap
       var animationTimeout = null; // For debouncing
       var charElements = [];
@@ -782,6 +782,20 @@
       var lastX = 0;
       var lastTime = 0;
       
+      // Get scroll boundaries
+      function getScrollBounds() {
+        return {
+          maxScroll: Math.max(0, scrollContainer.scrollWidth - scrollContainer.clientWidth),
+          minScroll: 0
+        };
+      }
+      
+      // Enforce scroll boundaries
+      function enforceScrollBounds(targetScroll) {
+        var bounds = getScrollBounds();
+        return Math.max(bounds.minScroll, Math.min(bounds.maxScroll, targetScroll));
+      }
+      
       // Mouse/touch drag scrolling
       function startDrag(e) {
         isDragging = true;
@@ -805,9 +819,10 @@
         removeClass(scrollContainer, 'dragging');
         scrollContainer.style.cursor = '';
         
-        // Apply momentum scrolling
+        // Apply momentum scrolling with boundary enforcement
         var momentumDuration = Math.min(Math.abs(velocity) * 100, 2000);
         var targetScroll = scrollContainer.scrollLeft + velocity * momentumDuration / 60;
+        targetScroll = enforceScrollBounds(targetScroll);
         
         if (momentumDuration > 0) {
           smoothScrollTo(scrollContainer, targetScroll, momentumDuration);
@@ -823,7 +838,8 @@
         var deltaX = currentX - startX;
         var deltaTime = currentTime - lastTime;
         
-        scrollContainer.scrollLeft = scrollLeft - deltaX;
+        var newScrollLeft = enforceScrollBounds(scrollLeft - deltaX);
+        scrollContainer.scrollLeft = newScrollLeft;
         
         // Calculate velocity for momentum
         if (deltaTime > 0) {
@@ -844,34 +860,43 @@
       addEvent(document, 'touchend', stopDrag);
       addEvent(document, 'touchmove', drag);
       
-      // Keyboard navigation
+      // Keyboard navigation with boundary enforcement
       addEvent(scrollContainer, 'keydown', function(e) {
-        var cardWidth = 350 + 30; // card width + gap
+        // Get current viewport width to calculate appropriate scroll amount
+        var viewportWidth = window.innerWidth;
+        var cardWidth = viewportWidth <= 600 ? 250 + 15 : 
+                       viewportWidth <= 900 ? 280 + 20 :
+                       viewportWidth <= 1200 ? 320 + 30 : 350 + 30;
         var scrollAmount = cardWidth;
+        var bounds = getScrollBounds();
         
         switch(e.keyCode) {
           case 37: // Left arrow
             e.preventDefault();
-            smoothScrollTo(scrollContainer, scrollContainer.scrollLeft - scrollAmount, 300);
+            var targetLeft = enforceScrollBounds(scrollContainer.scrollLeft - scrollAmount);
+            smoothScrollTo(scrollContainer, targetLeft, 300);
             break;
           case 39: // Right arrow
             e.preventDefault();
-            smoothScrollTo(scrollContainer, scrollContainer.scrollLeft + scrollAmount, 300);
+            var targetRight = enforceScrollBounds(scrollContainer.scrollLeft + scrollAmount);
+            smoothScrollTo(scrollContainer, targetRight, 300);
             break;
           case 36: // Home
             e.preventDefault();
-            smoothScrollTo(scrollContainer, 0, 500);
+            smoothScrollTo(scrollContainer, bounds.minScroll, 500);
             break;
           case 35: // End
             e.preventDefault();
-            smoothScrollTo(scrollContainer, scrollContainer.scrollWidth - scrollContainer.clientWidth, 500);
+            smoothScrollTo(scrollContainer, bounds.maxScroll, 500);
             break;
         }
       });
       
-      // Smooth scroll helper function
+      // Enhanced smooth scroll helper function with boundary enforcement
       function smoothScrollTo(element, target, duration) {
         var start = element.scrollLeft;
+        var bounds = getScrollBounds();
+        target = enforceScrollBounds(target);
         var change = target - start;
         var startTime = performance.now ? performance.now() : Date.now();
         
@@ -882,7 +907,8 @@
           // Easing function (ease-out-cubic)
           var easeProgress = 1 - Math.pow(1 - progress, 3);
           
-          element.scrollLeft = start + change * easeProgress;
+          var newScrollLeft = start + change * easeProgress;
+          element.scrollLeft = enforceScrollBounds(newScrollLeft);
           
           if (progress < 1) {
             if (window.requestAnimationFrame) {
@@ -902,33 +928,178 @@
         }
       }
       
-      // Add scroll indicators (optional)
+      // Add scroll indicators (optional) with boundary awareness
       var projectsSection = document.querySelector('.projects');
-      if (projectsSection && scrollContainer.scrollWidth > scrollContainer.clientWidth) {
-        var scrollIndicator = document.createElement('div');
-        scrollIndicator.className = 'projects__scroll-indicator';
-        scrollIndicator.innerHTML = '<span>← Scroll for more projects →</span>';
-        scrollIndicator.style.cssText = 'text-align: center; padding: 10px; font-size: 0.9rem; opacity: 0.7; transition: opacity 0.3s ease;';
-        projectsSection.appendChild(scrollIndicator);
-        
-        // Hide indicator after first scroll
-        var hasScrolled = false;
-        addEvent(scrollContainer, 'scroll', function() {
-          if (!hasScrolled && scrollContainer.scrollLeft > 50) {
-            hasScrolled = true;
-            scrollIndicator.style.opacity = '0';
-            setTimeout(function() {
-              if (scrollIndicator.parentNode) {
-                scrollIndicator.parentNode.removeChild(scrollIndicator);
-              }
-            }, 300);
-          }
-        });
+      if (projectsSection) {
+        var bounds = getScrollBounds();
+        if (bounds.maxScroll > 50) { // Only show indicator if there's significant scrollable content
+          var scrollIndicator = document.createElement('div');
+          scrollIndicator.className = 'projects__scroll-indicator';
+          scrollIndicator.innerHTML = '<span>← Scroll for more projects →</span>';
+          scrollIndicator.style.cssText = 'text-align: center; padding: 10px; font-size: 0.9rem; opacity: 0.7; transition: opacity 0.3s ease;';
+          projectsSection.appendChild(scrollIndicator);
+          
+          // Hide indicator after first scroll or when at boundaries
+          var hasScrolled = false;
+          addEvent(scrollContainer, 'scroll', function() {
+            var currentScroll = scrollContainer.scrollLeft;
+            var bounds = getScrollBounds();
+            
+            if (!hasScrolled && currentScroll > 50) {
+              hasScrolled = true;
+              scrollIndicator.style.opacity = '0';
+              setTimeout(function() {
+                if (scrollIndicator.parentNode) {
+                  scrollIndicator.parentNode.removeChild(scrollIndicator);
+                }
+              }, 300);
+            }
+          });
+        }
       }
+      
+      // Handle window resize to recalculate boundaries
+      addEvent(window, 'resize', function() {
+        // Debounce resize events
+        clearTimeout(window.projectsResizeTimeout);
+        window.projectsResizeTimeout = setTimeout(function() {
+          var bounds = getScrollBounds();
+          var currentScroll = scrollContainer.scrollLeft;
+          if (currentScroll > bounds.maxScroll) {
+            smoothScrollTo(scrollContainer, bounds.maxScroll, 300);
+          }
+        }, 250);
+      });
     }
     
     // Initialize projects scroll functionality
     initProjectsScroll();
+
+    // Achievements section scroll animations
+    function initAchievementsAnimations() {
+      var achievementItems = document.querySelectorAll('.achievements__item');
+      if (!achievementItems.length) return;
+
+      // Check if user prefers reduced motion
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      
+      // Intersection Observer for scroll animations
+      var achievementObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var item = entry.target;
+            var achievementNumber = parseInt(item.getAttribute('data-achievement')) || 0;
+            
+            if (prefersReducedMotion) {
+              // Immediate animation for reduced motion preference
+              addClass(item, 'animate-in');
+            } else {
+              // Staggered animation with 300ms delay between each card
+              setTimeout(function() {
+                addClass(item, 'animate-in');
+              }, achievementNumber * 300);
+            }
+            
+            // Stop observing this item once animated
+            achievementObserver.unobserve(item);
+          }
+        });
+      }, {
+        threshold: 0.2, // Trigger when 20% of the element is visible
+        rootMargin: '0px 0px -50px 0px' // Trigger slightly before the element comes into view
+      });
+
+      // Start observing all achievement items
+      achievementItems.forEach(function(item) {
+        achievementObserver.observe(item);
+      });
+
+      // Fallback for browsers without Intersection Observer support
+      if (!window.IntersectionObserver) {
+        console.log('Intersection Observer not supported, applying immediate animations');
+        achievementItems.forEach(function(item, index) {
+          if (prefersReducedMotion) {
+            addClass(item, 'animate-in');
+          } else {
+            setTimeout(function() {
+              addClass(item, 'animate-in');
+            }, index * 300);
+          }
+        });
+      }
+
+      // Handle window resize for responsive behavior
+      addEvent(window, 'resize', function() {
+        // Debounce resize events for performance
+        clearTimeout(window.achievementsResizeTimeout);
+        window.achievementsResizeTimeout = setTimeout(function() {
+          // Re-trigger animations if items are in viewport after resize
+          achievementItems.forEach(function(item) {
+            if (hasClass(item, 'animate-in')) {
+              var rect = item.getBoundingClientRect();
+              var isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+              
+              if (!isInViewport) {
+                removeClass(item, 'animate-in');
+                achievementObserver.observe(item);
+              }
+            }
+          });
+        }, 250);
+      });
+    }
+
+    // Enhanced scroll performance for achievements
+    function optimizeAchievementsPerformance() {
+      var achievementCards = document.querySelectorAll('.achievement-card');
+      
+      // Add performance optimizations
+      achievementCards.forEach(function(card) {
+        // Enable hardware acceleration
+        card.style.transform = 'translateZ(0)';
+        card.style.backfaceVisibility = 'hidden';
+        card.style.perspective = '1000px';
+        
+        // Optimize hover animations
+        addEvent(card, 'mouseenter', function() {
+          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            card.style.willChange = 'transform, box-shadow';
+          }
+        });
+        
+        addEvent(card, 'mouseleave', function() {
+          card.style.willChange = 'auto';
+        });
+      });
+    }
+
+    // Initialize achievements section when DOM is ready
+    if (document.querySelector('.achievements')) {
+      initAchievementsAnimations();
+      optimizeAchievementsPerformance();
+      
+      // Log initialization for debugging
+      console.log('Achievements section initialized with', document.querySelectorAll('.achievements__item').length, 'items');
+    }
+
+    // Listen for reduced motion preference changes
+    if (window.matchMedia) {
+      var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      
+      // Add event listener for preference changes (modern browsers)
+      if (motionQuery.addEventListener) {
+        motionQuery.addEventListener('change', function() {
+          if (motionQuery.matches) {
+            console.log('Reduced motion preference detected, disabling complex animations');
+            // Apply immediate animations if preference changes to reduced motion
+            var achievementItems = document.querySelectorAll('.achievements__item:not(.animate-in)');
+            achievementItems.forEach(function(item) {
+              addClass(item, 'animate-in');
+            });
+          }
+        });
+      }
+    }
 
   });
 

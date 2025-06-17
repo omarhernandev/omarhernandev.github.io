@@ -380,20 +380,10 @@ body.dark-mode .projects-list {
 
 body.dark-mode .page__main,
 body.dark-mode .page__about,
+body.dark-mode .page__services,
 body.dark-mode .page__testimonial,
 body.dark-mode .page__outro {
   background-color: transparent !important;
-}
-
-/* Ensure page__services retains its background in both light and dark modes */
-body.dark-mode .page__services {
-  background-color: #0a0a0a !important;
-}
-
-/* Preserve contact page background image in dark mode */
-body.dark-mode .page__main.main_contact {
-  background: #000000 url("/images/Contact/Contact-Hero.jpg") center / cover no-repeat !important;
-  background-color: #000000 !important;
 }
 
 .projects-section {
@@ -2928,6 +2918,7 @@ body.dark-mode .spollers-faq__item {
     transition: all 0.3s ease;
     text-decoration: none;
     letter-spacing: 0.02em;
+    
   }
 
   .menu__link:hover {
@@ -5310,7 +5301,7 @@ body.dark-mode .contact-invite__social-link:hover svg {
 /* Projects Section Container */
 .projects {
   padding: 80px 0;
-  background: #e1e4eb;
+  background: #f8f9fa;
   position: relative;
   overflow: hidden;
 }
@@ -5327,17 +5318,16 @@ body.dark-mode .projects {
 
 .projects__title {
   text-align: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  color: var(--accent-color);
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 50px;
+  color: #333;
   position: relative;
-  transition: all 0.3s ease;
 }
 
 body.dark-mode .projects__title {
-  color: var(--text-primary-dark);
-  text-shadow: 0 0 15px rgba(57, 255, 20, 0.6);
+  color: #00ff00;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
 }
 
 /* Horizontal Scroll Container */
@@ -5386,10 +5376,9 @@ body.dark-mode .projects__scroll-container::-webkit-scrollbar-thumb:hover {
 /* Project Row */
 .projects__row {
   display: flex;
-  gap: 20px;
-  padding: 0 15px;
-  /* Calculate width for 900px breakpoint: 7 columns * (280px + 20px gap) */
-  width: calc(7 * (280px + 20px) - 20px + 30px); /* -20px for last gap, +30px for padding */
+  gap: 30px;
+  padding: 0 20px;
+  width: max-content;
   min-width: 100%;
 }
 
@@ -5549,8 +5538,8 @@ body.dark-mode .item-projects__text {
 }
 
 body.dark-mode .item-projects__button {
-  background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%) !important;
-  color: #000 !important;
+  background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+  color: #000;
 }
 
 .item-projects__button:hover {
@@ -5561,8 +5550,7 @@ body.dark-mode .item-projects__button {
 
 body.dark-mode .item-projects__button:hover {
   box-shadow: 0 8px 20px rgba(0, 255, 0, 0.3);
-  background: linear-gradient(135deg, #00cc00 0%, #009900 100%) !important;
-  color: #000 !important;
+  background: linear-gradient(135deg, #00cc00 0%, #009900 100%);
 }
 
 /* Responsive Design */
@@ -5574,11 +5562,6 @@ body.dark-mode .item-projects__button:hover {
   
   .projects__column {
     flex: 0 0 320px;
-  }
-  
-  .projects__row {
-    /* Calculate width for 1200px breakpoint: 7 columns * (320px + 30px gap) */
-    width: calc(7 * (320px + 30px) - 30px + 40px); /* -30px for last gap, +40px for padding */
   }
 }
 
@@ -5599,8 +5582,6 @@ body.dark-mode .item-projects__button:hover {
   .projects__row {
     gap: 20px;
     padding: 0 15px;
-    /* Calculate width for 900px breakpoint: 7 columns * (280px + 20px gap) */
-    width: calc(7 * (280px + 20px) - 20px + 30px); /* -20px for last gap, +30px for padding */
   }
   
   .item-projects__content {
@@ -5633,8 +5614,6 @@ body.dark-mode .item-projects__button:hover {
   .projects__row {
     gap: 15px;
     padding: 0 10px;
-    /* Calculate width for 600px breakpoint: 7 columns * (250px + 15px gap) */
-    width: calc(7 * (250px + 15px) - 15px + 20px); /* -15px for last gap, +20px for padding */
   }
   
   .projects__scroll-container {
@@ -5760,641 +5739,4 @@ body.dark-mode .projects__scroll-indicator {
 body.dark-mode .projects__scroll-indicator span {
   background: rgba(0, 255, 0, 0.1);
   border-color: rgba(0, 255, 0, 0.2);
-}
-
-/* Project Image with Gloss Effect */
-.project-img {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Fix for actual image elements in project cards */
-.project-img img,
-.item-projects__image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
-
-body.dark-mode .project-img {
-  background: linear-gradient(135deg, #001122 0%, #003344 100%);
-}
-
-/* ===== ACHIEVEMENTS SECTION ===== */
-.achievements {
-  padding: 80px 0;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-body.dark-mode .achievements {
-  background: linear-gradient(135deg, #0a0f0f 0%, #0f1419 100%);
-}
-
-.achievements__container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.achievements__header {
-  text-align: center;
-  margin-bottom: 60px;
-}
-
-.achievements__title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 16px;
-  font-family: 'Orbitron', 'IBM Plex Mono', monospace;
-  position: relative;
-}
-
-body.dark-mode .achievements__title {
-  color: #00ff00;
-  text-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
-}
-
-.achievements__subtitle {
-  font-size: 1.2rem;
-  color: #666;
-  font-weight: 400;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
-
-body.dark-mode .achievements__subtitle {
-  color: #a0a0a0;
-}
-
-.achievements__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  margin-top: 40px;
-}
-
-.achievements__item {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.achievements__item.animate-in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.achievement-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 32px 24px;
-  text-align: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-body.dark-mode .achievement-card {
-  background: rgba(17, 25, 40, 0.85);
-  border: 1px solid rgba(0, 255, 0, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 255, 0, 0.1);
-}
-
-.achievement-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 191, 255, 0.15);
-  border-color: rgba(0, 191, 255, 0.3);
-}
-
-body.dark-mode .achievement-card:hover {
-  box-shadow: 0 20px 40px rgba(0, 255, 0, 0.2);
-  border-color: rgba(0, 255, 0, 0.4);
-}
-
-.achievement-card__logo {
-  width: 100px;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  border-radius: 12px;
-  background: transparent;
-  border: none;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-}
-
-body.dark-mode .achievement-card__logo {
-  background: transparent;
-  border: none;
-}
-
-.achievement-card:hover .achievement-card__logo {
-  background: transparent;
-  border: none;
-  transform: scale(1.05);
-}
-
-body.dark-mode .achievement-card:hover .achievement-card__logo {
-  background: transparent;
-  border: none;
-}
-
-.achievement-card__logo img {
-  max-width: 90px;
-  max-height: 90px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  filter: brightness(1.1) contrast(1.1);
-  transition: all 0.3s ease;
-}
-
-.achievement-card__content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-}
-
-.achievement-card__title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 12px;
-  line-height: 1.4;
-  font-family: 'IBM Plex Mono', monospace;
-}
-
-body.dark-mode .achievement-card__title {
-  color: #00ff00;
-}
-
-.achievement-card__description {
-  font-size: 0.95rem;
-  color: #666;
-  line-height: 1.6;
-  margin: 0;
-}
-
-body.dark-mode .achievement-card__description {
-  color: #a0a0a0;
-}
-
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .achievements__container {
-    max-width: 100%;
-    padding: 0 40px;
-  }
-  
-  .achievements__grid {
-    gap: 25px;
-  }
-  
-  .achievement-card {
-    padding: 28px 20px;
-  }
-  
-  .achievement-card__logo {
-    width: 95px;
-    height: 95px;
-  }
-  
-  .achievement-card__logo img {
-    max-width: 85px;
-    max-height: 85px;
-  }
-}
-
-@media (max-width: 900px) {
-  .achievements {
-    padding: 60px 0;
-  }
-  
-  .achievements__container {
-    padding: 0 30px;
-  }
-  
-  .achievements__header {
-    margin-bottom: 50px;
-  }
-  
-  .achievements__title {
-    font-size: 2.2rem;
-  }
-  
-  .achievements__subtitle {
-    font-size: 1.1rem;
-  }
-  
-  .achievements__grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-  
-  .achievement-card {
-    padding: 24px 18px;
-  }
-  
-  .achievement-card__title {
-    font-size: 1.15rem;
-  }
-  
-  .achievement-card__description {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .achievements {
-    padding: 50px 0;
-  }
-  
-  .achievements__container {
-    padding: 0 20px;
-  }
-  
-  .achievements__title {
-    font-size: 2rem;
-  }
-  
-  .achievements__subtitle {
-    font-size: 1rem;
-  }
-  
-  .achievements__grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  
-  .achievement-card {
-    padding: 28px 24px;
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  .achievement-card__logo {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 20px;
-  }
-  
-  .achievement-card__logo img {
-    max-width: 90px;
-    max-height: 90px;
-  }
-  
-  .achievement-card__title {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
-  
-  .achievement-card__description {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .achievements {
-    padding: 40px 0;
-  }
-  
-  .achievements__container {
-    padding: 0 15px;
-  }
-  
-  .achievements__title {
-    font-size: 1.8rem;
-  }
-  
-  .achievements__subtitle {
-    font-size: 0.95rem;
-  }
-  
-  .achievement-card {
-    padding: 24px 20px;
-  }
-  
-  .achievement-card__logo {
-    width: 75px;
-    height: 75px;
-  }
-  
-  .achievement-card__logo img {
-    max-width: 55px;
-    max-height: 55px;
-  }
-  
-  .achievement-card__title {
-    font-size: 1.1rem;
-  }
-  
-  .achievement-card__description {
-    font-size: 0.85rem;
-  }
-}
-
-/* Accessibility - Reduced Motion */
-@media (prefers-reduced-motion: reduce) {
-  .achievements__item {
-    transition: opacity 0.3s ease;
-    transform: none;
-  }
-  
-  .achievement-card {
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .achievement-card:hover {
-    transform: none;
-  }
-  
-  .achievement-card__logo,
-  .achievement-card__logo img {
-    transition: none;
-  }
-  
-  .achievement-card:hover .achievement-card__logo,
-  .achievement-card:hover .achievement-card__logo img {
-    transform: none;
-  }
-}
-
-/* Focus States for Accessibility */
-.achievement-card:focus-within {
-  outline: 2px solid #00bfff;
-  outline-offset: 4px;
-}
-
-body.dark-mode .achievement-card:focus-within {
-  outline-color: #00ff00;
-}
-
-/* Animation Performance Optimization */
-.achievement-card,
-.achievement-card__logo,
-.achievement-card__logo img {
-  will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  perspective: 1000px;
-  -webkit-perspective: 1000px;
-}
-
-/* Special styling for GMS logo - make it larger and more prominent */
-.achievement-card[data-achievement="2"] .achievement-card__logo {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 24px;
-}
-
-.achievement-card[data-achievement="2"] .achievement-card__logo img {
-  max-width: 110px;
-  max-height: 110px;
-  filter: brightness(1.2) contrast(1.15) saturate(1.1);
-}
-
-.achievement-card[data-achievement="2"]:hover .achievement-card__logo {
-  transform: scale(1.08);
-}
-
-.achievement-card[data-achievement="2"]:hover .achievement-card__logo img {
-  filter: brightness(1.3) contrast(1.2) saturate(1.15);
-}
-
-/* Special styling for VA logo - make it larger and more prominent */
-.achievement-card[data-achievement="6"] .achievement-card__logo {
-  width: 140px;
-  height: 140px;
-  margin-bottom: 28px;
-}
-
-.achievement-card[data-achievement="6"] .achievement-card__logo img {
-  max-width: 130px;
-  max-height: 130px;
-  filter: brightness(1.25) contrast(1.2) saturate(1.15);
-}
-
-.achievement-card[data-achievement="6"]:hover .achievement-card__logo {
-  transform: scale(1.08);
-}
-
-.achievement-card[data-achievement="6"]:hover .achievement-card__logo img {
-  filter: brightness(1.35) contrast(1.25) saturate(1.2);
-}
-
-/* Special styling for Emory Alumni logo - make it larger and more prominent */
-.achievement-card[data-achievement="9"] .achievement-card__logo {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 24px;
-}
-
-.achievement-card[data-achievement="9"] .achievement-card__logo img {
-  max-width: 110px;
-  max-height: 110px;
-  filter: brightness(1.2) contrast(1.15) saturate(1.1);
-}
-
-.achievement-card[data-achievement="9"]:hover .achievement-card__logo {
-  transform: scale(1.08);
-}
-
-.achievement-card[data-achievement="9"]:hover .achievement-card__logo img {
-  filter: brightness(1.3) contrast(1.2) saturate(1.15);
-}
-
-/* Responsive adjustments for GMS logo */
-@media (max-width: 1200px) {
-  .achievement-card[data-achievement="2"] .achievement-card__logo {
-    width: 115px;
-    height: 115px;
-  }
-  
-  .achievement-card[data-achievement="2"] .achievement-card__logo img {
-    max-width: 105px;
-    max-height: 105px;
-  }
-}
-
-@media (max-width: 900px) {
-  .achievement-card[data-achievement="2"] .achievement-card__logo {
-    width: 110px;
-    height: 110px;
-  }
-  
-  .achievement-card[data-achievement="2"] .achievement-card__logo img {
-    max-width: 100px;
-    max-height: 100px;
-  }
-}
-
-@media (max-width: 768px) {
-  .achievement-card[data-achievement="2"] .achievement-card__logo {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 24px;
-  }
-  
-  .achievement-card[data-achievement="2"] .achievement-card__logo img {
-    max-width: 110px;
-    max-height: 110px;
-  }
-}
-
-/* Responsive adjustments for VA logo */
-@media (max-width: 1200px) {
-  .achievement-card[data-achievement="6"] .achievement-card__logo {
-    width: 135px;
-    height: 135px;
-  }
-  
-  .achievement-card[data-achievement="6"] .achievement-card__logo img {
-    max-width: 125px;
-    max-height: 125px;
-  }
-}
-
-@media (max-width: 900px) {
-  .achievement-card[data-achievement="6"] .achievement-card__logo {
-    width: 130px;
-    height: 130px;
-  }
-  
-  .achievement-card[data-achievement="6"] .achievement-card__logo img {
-    max-width: 120px;
-    max-height: 120px;
-  }
-}
-
-@media (max-width: 768px) {
-  .achievement-card[data-achievement="6"] .achievement-card__logo {
-    width: 140px;
-    height: 140px;
-    margin-bottom: 28px;
-  }
-  
-  .achievement-card[data-achievement="6"] .achievement-card__logo img {
-    max-width: 130px;
-    max-height: 130px;
-  }
-}
-
-/* Responsive adjustments for Emory Alumni logo */
-@media (max-width: 1200px) {
-  .achievement-card[data-achievement="9"] .achievement-card__logo {
-    width: 115px;
-    height: 115px;
-  }
-  
-  .achievement-card[data-achievement="9"] .achievement-card__logo img {
-    max-width: 105px;
-    max-height: 105px;
-  }
-}
-
-@media (max-width: 900px) {
-  .achievement-card[data-achievement="9"] .achievement-card__logo {
-    width: 110px;
-    height: 110px;
-  }
-  
-  .achievement-card[data-achievement="9"] .achievement-card__logo img {
-    max-width: 100px;
-    max-height: 100px;
-  }
-}
-
-@media (max-width: 768px) {
-  .achievement-card[data-achievement="9"] .achievement-card__logo {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 24px;
-  }
-  
-  .achievement-card[data-achievement="9"] .achievement-card__logo img {
-    max-width: 110px;
-    max-height: 110px;
-  }
-}
-
-/* Special styling for VA logo - make it larger and more prominent */
-.achievement-card[data-achievement="6"] .achievement-card__logo {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 24px;
-}
-
-.achievement-card[data-achievement="6"] .achievement-card__logo img {
-  max-width: 110px;
-  max-height: 110px;
-  filter: brightness(1.2) contrast(1.15) saturate(1.1);
-}
-
-.achievement-card[data-achievement="6"]:hover .achievement-card__logo {
-  transform: scale(1.08);
-}
-
-.achievement-card[data-achievement="6"]:hover .achievement-card__logo img {
-  filter: brightness(1.3) contrast(1.2) saturate(1.15);
-}
-
-/* Responsive adjustments for VA logo */
-@media (max-width: 1200px) {
-  .achievement-card[data-achievement="6"] .achievement-card__logo {
-    width: 115px;
-    height: 115px;
-  }
-  
-  .achievement-card[data-achievement="6"] .achievement-card__logo img {
-    max-width: 105px;
-    max-height: 105px;
-  }
-}
-
-@media (max-width: 900px) {
-  .achievement-card[data-achievement="6"] .achievement-card__logo {
-    width: 110px;
-    height: 110px;
-  }
-  
-  .achievement-card[data-achievement="6"] .achievement-card__logo img {
-    max-width: 100px;
-    max-height: 100px;
-  }
-}
-
-@media (max-width: 768px) {
-  .achievement-card[data-achievement="6"] .achievement-card__logo {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 24px;
-  }
-  
-  .achievement-card[data-achievement="6"] .achievement-card__logo img {
-    max-width: 110px;
-    max-height: 110px;
-  }
 }

@@ -13,7 +13,261 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
   <link rel="apple-touch-icon" href="/images/favicon.ico" />
   <title>About | Omar Hernandez</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    #terminal-container {
+      background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+      border: 4px solid #333;
+      border-radius: 20px;
+      max-width: 900px;
+      margin: 40px auto;
+      box-shadow: 
+        0 0 30px rgba(0, 255, 150, 0.3),
+        inset 0 0 20px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      position: relative;
+    }
+
+    #terminal-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 255, 150, 0.03) 50%,
+        transparent 100%
+      );
+      pointer-events: none;
+      animation: crt-flicker 0.15s infinite linear alternate;
+    }
+
+    #terminal-header {
+      background: linear-gradient(90deg, #00ff96, #00cc77);
+      color: #000;
+      padding: 8px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-weight: bold;
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-shadow: none;
+    }
+
+    #terminal-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .terminal-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .control-btn {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      position: relative;
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        0 1px 2px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .close-btn {
+      background: linear-gradient(135deg, #ff5f57, #ff453a);
+      border: 1px solid #d12b20;
+    }
+
+    .minimize-btn {
+      background: linear-gradient(135deg, #ffbd2e, #ff9500);
+      border: 1px solid #dc7f00;
+    }
+
+    .maximize-btn {
+      background: linear-gradient(135deg, #28ca42, #30d158);
+      border: 1px solid #1e8a2e;
+    }
+
+    .control-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .control-btn:active {
+      transform: scale(0.95);
+    }
+
+    .terminal-text {
+      flex: 1;
+      text-align: center;
+      margin-right: 32px; /* Balance the space taken by controls */
+    }
+
+    #terminal-box {
+      background: #000;
+      padding: 20px;
+      min-height: 400px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #scanlines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 150, 0.05) 2px,
+        rgba(0, 255, 150, 0.05) 4px
+      );
+      pointer-events: none;
+      animation: scanline-move 0.1s linear infinite;
+    }
+
+    #terminal-output {
+      color: #00ff96;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 14px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      text-shadow: 0 0 5px rgba(0, 255, 150, 0.8);
+      margin: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    #cursor {
+      color: #00ff96;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 14px;
+      text-shadow: 0 0 5px rgba(0, 255, 150, 0.8);
+      animation: blink 1s infinite;
+      position: relative;
+      z-index: 2;
+    }
+
+    #refresh-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: linear-gradient(145deg, #444, #222);
+      color: #00ff96;
+      border: 2px solid #00ff96;
+      padding: 8px 16px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      cursor: pointer;
+      border-radius: 5px;
+      text-shadow: 0 0 5px rgba(0, 255, 150, 0.8);
+      box-shadow: 0 0 10px rgba(0, 255, 150, 0.3);
+      transition: all 0.2s;
+      z-index: 3;
+    }
+
+    #refresh-btn:hover {
+      background: linear-gradient(145deg, #555, #333);
+      box-shadow: 0 0 20px rgba(0, 255, 150, 0.6);
+      transform: scale(1.05);
+    }
+
+    #refresh-btn:active {
+      transform: scale(0.98);
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    @keyframes crt-flicker {
+      0% { opacity: 1; }
+      98% { opacity: 1; }
+      99% { opacity: 0.98; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes scanline-move {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100vh); }
+    }
+
+    @keyframes subtle-blink {
+      0%, 80% { opacity: 0.7; }
+      90% { opacity: 0.3; }
+      100% { opacity: 0.7; }
+    }
+
+    .typing {
+      border-right: 2px solid #00ff96;
+      animation: typing 0.05s steps(1, end);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      #terminal-container {
+        margin: 20px;
+        max-width: calc(100% - 40px);
+      }
+      
+      #terminal-output {
+        font-size: 12px;
+      }
+      
+      #terminal-header {
+        font-size: 10px;
+        padding: 6px 12px;
+      }
+      
+      #refresh-btn {
+        padding: 6px 12px;
+        font-size: 10px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      #terminal-box {
+        padding: 15px;
+        min-height: 350px;
+      }
+      
+      #terminal-output {
+        font-size: 11px;
+        line-height: 1.6;
+      }
+      
+      #terminal-header {
+        font-size: 9px;
+      }
+
+      .control-btn {
+        width: 10px;
+        height: 10px;
+      }
+
+      .terminal-controls {
+        gap: 6px;
+      }
+
+      .terminal-text {
+        margin-right: 24px;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -31,7 +285,7 @@
                   <li class="menu__item"><a href="index.html" class="menu__link">Home</a></li>
                   <li class="menu__item"><a href="about.html" class="menu__link">About</a></li>
                   <li class="menu__item"><a href="projects.html" class="menu__link">Projects</a></li>
-                  <li class="menu__item"><a href="contact.html" class="menu__link">Contact</a></li>
+                  <li class="menu__item"><a href="contact.html" class="menu__link">Connect</a></li>
                 </ul>
                 <div class="menu__social">
                   <a href="https://github.com/oohmxi" target="_blank" rel="noopener noreferrer" class="menu__social-link" title="GitHub">
@@ -71,18 +325,24 @@
           <div class="about__image"><img src="../images/About/About-Our-Mission.jpg" alt="Our Mission" /></div>
           <div class="about__content">
             <h2 class="about__title title">About Heading</h2>
-            <div class="about__text">
-              <p>
-                About Text: In this section, you can provide a detailed paragraph that delves into the history,
-                values, and mission of your web development business. Highlight expertise, unique approach of your
-                team, and the commitment that sets you apart.
-              </p>
-              <p>
-                Emphasize your passion for creating exceptional web solutions and convey your dedication to delivering
-                remarkable results for clients.
-              </p>
+            <div id="terminal-container">
+              <div id="terminal-header">
+                <div id="terminal-title">
+                  <div class="terminal-controls">
+                    <span class="control-btn close-btn"></span>
+                    <span class="control-btn minimize-btn"></span>
+                    <span class="control-btn maximize-btn"></span>
+                  </div>
+                  <span class="terminal-text">ABOUT-ME v2.1 | USER: GUEST | STATUS: ONLINE</span>
+                </div>
+              </div>
+              <div id="terminal-box">
+                <div id="scanlines"></div>
+                <pre id="terminal-output"></pre>
+                <span id="cursor">█</span>
+                <button id="refresh-btn">RESET</button>
+              </div>
             </div>
-            <a href="#" class="about__button button">CTA Button</a>
           </div>
         </div>
       </section>
@@ -108,6 +368,238 @@
     </footer>
   </div>
   <script src="js/script.js"></script>
+  <script>
+    const aboutLines = [
+      "SYSTEM INITIALIZING...",
+      "LOADING PERSONAL DATA...",
+      "",
+      "> whoami",
+      "I'm a U.S. citizen born in Cuba and raised in Miami, FL since the age of two.",
+      "",
+      "> education",
+      "In 2016, I was honored as 1 of 1,000 Gates Millennium Scholars selected from over 53,000 applicants.",
+      "I earned a B.S. in Neuroscience with a minor in Italian from Emory University in Atlanta.",
+      "I'm currently pursuing an M.S. in Information Systems (Cybersecurity) at Boston University.",
+      "",
+      "> languages",
+      "I'm fluent in English, Spanish, and Italian.",
+      "Explore my site to discover the other languages I speak — both human and machine 😉",
+      "",
+      "> status",
+      "READY FOR NEW CONNECTIONS..."
+    ];
+
+    let currentLine = 0;
+    let isTyping = false;
+    const output = document.getElementById("terminal-output");
+    const cursor = document.getElementById("cursor");
+    const refreshBtn = document.getElementById("refresh-btn");
+
+    function typeText(text, callback) {
+      if (isTyping) return;
+      isTyping = true;
+      
+      let i = 0;
+      const typeInterval = setInterval(() => {
+        if (i < text.length) {
+          output.textContent += text.charAt(i);
+          i++;
+        } else {
+          clearInterval(typeInterval);
+          output.textContent += "\n";
+          isTyping = false;
+          if (callback) callback();
+        }
+      }, 30);
+    }
+
+    function resetTerminal() {
+      currentLine = 0;
+      output.textContent = "";
+      isTyping = false;
+      showBootSequence();
+    }
+
+    function showSpaceHint() {
+      // Remove any existing hint first
+      const existingHint = document.getElementById("space-hint");
+      if (existingHint) existingHint.remove();
+      
+      // Create new hint
+      const hint = document.createElement("div");
+      hint.id = "space-hint";
+      hint.textContent = "Press SPACE";
+      hint.style.cssText = `
+        color: #666;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 12px;
+        margin-top: 10px;
+        text-align: center;
+        opacity: 0.7;
+        animation: subtle-blink 2s ease-in-out infinite;
+      `;
+      document.getElementById("terminal-box").appendChild(hint);
+    }
+
+    function showNextLine() {
+      if (isTyping || currentLine >= aboutLines.length) return;
+      
+      // Remove the hint on interaction
+      const hint = document.getElementById("space-hint");
+      if (hint) hint.remove();
+      
+      // Special case: first space press loads the intro section
+      if (currentLine === 0) {
+        typeText("SYSTEM INITIALIZING...", () => {
+          output.textContent += "\n";
+          typeText("LOADING PERSONAL DATA...", () => {
+            output.textContent += "\n\n";
+            typeText("> whoami", () => {
+              output.textContent += "\n";
+              typeText("I'm a U.S. citizen born in Cuba and raised in Miami, FL since the age of two.", () => {
+                output.textContent += "\n";
+                currentLine = 6; // Skip to education section
+                // Show hint for next section
+                setTimeout(() => showSpaceHint(), 500);
+              });
+            });
+          });
+        });
+        return;
+      }
+      
+      // Second space press: load complete education section
+      if (currentLine === 6) {
+        output.textContent += "\n";
+        typeText("> education --achievements", () => {
+          output.textContent += "\n";
+          typeText("In 2016, I was honored as 1 of 1,000 Gates Millennium Scholars selected from over 53,000 applicants.", () => {
+            output.textContent += "\n";
+            typeText("I earned a B.S. in Neuroscience with a minor in Italian from Emory University in Atlanta.", () => {
+              output.textContent += "\n";
+              typeText("I'm currently pursuing an M.S. in Information Systems (Cybersecurity) at Boston University.", () => {
+                output.textContent += "\n";
+                currentLine = 11; // Skip to languages section
+                // Show hint for next section
+                setTimeout(() => showSpaceHint(), 500);
+              });
+            });
+          });
+        });
+        return;
+      }
+      
+      // Third space press: load complete languages section
+      if (currentLine === 11) {
+        output.textContent += "\n";
+        typeText("> languages --list", () => {
+          output.textContent += "\n";
+          typeText("I'm fluent in English, Spanish, and Italian.", () => {
+            output.textContent += "\n";
+            typeText("Explore my site to discover the other languages I speak — both human and machine 😉", () => {
+              output.textContent += "\n";
+              currentLine = 15; // Skip to status section
+              // Show hint for final section
+              setTimeout(() => showSpaceHint(), 500);
+            });
+          });
+        });
+        return;
+      }
+      
+      // Fourth space press: load status section
+      if (currentLine === 15) {
+        output.textContent += "\n";
+        typeText("> status", () => {
+          output.textContent += "\n";
+          typeText("READY FOR NEW CONNECTIONS...", () => {
+            currentLine = aboutLines.length; // Mark as complete
+            // No hint needed - terminal is complete
+          });
+        });
+        return;
+      }
+      
+      // Default behavior for any remaining lines
+      const line = aboutLines[currentLine];
+      if (line.startsWith(">")) {
+        typeText(line, () => {
+          currentLine++;
+          if (currentLine < aboutLines.length) {
+            setTimeout(() => showNextLine(), 200);
+          }
+        });
+      } else if (line === "") {
+        output.textContent += "\n";
+        currentLine++;
+        if (currentLine < aboutLines.length) {
+          setTimeout(() => showNextLine(), 100);
+        }
+      } else {
+        typeText(line, () => {
+          currentLine++;
+        });
+      }
+    }
+
+    function showAllLines() {
+      if (isTyping) return;
+      
+      while (currentLine < aboutLines.length) {
+        output.textContent += aboutLines[currentLine] + "\n";
+        currentLine++;
+      }
+    }
+
+    function showBootSequence() {
+      output.textContent = "";
+      // Remove any existing hint
+      const existingHint = document.getElementById("space-hint");
+      if (existingHint) existingHint.remove();
+      
+      setTimeout(() => {
+        typeText("ABOUT-ME v2.1 ACTIVE", () => {
+          setTimeout(() => {
+            output.textContent += "\n";
+            output.textContent += "═══════════════════════════════════════════════════\n\n";
+            currentLine = 0;
+            
+            // Add grey "Press SPACE" hint
+            const hint = document.createElement("div");
+            hint.id = "space-hint";
+            hint.textContent = "Press SPACE";
+            hint.style.cssText = `
+              color: #666;
+              font-family: 'Share Tech Mono', monospace;
+              font-size: 12px;
+              margin-top: 10px;
+              text-align: center;
+              opacity: 0.7;
+              animation: subtle-blink 2s ease-in-out infinite;
+            `;
+            document.getElementById("terminal-box").appendChild(hint);
+          }, 500);
+        });
+      }, 100);
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === " ") {
+        e.preventDefault();
+        showNextLine();
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        showAllLines();
+      }
+    });
+
+    refreshBtn.addEventListener("click", () => {
+      resetTerminal();
+    });
+
+    // Initialize
+    showBootSequence();
+  </script>
 </body>
 
 </html>
