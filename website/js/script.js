@@ -205,7 +205,7 @@
 
     // Hero image is now handled via HTML/CSS - no JavaScript animation needed
 
-    // Decryption Animation for Name
+    // Enhanced Letter Animation for Name
     function initDecryptAnimation() {
       var decryptElement = document.querySelector('.decrypt-text');
       if (!decryptElement) return;
@@ -230,15 +230,24 @@
       decryptElement.setAttribute('aria-label', targetText);
       decryptElement.setAttribute('role', 'text');
       
-      // Initialize character spans
+      // Initialize character spans with enhanced letter animation support
       function initCharSpans() {
+        console.log('Initializing character spans with letter animation...');
         decryptElement.innerHTML = '';
         charElements = [];
         
         for (var i = 0; i < targetText.length; i++) {
           var charSpan = document.createElement('span');
-          charSpan.className = 'char locked';
-          charSpan.textContent = targetText[i] === ' ' ? '\u00A0' : targetText[i];
+          
+          if (targetText[i] === ' ') {
+            charSpan.className = 'space';
+            charSpan.innerHTML = '&nbsp;';
+            console.log('Created space element at index', i);
+          } else {
+            charSpan.className = 'char letter locked';
+            charSpan.textContent = targetText[i];
+            console.log('Created letter element for "' + targetText[i] + '" at index', i, 'with classes:', charSpan.className);
+          }
           
           // Chrome mobile optimization for individual characters
           if (isChromeMobile) {
@@ -251,6 +260,9 @@
           charElements.push(charSpan);
           decryptElement.appendChild(charSpan);
         }
+        
+        console.log('Character spans initialized. Total elements:', charElements.length);
+        console.log('Final HTML structure:', decryptElement.innerHTML);
       }
       
       function getRandomChar() {
@@ -285,9 +297,17 @@
           // Lock characters that should be locked
           while (lockedChars < shouldBeLocked && lockedChars < targetText.length) {
             var charElement = charElements[lockedChars];
-            charElement.textContent = targetText[lockedChars] === ' ' ? '\u00A0' : targetText[lockedChars];
+            if (targetText[lockedChars] === ' ') {
+              charElement.innerHTML = '&nbsp;';
+            } else {
+              charElement.textContent = targetText[lockedChars];
+            }
             removeClass(charElement, 'decrypting');
             addClass(charElement, 'locked');
+            // Ensure letter class is maintained for animation
+            if (targetText[lockedChars] !== ' ' && !hasClass(charElement, 'letter')) {
+              addClass(charElement, 'letter');
+            }
             lockedChars++;
           }
           
@@ -305,9 +325,17 @@
             // Ensure all characters are properly locked
             for (var i = 0; i < charElements.length; i++) {
               var charElement = charElements[i];
-              charElement.textContent = targetText[i] === ' ' ? '\u00A0' : targetText[i];
+              if (targetText[i] === ' ') {
+                charElement.innerHTML = '&nbsp;';
+              } else {
+                charElement.textContent = targetText[i];
+              }
               removeClass(charElement, 'decrypting');
               addClass(charElement, 'locked');
+              // Ensure letter class is maintained for animation
+              if (targetText[i] !== ' ' && !hasClass(charElement, 'letter')) {
+                addClass(charElement, 'letter');
+              }
             }
             isAnimating = false;
           }
@@ -346,9 +374,17 @@
         if (!isAnimating) {
           for (var i = 0; i < charElements.length; i++) {
             var charElement = charElements[i];
-            charElement.textContent = targetText[i] === ' ' ? '\u00A0' : targetText[i];
+            if (targetText[i] === ' ') {
+              charElement.innerHTML = '&nbsp;';
+            } else {
+              charElement.textContent = targetText[i];
+            }
             removeClass(charElement, 'decrypting');
             addClass(charElement, 'locked');
+            // Ensure letter class is maintained for animation
+            if (targetText[i] !== ' ' && !hasClass(charElement, 'letter')) {
+              addClass(charElement, 'letter');
+            }
           }
         }
       });

@@ -6896,3 +6896,141 @@ body.dark-mode .nonprofit-card__logo-link:focus .nonprofit-card__logo {
     max-height: 220px;
   }
 }
+
+/* === ENHANCED LETTER ANIMATION STYLES === */
+/* Individual letter styling for sophisticated animation */
+.decrypt-text .letter {
+  display: inline-block;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: letterFloat 4s ease-in-out infinite;
+  animation-delay: var(--letter-delay, 0s);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Also target .char elements for backward compatibility */
+.decrypt-text .char.letter {
+  display: inline-block;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: letterFloat 4s ease-in-out infinite;
+  animation-delay: var(--letter-delay, 0s);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Dark mode letter styling */
+body.dark-mode .decrypt-text .letter,
+body.dark-mode .decrypt-text .char.letter {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5), 0 0 8px rgba(57, 255, 20, 0.3);
+}
+
+/* Continuous subtle rotation animation for each letter */
+@keyframes letterFloat {
+  0%, 100% { 
+    transform: rotateY(-2deg) rotateZ(-1deg) translateY(0px);
+  }
+  25% { 
+    transform: rotateY(3deg) rotateZ(2deg) translateY(-2px);
+  }
+  50% { 
+    transform: rotateY(-1deg) rotateZ(1deg) translateY(-1px);
+  }
+  75% { 
+    transform: rotateY(2deg) rotateZ(-2deg) translateY(-2px);
+  }
+}
+
+/* Enhanced hover effects for individual letters */
+.decrypt-text:hover .letter,
+.decrypt-text:hover .char.letter {
+  transform: rotateY(5deg) rotateZ(3deg) scale(1.02);
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  filter: brightness(1.1);
+}
+
+body.dark-mode .decrypt-text:hover .letter,
+body.dark-mode .decrypt-text:hover .char.letter {
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6), 0 0 15px rgba(57, 255, 20, 0.6);
+  filter: brightness(1.2);
+}
+
+/* Staggered animation delays for wave-like effect */
+.decrypt-text .letter:nth-child(1), .decrypt-text .char.letter:nth-child(1) { --letter-delay: 0s; }
+.decrypt-text .letter:nth-child(2), .decrypt-text .char.letter:nth-child(2) { --letter-delay: 0.1s; }
+.decrypt-text .letter:nth-child(3), .decrypt-text .char.letter:nth-child(3) { --letter-delay: 0.2s; }
+.decrypt-text .letter:nth-child(4), .decrypt-text .char.letter:nth-child(4) { --letter-delay: 0.3s; }
+.decrypt-text .letter:nth-child(5), .decrypt-text .char.letter:nth-child(5) { --letter-delay: 0.4s; }
+.decrypt-text .letter:nth-child(6), .decrypt-text .char.letter:nth-child(6) { --letter-delay: 0.5s; }
+.decrypt-text .letter:nth-child(7), .decrypt-text .char.letter:nth-child(7) { --letter-delay: 0.6s; }
+.decrypt-text .letter:nth-child(8), .decrypt-text .char.letter:nth-child(8) { --letter-delay: 0.7s; }
+.decrypt-text .letter:nth-child(9), .decrypt-text .char.letter:nth-child(9) { --letter-delay: 0.8s; }
+.decrypt-text .letter:nth-child(10), .decrypt-text .char.letter:nth-child(10) { --letter-delay: 0.9s; }
+.decrypt-text .letter:nth-child(11), .decrypt-text .char.letter:nth-child(11) { --letter-delay: 1s; }
+.decrypt-text .letter:nth-child(12), .decrypt-text .char.letter:nth-child(12) { --letter-delay: 1.1s; }
+.decrypt-text .letter:nth-child(13), .decrypt-text .char.letter:nth-child(13) { --letter-delay: 1.2s; }
+
+/* Space character handling */
+.decrypt-text .space {
+  display: inline-block;
+  width: 0.3em;
+}
+
+/* Accessibility - Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .decrypt-text .letter {
+    animation: none;
+    transform: none;
+  }
+  
+  .decrypt-text:hover .letter {
+    transform: scale(1.01);
+    filter: brightness(1.05);
+  }
+}
+
+/* Mobile optimizations - Reduce effects on smaller screens */
+@media (max-width: 768px) {
+  .decrypt-text .letter {
+    animation-duration: 6s; /* Slower on mobile for better performance */
+  }
+  
+  @keyframes letterFloat {
+    0%, 100% { 
+      transform: rotateY(-1deg) translateY(0px);
+    }
+    50% { 
+      transform: rotateY(1deg) translateY(-1px);
+    }
+  }
+  
+  .decrypt-text:hover .letter {
+    transform: rotateY(2deg) scale(1.01);
+  }
+}
+
+/* Ultra-small screens - Minimal animation */
+@media (max-width: 480px) {
+  .decrypt-text .letter {
+    animation: none;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .decrypt-text:hover .letter {
+    transform: scale(1.02);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  }
+  
+  body.dark-mode .decrypt-text .letter {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4), 0 0 5px rgba(57, 255, 20, 0.2);
+  }
+  
+  body.dark-mode .decrypt-text:hover .letter {
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5), 0 0 8px rgba(57, 255, 20, 0.4);
+  }
+}
