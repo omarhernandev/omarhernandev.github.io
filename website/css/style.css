@@ -7034,3 +7034,81 @@ body.dark-mode .decrypt-text:hover .char.letter {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5), 0 0 8px rgba(57, 255, 20, 0.4);
   }
 }
+
+/* === NEURAL NETWORK BACKGROUND === */
+/* Canvas positioned behind hero content */
+.neural-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  opacity: 0.9;
+}
+
+/* Main section positioning */
+.main {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure content is above the canvas */
+.main__container {
+  position: relative;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced hero text visibility */
+.main__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+/* Dark mode adjustments for neural background */
+body.dark-mode .neural-background {
+  background: linear-gradient(135deg, #000000 0%, #0f0f23 50%, #1a1a2e 100%);
+  opacity: 0.95;
+}
+
+body.dark-mode .main__container {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(3px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .neural-background {
+    opacity: 0.7;
+  }
+  
+  .main__container {
+    backdrop-filter: blur(1px);
+    padding: 1.5rem;
+  }
+}
+
+/* Accessibility - respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .neural-background {
+    opacity: 0.3;
+  }
+}
+
+/* Performance optimization - will-change for smooth animations */
+.neural-background {
+  will-change: transform;
+  transform: translateZ(0);
+}
