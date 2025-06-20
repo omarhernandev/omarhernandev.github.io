@@ -631,6 +631,10 @@ body.dark-mode .project-tool {
   transform: translateZ(0);
 }
 
+
+
+
+
 .header__container {
   display: flex;
   align-items: center;
@@ -993,11 +997,13 @@ body.dark-mode .main__image {
   0% { 
     opacity: 0; 
     transform: translateY(30px) scale(0.95);
+    -webkit-backdrop-filter: blur(0px);
     backdrop-filter: blur(0px);
   }
   100% { 
     opacity: 1; 
     transform: translateY(0) scale(1);
+    -webkit-backdrop-filter: blur(20px);
     backdrop-filter: blur(20px);
   }
 }
@@ -5813,15 +5819,14 @@ body.dark-mode .achievements {
 .achievements__title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #333;
+  color: var(--accent-color);
   margin-bottom: 16px;
-  font-family: 'Orbitron', 'IBM Plex Mono', monospace;
   position: relative;
 }
 
 body.dark-mode .achievements__title {
-  color: #00ff00;
-  text-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+  color: var(--text-primary-dark);
+  text-shadow: 0 0 15px rgba(57, 255, 20, 0.6);
 }
 
 .achievements__subtitle {
@@ -5846,13 +5851,14 @@ body.dark-mode .achievements__subtitle {
 
 .achievements__item {
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
 }
 
 .achievements__item.animate-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .achievement-card {
@@ -5862,7 +5868,7 @@ body.dark-mode .achievements__subtitle {
   text-align: center;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(10px);
@@ -5871,6 +5877,7 @@ body.dark-mode .achievements__subtitle {
   display: flex;
   flex-direction: column;
   align-items: center;
+  will-change: transform, box-shadow;
 }
 
 body.dark-mode .achievement-card {
@@ -6165,15 +6172,15 @@ body.dark-mode .achievement-card:focus-within {
 
 /* Special styling for GMS logo - make it larger and more prominent */
 .achievement-card[data-achievement="2"] .achievement-card__logo {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 24px;
+  width: 240px;
+  height: 240px;
+  margin-bottom: 32px;
 }
 
 .achievement-card[data-achievement="2"] .achievement-card__logo img {
-  max-width: 110px;
-  max-height: 110px;
-  filter: brightness(1.2) contrast(1.15) saturate(1.1);
+  max-width: 220px;
+  max-height: 220px;
+  filter: brightness(1.25) contrast(1.2) saturate(1.15);
 }
 
 .achievement-card[data-achievement="2"]:hover .achievement-card__logo {
@@ -6184,17 +6191,38 @@ body.dark-mode .achievement-card:focus-within {
   filter: brightness(1.3) contrast(1.2) saturate(1.15);
 }
 
-/* Special styling for VA logo - make it larger and more prominent */
+/* Special styling for HSF logo - make it larger and more prominent */
+.achievement-card[data-achievement="3"] .achievement-card__logo {
+  width: 240px;
+  height: 240px;
+  margin-bottom: 32px;
+}
+
+.achievement-card[data-achievement="3"] .achievement-card__logo img {
+  max-width: 220px;
+  max-height: 220px;
+  filter: brightness(1.25) contrast(1.2) saturate(1.15);
+}
+
+.achievement-card[data-achievement="3"]:hover .achievement-card__logo {
+  transform: scale(1.08);
+}
+
+.achievement-card[data-achievement="3"]:hover .achievement-card__logo img {
+  filter: brightness(1.35) contrast(1.25) saturate(1.2);
+}
+
+/* Standard sizing for VA logo (data-achievement="6") */
 .achievement-card[data-achievement="6"] .achievement-card__logo {
-  width: 140px;
-  height: 140px;
-  margin-bottom: 28px;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
 }
 
 .achievement-card[data-achievement="6"] .achievement-card__logo img {
-  max-width: 130px;
-  max-height: 130px;
-  filter: brightness(1.25) contrast(1.2) saturate(1.15);
+  max-width: 90px;
+  max-height: 90px;
+  filter: brightness(1.1) contrast(1.1);
 }
 
 .achievement-card[data-achievement="6"]:hover .achievement-card__logo {
@@ -6229,76 +6257,114 @@ body.dark-mode .achievement-card:focus-within {
 /* Responsive adjustments for GMS logo */
 @media (max-width: 1200px) {
   .achievement-card[data-achievement="2"] .achievement-card__logo {
-    width: 115px;
-    height: 115px;
+    width: 230px;
+    height: 230px;
   }
   
   .achievement-card[data-achievement="2"] .achievement-card__logo img {
-    max-width: 105px;
-    max-height: 105px;
+    max-width: 210px;
+    max-height: 210px;
   }
 }
 
 @media (max-width: 900px) {
   .achievement-card[data-achievement="2"] .achievement-card__logo {
-    width: 110px;
-    height: 110px;
+    width: 220px;
+    height: 220px;
   }
   
   .achievement-card[data-achievement="2"] .achievement-card__logo img {
-    max-width: 100px;
-    max-height: 100px;
+    max-width: 200px;
+    max-height: 200px;
   }
 }
 
 @media (max-width: 768px) {
   .achievement-card[data-achievement="2"] .achievement-card__logo {
-    width: 120px;
-    height: 120px;
-    margin-bottom: 24px;
+    width: 240px;
+    height: 240px;
+    margin-bottom: 32px;
   }
   
   .achievement-card[data-achievement="2"] .achievement-card__logo img {
-    max-width: 110px;
-    max-height: 110px;
+    max-width: 220px;
+    max-height: 220px;
+  }
+}
+
+/* Responsive adjustments for HSF logo */
+@media (max-width: 1200px) {
+  .achievement-card[data-achievement="3"] .achievement-card__logo {
+    width: 230px;
+    height: 230px;
+  }
+  
+  .achievement-card[data-achievement="3"] .achievement-card__logo img {
+    max-width: 210px;
+    max-height: 210px;
+  }
+}
+
+@media (max-width: 900px) {
+  .achievement-card[data-achievement="3"] .achievement-card__logo {
+    width: 220px;
+    height: 220px;
+  }
+  
+  .achievement-card[data-achievement="3"] .achievement-card__logo img {
+    max-width: 200px;
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .achievement-card[data-achievement="3"] .achievement-card__logo {
+    width: 240px;
+    height: 240px;
+    margin-bottom: 32px;
+  }
+  
+  .achievement-card[data-achievement="3"] .achievement-card__logo img {
+    max-width: 220px;
+    max-height: 220px;
   }
 }
 
 /* Responsive adjustments for VA logo */
 @media (max-width: 1200px) {
   .achievement-card[data-achievement="6"] .achievement-card__logo {
-    width: 135px;
-    height: 135px;
+    width: 95px;
+    height: 95px;
   }
   
   .achievement-card[data-achievement="6"] .achievement-card__logo img {
-    max-width: 125px;
-    max-height: 125px;
+    max-width: 85px;
+    max-height: 85px;
   }
 }
 
 @media (max-width: 900px) {
   .achievement-card[data-achievement="6"] .achievement-card__logo {
-    width: 130px;
-    height: 130px;
+    width: 100px;
+    height: 100px;
   }
   
   .achievement-card[data-achievement="6"] .achievement-card__logo img {
-    max-width: 120px;
-    max-height: 120px;
+    max-width: 90px;
+    max-height: 90px;
   }
 }
 
 @media (max-width: 768px) {
   .achievement-card[data-achievement="6"] .achievement-card__logo {
-    width: 140px;
-    height: 140px;
-    margin-bottom: 28px;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
   }
   
   .achievement-card[data-achievement="6"] .achievement-card__logo img {
-    max-width: 130px;
-    max-height: 130px;
+    max-width: 90px;
+    max-height: 90px;
   }
 }
 
@@ -6340,12 +6406,7 @@ body.dark-mode .achievement-card:focus-within {
   }
 }
 
-/* Special styling for VA logo - make it larger and more prominent */
-.achievement-card[data-achievement="6"] .achievement-card__logo {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 24px;
-}
+
 
 .achievement-card[data-achievement="6"] .achievement-card__logo img {
   max-width: 110px;
@@ -6424,11 +6485,12 @@ body.dark-mode .nonprofits {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 16px;
-  color: var(--text-color);
+  color: var(--accent-color);
 }
 
 body.dark-mode .nonprofits__title {
-  color: var(--dark-text-color);
+  color: var(--text-primary-dark);
+  text-shadow: 0 0 15px rgba(57, 255, 20, 0.6);
 }
 
 .nonprofits__subtitle {
@@ -6438,25 +6500,24 @@ body.dark-mode .nonprofits__title {
 }
 
 body.dark-mode .nonprofits__subtitle {
-  color: var(--dark-text-secondary);
+  color: #a0a0a0;
 }
 
 .nonprofits__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 60px;
   align-items: start;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.nonprofits__item {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.6s ease;
+.nonprofits__item:nth-child(even) {
+  transform: translateY(40px);
 }
 
-.nonprofits__item.animate-in {
-  opacity: 1;
-  transform: translateY(0);
+.nonprofits__item.animate-in:nth-child(even) {
+  transform: translateY(40px);
 }
 
 .nonprofit-card {
@@ -6498,13 +6559,13 @@ body.dark-mode .nonprofit-card:hover {
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.5);
+  background: transparent;
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
 
 body.dark-mode .nonprofit-card__logo {
-  background: rgba(255, 255, 255, 0.1);
+  background: transparent;
 }
 
 .nonprofit-card:hover .nonprofit-card__logo {
@@ -6512,7 +6573,7 @@ body.dark-mode .nonprofit-card__logo {
 }
 
 body.dark-mode .nonprofit-card:hover .nonprofit-card__logo {
-  background: rgba(255, 255, 255, 0.15);
+  background: transparent;
 }
 
 .nonprofit-card__logo img {
@@ -6752,11 +6813,86 @@ body.dark-mode .nonprofit-card:focus-within {
 }
 
 .nonprofit-card__logo-link:focus {
-  outline: 2px solid var(--accent-color);
-  outline-offset: 4px;
-  border-radius: 12px;
+  outline: none;
 }
 
-body.dark-mode .nonprofit-card__logo-link:focus {
-  outline-color: var(--dark-accent-color);
+.nonprofit-card__logo-link:focus .nonprofit-card__logo {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  transform: scale(1.02);
+}
+
+body.dark-mode .nonprofit-card__logo-link:focus .nonprofit-card__logo {
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.4);
+}
+
+/* Special styling for NIH logo - make it larger and more prominent */
+.achievement-card[data-achievement="1"] .achievement-card__logo {
+  width: 240px;
+  height: 240px;
+  margin-bottom: 32px;
+}
+
+.achievement-card[data-achievement="1"] .achievement-card__logo img {
+  max-width: 220px;
+  max-height: 220px;
+  filter: brightness(1.25) contrast(1.2) saturate(1.15);
+}
+
+.achievement-card[data-achievement="1"]:hover .achievement-card__logo {
+  transform: scale(1.08);
+}
+
+.achievement-card[data-achievement="1"]:hover .achievement-card__logo img {
+  filter: brightness(1.35) contrast(1.25) saturate(1.2);
+}
+
+@media (max-width: 768px) {
+  .achievement-card[data-achievement="3"] .achievement-card__logo {
+    width: 240px;
+    height: 240px;
+    margin-bottom: 32px;
+  }
+  
+  .achievement-card[data-achievement="3"] .achievement-card__logo img {
+    max-width: 220px;
+    max-height: 220px;
+  }
+}
+
+/* Responsive adjustments for NIH logo */
+@media (max-width: 1200px) {
+  .achievement-card[data-achievement="1"] .achievement-card__logo {
+    width: 230px;
+    height: 230px;
+  }
+  
+  .achievement-card[data-achievement="1"] .achievement-card__logo img {
+    max-width: 210px;
+    max-height: 210px;
+  }
+}
+
+@media (max-width: 900px) {
+  .achievement-card[data-achievement="1"] .achievement-card__logo {
+    width: 220px;
+    height: 220px;
+  }
+  
+  .achievement-card[data-achievement="1"] .achievement-card__logo img {
+    max-width: 200px;
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .achievement-card[data-achievement="1"] .achievement-card__logo {
+    width: 240px;
+    height: 240px;
+    margin-bottom: 32px;
+  }
+  
+  .achievement-card[data-achievement="1"] .achievement-card__logo img {
+    max-width: 220px;
+    max-height: 220px;
+  }
 }

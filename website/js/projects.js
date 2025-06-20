@@ -1,21 +1,21 @@
 // Placeholder project data
 const projects = [
   {
-    title: 'TravelTrolly',
+    title: 'Keystone',
     year: 2024,
-    description: 'Personal project (In development)',
-    tools: ['Swift', 'SwiftUI', 'Xcode', 'Postman']
+    description: 'Contract work for a FinTech startup',
+    tools: ['Python', 'AWS', 'CI/CD', 'Git', 'PostgreSQL', 'Apache Airflow']
   },
   {
-    title: 'Vakary',
-    year: 2024,
+    title: 'Accessing Cortical Excitability',
+    year: 2018,
     description: 'School project as part of the EIP',
-    tools: ['Swift', 'SwiftUI', 'Xcode', 'Postman', 'MongoDB', 'Docker']
+    tools: ['Python', 'Matlab', 'Neuroscience', 'AFNI', 'fMRI']
   },
   {
-    title: 'Boston Dynamics Spot Detection',
-    year: 2022,
-    description: 'Project carried out as part of my internship at ALERION',
+    title: 'LedgerTrac',
+    year: 2024,
+    description: 'Automated secure EPPS reporting and client statement generation platform with zero-trust credential handling, built for LeadTrac’s high-volume financial workflows',
     tools: ['Python', 'AI (Yolo V5)', 'Robotics']
   },
   {

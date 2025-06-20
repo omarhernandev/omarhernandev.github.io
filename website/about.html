@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="format-detection" content="telephone=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#163440" />
   <link rel="icon" href="/images/favicon.ico" type="image/x-icon" />
@@ -14,8 +14,41 @@
   <link rel="apple-touch-icon" href="/images/favicon.ico" />
   <title>About | Omar Hernandez</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css" />
   <style>
+    /* Matrix Rain Background */
+    #matrix-rain-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 1;
+      background: transparent;
+    }
+
+    #matrix-rain-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+    }
+
+    /* Make containers relative to contain absolute canvas */
+    .wrapper, .about__container {
+      position: relative;
+    }
+
+    /* Accessibility: Respect reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      #matrix-rain-background {
+        display: none !important;
+      }
+    }
+
     #terminal-container {
       background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
       border: 4px solid #333;
@@ -47,7 +80,7 @@
     }
 
     #terminal-header {
-      background: linear-gradient(90deg, #00ff96, #00cc77);
+      background: linear-gradient(90deg, #c0c0c0, #a8a8a8);
       color: #000;
       padding: 8px 16px;
       font-family: 'Share Tech Mono', monospace;
@@ -142,7 +175,7 @@
     #terminal-output {
       color: #00ff96;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 14px;
+      font-size: 18px;
       line-height: 1.8;
       white-space: pre-wrap;
       text-shadow: 0 0 5px rgba(0, 255, 150, 0.8);
@@ -154,7 +187,7 @@
     #cursor {
       color: #00ff96;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 14px;
+      font-size: 18px;
       text-shadow: 0 0 5px rgba(0, 255, 150, 0.8);
       animation: blink 1s infinite;
       position: relative;
@@ -225,7 +258,7 @@
       }
       
       #terminal-output {
-        font-size: 12px;
+        font-size: 16px;
       }
       
       #terminal-header {
@@ -246,7 +279,7 @@
       }
       
       #terminal-output {
-        font-size: 11px;
+        font-size: 15px;
         line-height: 1.6;
       }
       
@@ -267,6 +300,91 @@
         margin-right: 24px;
       }
     }
+
+    /* About page specific styles */
+    .about__content--centered {
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .about__title {
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+      color: #d4a437;
+    }
+
+    /* Photo Gallery Styles */
+    .gallery {
+      padding: 80px 0;
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .gallery__container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .gallery__title {
+      text-align: center;
+      margin-bottom: 50px;
+      font-size: 2.2rem;
+      color: #333;
+    }
+
+    .gallery__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .gallery__placeholder {
+      background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+      border: 2px dashed #dee2e6;
+      padding: 60px 20px;
+      text-align: center;
+      border-radius: 10px;
+      color: #6c757d;
+      font-style: italic;
+      transition: all 0.3s ease;
+    }
+
+    .gallery__placeholder:hover {
+      background: linear-gradient(145deg, #e9ecef, #dee2e6);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .about__content--centered {
+        padding: 40px 15px;
+      }
+      
+      .about__title {
+        font-size: 2rem;
+        margin-bottom: 30px;
+      }
+      
+      .gallery {
+        padding: 60px 0;
+      }
+      
+      .gallery__title {
+        font-size: 1.8rem;
+        margin-bottom: 40px;
+      }
+      
+      .gallery__grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .gallery__placeholder {
+        padding: 40px 15px;
+      }
+    }
   </style>
 </head>
 
@@ -280,6 +398,14 @@
         <div class="header__navigation">
           <div class="header__menu menu">
             <nav class="menu__body">
+              <div class="menu-logo">
+                <img src="/images/logo.png" alt="Omar Hernandez Logo" />
+              </div>
+              <button type="button" class="menu-close-button" aria-label="Close menu" title="Close menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                </svg>
+              </button>
               <nav class="menu__body">
                 <ul class="menu__list">
                   <li class="menu__item"><a href="index.html" class="menu__link">Home</a></li>
@@ -312,19 +438,14 @@
       </div>
     </header>
     <main class="page">
-      <section class="page__main main main_about main_pages">
-        <div class="main__container main__container_pages">
-          <h1 class="main__title">About</h1>
-          <div class="main__text main__text_pages">
-            Working across diverse industries has equipped me with a versatile skill set. What I enjoy most is using data-driven strategies to predict and shape the future — transforming uncertainty into opportunity through insight and innovation.
-          </div>
-        </div>
-      </section>
       <section class="page__about about">
         <div class="about__container">
-          <div class="about__image"><img src="../images/About/About-Our-Mission.jpg" alt="Our Mission" /></div>
-          <div class="about__content">
-            <h2 class="about__title title">About Heading</h2>
+          <!-- Matrix Rain Background -->
+          <div id="matrix-rain-background">
+            <canvas id="matrix-rain-canvas"></canvas>
+          </div>
+          <div class="about__content about__content--centered">
+            <h2 class="about__title title">About Me</h2>
             <div id="terminal-container">
               <div id="terminal-header">
                 <div id="terminal-title">
@@ -346,14 +467,27 @@
           </div>
         </div>
       </section>
+      
+      <!-- Photo Gallery Section -->
+      <section class="page__gallery gallery">
+        <div class="gallery__container">
+          <h2 class="gallery__title title">Work & Impact</h2>
+          <div class="gallery__grid">
+            <!-- Photo gallery content will go here -->
+            <div class="gallery__placeholder">
+              <p>Photo galleries showcasing work and impact will be added here</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       <section class="page__outro outro outro_about">
         <div class="outro__container">
           <h2 class="outro__title title">Talk To Us Heading</h2>
           <div class="outro__text">
-            You can compose a friendly and informative paragraph that encourages visitors to engage with your
-            business.
+            Working across diverse industries has equipped me with a versatile skill set. What I enjoy most is using data-driven strategies to predict and shape the future — transforming uncertainty into opportunity through insight and innovation.
           </div>
-          <a href="#" class="outro__button button">CTA Button</a>
+          <a href="contact.html" class="outro__button button">Get In Touch</a>
         </div>
       </section>
     </main>
@@ -378,7 +512,7 @@
       "",
       "> education",
       "In 2016, I was honored as 1 of 1,000 Gates Millennium Scholars selected from over 53,000 applicants.",
-      "I earned a B.S. in Neuroscience with a minor in Italian from Emory University in Atlanta.",
+      "In 2021, I earned a B.S. in Neuroscience with a minor in Italian from Emory University in Atlanta.",
       "I'm currently pursuing an M.S. in Information Systems (Cybersecurity) at Boston University.",
       "",
       "> languages",
@@ -391,54 +525,62 @@
 
     let currentLine = 0;
     let isTyping = false;
+    let hasSeenSequence = false; // Track if user has completed sequence
+    let activeTimeouts = []; // Track all active timeouts for cleanup
+    let typeInterval = null; // Track the current typing interval
     const output = document.getElementById("terminal-output");
     const cursor = document.getElementById("cursor");
     const refreshBtn = document.getElementById("refresh-btn");
+
+    function createTimeout(callback, delay) {
+      const timeoutId = setTimeout(callback, delay);
+      activeTimeouts.push(timeoutId);
+      return timeoutId;
+    }
+
+    function clearAllTimeouts() {
+      activeTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
+      activeTimeouts = [];
+    }
+
+    function resetTerminal() {
+      // Stop all ongoing animations and timeouts
+      isTyping = false;
+      if (typeInterval) {
+        clearInterval(typeInterval);
+        typeInterval = null;
+      }
+      clearAllTimeouts();
+      
+      // Reset state
+      currentLine = 0;
+      output.textContent = "";
+      
+      // Remove any hints
+      const existingHint = document.getElementById("space-hint");
+      if (existingHint) existingHint.remove();
+      
+      // Start fresh
+      showBootSequence();
+    }
 
     function typeText(text, callback) {
       if (isTyping) return;
       isTyping = true;
       
       let i = 0;
-      const typeInterval = setInterval(() => {
+      typeInterval = setInterval(() => {
         if (i < text.length) {
           output.textContent += text.charAt(i);
           i++;
         } else {
           clearInterval(typeInterval);
+          typeInterval = null;
           output.textContent += "\n";
           isTyping = false;
           if (callback) callback();
         }
       }, 30);
-    }
-
-    function resetTerminal() {
-      currentLine = 0;
-      output.textContent = "";
-      isTyping = false;
-      showBootSequence();
-    }
-
-    function showSpaceHint() {
-      // Remove any existing hint first
-      const existingHint = document.getElementById("space-hint");
-      if (existingHint) existingHint.remove();
-      
-      // Create new hint
-      const hint = document.createElement("div");
-      hint.id = "space-hint";
-      hint.textContent = "Press SPACE";
-      hint.style.cssText = `
-        color: #666;
-        font-family: 'Share Tech Mono', monospace;
-        font-size: 12px;
-        margin-top: 10px;
-        text-align: center;
-        opacity: 0.7;
-        animation: subtle-blink 2s ease-in-out infinite;
-      `;
-      document.getElementById("terminal-box").appendChild(hint);
     }
 
     function showNextLine() {
@@ -448,98 +590,74 @@
       const hint = document.getElementById("space-hint");
       if (hint) hint.remove();
       
-      // Special case: first space press loads the intro section
+      // Single space press triggers entire sequence
       if (currentLine === 0) {
-        typeText("SYSTEM INITIALIZING...", () => {
-          output.textContent += "\n";
-          typeText("LOADING PERSONAL DATA...", () => {
-            output.textContent += "\n\n";
+        runFullSequence();
+        return;
+      }
+    }
+
+    function runFullSequence() {
+      // Mark as started to prevent multiple triggers
+      currentLine = 1;
+      
+      // Section 1: System initialization and whoami
+      typeText("SYSTEM INITIALIZING...", () => {
+        output.textContent += "\n";
+        typeText("LOADING PERSONAL DATA...", () => {
+          output.textContent += "\n\n";
+          
+          createTimeout(() => {
             typeText("> whoami", () => {
               output.textContent += "\n";
               typeText("I'm a U.S. citizen born in Cuba and raised in Miami, FL since the age of two.", () => {
-                output.textContent += "\n";
-                currentLine = 6; // Skip to education section
-                // Show hint for next section
-                setTimeout(() => showSpaceHint(), 500);
+                output.textContent += "\n\n";
+                
+                // Section 2: Education (after 0.8 second pause)
+                createTimeout(() => {
+                  typeText("> education", () => {
+                    output.textContent += "\n";
+                    typeText("In 2016, I was honored as 1 of 1,000 Gates Millennium Scholars selected from over 53,000 applicants.", () => {
+                      output.textContent += "\n";
+                      typeText("In 2021, I earned a B.S. in Neuroscience with a minor in Italian from Emory University in Atlanta.", () => {
+                        output.textContent += "\n";
+                        typeText("I'm currently pursuing an M.S. in Information Systems (Cybersecurity) at Boston University.", () => {
+                          output.textContent += "\n\n";
+                          
+                          // Section 3: Languages (after 0.8 second pause)
+                          createTimeout(() => {
+                            typeText("> languages", () => {
+                              output.textContent += "\n";
+                              typeText("I'm fluent in English, Spanish, and Italian.", () => {
+                                output.textContent += "\n";
+                                typeText("Explore my site to discover the other languages I speak — both human and machine 😉", () => {
+                                  output.textContent += "\n\n";
+                                  
+                                  // Section 4: Final status (after 0.8 second pause)
+                                  createTimeout(() => {
+                                    typeText("> status", () => {
+                                      output.textContent += "\n";
+                                      typeText("READY FOR NEW CONNECTIONS...", () => {
+                                        currentLine = aboutLines.length; // Mark as complete
+                                        hasSeenSequence = true; // User has now seen the full sequence
+                                        // Terminal sequence complete - no hint needed
+                                      });
+                                    });
+                                  }, 800);
+                                });
+                              });
+                            });
+                          }, 800);
+                        });
+                      });
+                    });
+                  });
+                }, 800);
               });
             });
-          });
+          }, 500);
         });
-        return;
-      }
-      
-      // Second space press: load complete education section
-      if (currentLine === 6) {
-        output.textContent += "\n";
-        typeText("> education --achievements", () => {
-          output.textContent += "\n";
-          typeText("In 2016, I was honored as 1 of 1,000 Gates Millennium Scholars selected from over 53,000 applicants.", () => {
-            output.textContent += "\n";
-            typeText("I earned a B.S. in Neuroscience with a minor in Italian from Emory University in Atlanta.", () => {
-              output.textContent += "\n";
-              typeText("I'm currently pursuing an M.S. in Information Systems (Cybersecurity) at Boston University.", () => {
-                output.textContent += "\n";
-                currentLine = 11; // Skip to languages section
-                // Show hint for next section
-                setTimeout(() => showSpaceHint(), 500);
-              });
-            });
-          });
-        });
-        return;
-      }
-      
-      // Third space press: load complete languages section
-      if (currentLine === 11) {
-        output.textContent += "\n";
-        typeText("> languages --list", () => {
-          output.textContent += "\n";
-          typeText("I'm fluent in English, Spanish, and Italian.", () => {
-            output.textContent += "\n";
-            typeText("Explore my site to discover the other languages I speak — both human and machine 😉", () => {
-              output.textContent += "\n";
-              currentLine = 15; // Skip to status section
-              // Show hint for final section
-              setTimeout(() => showSpaceHint(), 500);
-            });
-          });
-        });
-        return;
-      }
-      
-      // Fourth space press: load status section
-      if (currentLine === 15) {
-        output.textContent += "\n";
-        typeText("> status", () => {
-          output.textContent += "\n";
-          typeText("READY FOR NEW CONNECTIONS...", () => {
-            currentLine = aboutLines.length; // Mark as complete
-            // No hint needed - terminal is complete
-          });
-        });
-        return;
-      }
-      
-      // Default behavior for any remaining lines
-      const line = aboutLines[currentLine];
-      if (line.startsWith(">")) {
-        typeText(line, () => {
-          currentLine++;
-          if (currentLine < aboutLines.length) {
-            setTimeout(() => showNextLine(), 200);
-          }
-        });
-      } else if (line === "") {
-        output.textContent += "\n";
-        currentLine++;
-        if (currentLine < aboutLines.length) {
-          setTimeout(() => showNextLine(), 100);
-        }
-      } else {
-        typeText(line, () => {
-          currentLine++;
-        });
-      }
+      });
     }
 
     function showAllLines() {
@@ -557,27 +675,29 @@
       const existingHint = document.getElementById("space-hint");
       if (existingHint) existingHint.remove();
       
-      setTimeout(() => {
+      createTimeout(() => {
         typeText("ABOUT-ME v2.1 ACTIVE", () => {
-          setTimeout(() => {
+          createTimeout(() => {
             output.textContent += "\n";
             output.textContent += "═══════════════════════════════════════════════════\n\n";
             currentLine = 0;
             
-            // Add grey "Press SPACE" hint
-            const hint = document.createElement("div");
-            hint.id = "space-hint";
-            hint.textContent = "Press SPACE";
-            hint.style.cssText = `
-              color: #666;
-              font-family: 'Share Tech Mono', monospace;
-              font-size: 12px;
-              margin-top: 10px;
-              text-align: center;
-              opacity: 0.7;
-              animation: subtle-blink 2s ease-in-out infinite;
-            `;
-            document.getElementById("terminal-box").appendChild(hint);
+            // Only show hint on first visit, not after resets
+            if (!hasSeenSequence) {
+              const hint = document.createElement("div");
+              hint.id = "space-hint";
+              hint.textContent = "Press SPACE";
+              hint.style.cssText = `
+                color: #666;
+                font-family: 'Share Tech Mono', monospace;
+                font-size: 12px;
+                margin-top: 10px;
+                text-align: center;
+                opacity: 0.7;
+                animation: subtle-blink 2s ease-in-out infinite;
+              `;
+              document.getElementById("terminal-box").appendChild(hint);
+            }
           }, 500);
         });
       }, 100);
@@ -587,9 +707,6 @@
       if (e.key === " ") {
         e.preventDefault();
         showNextLine();
-      } else if (e.key === "Enter") {
-        e.preventDefault();
-        showAllLines();
       }
     });
 
@@ -599,6 +716,329 @@
 
     // Initialize
     showBootSequence();
+  </script>
+
+  <!-- Matrix Rain Effect -->
+  <script>
+    (function() {
+      'use strict';
+      
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+      
+      // Matrix Rain Configuration (Iridescent Effect)
+      const config = {
+        streams: 35,
+        minSpeed: 20,
+        maxSpeed: 70,
+        minOpacity: 0.25,
+        maxOpacity: 0.65,
+        fontSize: 16,
+        minStreamLength: 6,
+        maxStreamLength: 16,
+        spawnRate: 0.65,
+        fadeSpeed: 0.008
+      };
+      
+      // Character sets
+      const programmingSymbols = ['{', '}', '[', ']', '<', '>', '/', '\\', '|', '-', '+', '=', '0', '1', '$', '%', '&', '*'];
+      const binaryDigits = ['0', '1', '0', '1', '0', '1', '0', '1', '0', '1', '0', '1']; // More 0s and 1s for higher probability
+      const japaneseKanji = ['愛', '夢', '力', '心', '光', '希', '美', '和', '道', '真', '神', '空', '火', '水', '土', '風', '雲', '星', '月', '日', '山', '川', '海', '花', '木', '石', '金', '銀', '龍', '虎', '鳥', '魚', '人', '子', '母', '父', '友', '家', '学', '書', '音', '色', '時', '間', '世', '界', '生', '命', '死', '運', '命', '未', '来', '過', '去', '現', '在'];
+      
+      // Matrix Rain Class
+      class MatrixRain {
+        constructor() {
+          console.log('Matrix Rain: Constructor called');
+          this.canvas = document.getElementById('matrix-rain-canvas');
+          console.log('Matrix Rain: Canvas element:', this.canvas);
+          
+          if (!this.canvas) {
+            console.error('Matrix Rain: Canvas element not found!');
+            return;
+          }
+          
+          this.ctx = this.canvas.getContext('2d');
+          console.log('Matrix Rain: Canvas context:', this.ctx);
+          
+          if (!this.ctx) {
+            console.error('Matrix Rain: Canvas context not available!');
+            return;
+          }
+          
+          this.streams = [];
+          this.animationId = null;
+          this.isVisible = true;
+          this.lastTime = 0;
+          
+          console.log('Matrix Rain: Starting initialization...');
+          this.init();
+          this.setupEventListeners();
+          this.start();
+          console.log('Matrix Rain: Initialization complete');
+        }
+        
+        init() {
+          this.resize();
+          this.setupCanvas();
+          
+          // Clear canvas for Matrix rain animation
+          
+          this.createStreams();
+          
+          // Matrix rain is now immediately visible
+        }
+        
+        setupCanvas() {
+          this.ctx.font = `${config.fontSize}px 'Share Tech Mono', 'Noto Sans JP', monospace`;
+          this.ctx.textAlign = 'center';
+          this.ctx.textBaseline = 'top';
+        }
+        
+        resize() {
+          const rect = this.canvas.getBoundingClientRect();
+          const dpr = window.devicePixelRatio || 1;
+          
+          // Get viewport dimensions if canvas rect is 0
+          const width = rect.width || window.innerWidth;
+          const height = rect.height || window.innerHeight;
+          
+          console.log('Matrix Rain: Canvas dimensions:', width, 'x', height);
+          
+          this.canvas.width = width * dpr;
+          this.canvas.height = height * dpr;
+          
+          this.ctx.scale(dpr, dpr);
+          this.canvas.style.width = width + 'px';
+          this.canvas.style.height = height + 'px';
+          
+          this.width = width;
+          this.height = height;
+          
+          console.log('Matrix Rain: Canvas resized to:', this.width, 'x', this.height);
+        }
+        
+        createStreams() {
+          this.streams = [];
+          const streamCount = Math.floor(config.streams * (this.width / 1920)); // Scale with screen width
+          
+          for (let i = 0; i < streamCount; i++) {
+            if (Math.random() < config.spawnRate) {
+              this.createStream();
+            }
+          }
+        }
+        
+        createStream() {
+          const stream = {
+            x: Math.random() * this.width,
+            y: -Math.random() * this.height,
+            speed: config.minSpeed + Math.random() * (config.maxSpeed - config.minSpeed),
+            length: config.minStreamLength + Math.floor(Math.random() * (config.maxStreamLength - config.minStreamLength)),
+            characters: [],
+            opacity: config.minOpacity + Math.random() * (config.maxOpacity - config.minOpacity)
+          };
+          
+          // Generate mixed character stream (40% binary, 35% programming, 25% kanji)
+          for (let i = 0; i < stream.length; i++) {
+            const rand = Math.random();
+            let charSet;
+            
+            if (rand < 0.4) {
+              // 40% binary digits
+              charSet = binaryDigits;
+            } else if (rand < 0.75) {
+              // 35% programming symbols
+              charSet = programmingSymbols;
+            } else {
+              // 25% kanji
+              charSet = japaneseKanji;
+            }
+            
+            stream.characters.push({
+              char: charSet[Math.floor(Math.random() * charSet.length)],
+              opacity: 1 - (i / stream.length) * 0.8 // Fade trail effect
+            });
+          }
+          
+          this.streams.push(stream);
+        }
+        
+        updateStreams(deltaTime) {
+          for (let i = this.streams.length - 1; i >= 0; i--) {
+            const stream = this.streams[i];
+            stream.y += (stream.speed * deltaTime) / 1000;
+            
+            // Occasionally change characters for variety
+            if (Math.random() < 0.002) {
+              const charIndex = Math.floor(Math.random() * stream.characters.length);
+              const rand = Math.random();
+              let charSet;
+              
+              if (rand < 0.4) {
+                // 40% binary digits
+                charSet = binaryDigits;
+              } else if (rand < 0.75) {
+                // 35% programming symbols
+                charSet = programmingSymbols;
+              } else {
+                // 25% kanji
+                charSet = japaneseKanji;
+              }
+              
+              stream.characters[charIndex].char = charSet[Math.floor(Math.random() * charSet.length)];
+            }
+            
+            // Remove streams that have fallen off screen
+            if (stream.y > this.height + (stream.length * config.fontSize)) {
+              this.streams.splice(i, 1);
+            }
+          }
+          
+          // Spawn new streams randomly
+          while (this.streams.length < config.streams && Math.random() < config.spawnRate * 0.1) {
+            this.createStream();
+          }
+        }
+        
+        renderStreams() {
+          this.ctx.clearRect(0, 0, this.width, this.height);
+          
+          const time = Date.now() * 0.001; // Current time for color animation
+          
+          for (const stream of this.streams) {
+            for (let i = 0; i < stream.characters.length; i++) {
+              const char = stream.characters[i];
+              const x = stream.x;
+              const y = stream.y + (i * config.fontSize);
+              
+              if (y > -config.fontSize && y < this.height) {
+                const opacity = Math.min(stream.opacity * char.opacity, config.maxOpacity);
+                
+                // Create iridescent color effect
+                const positionFactor = (x / this.width) * 360; // Horizontal color shift
+                const verticalFactor = (y / this.height) * 60; // Vertical shift
+                const timeFactor = time * 30; // Slow color animation over time
+                const streamFactor = (i / stream.length) * 120; // Color shift along stream
+                
+                // Calculate HSL values for iridescent effect
+                const hue = (positionFactor + verticalFactor + timeFactor + streamFactor) % 360;
+                const saturation = 70 + (Math.sin(time * 2 + x * 0.01) * 20); // Dynamic saturation
+                const lightness = 50 + (opacity * 30); // Brighter with higher opacity
+                
+                // Create shimmering effect with dual-tone
+                const hue2 = (hue + 60) % 360; // Complementary hue
+                const alpha = opacity * (0.8 + 0.2 * Math.sin(time * 3 + x * 0.02 + y * 0.01));
+                
+                // Primary iridescent color
+                this.ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+                this.ctx.fillText(char.char, x, y);
+                
+                // Add subtle second layer for extra shimmer on leading characters
+                if (i < 3) { // Only for first few characters in stream
+                  const shimmerAlpha = alpha * 0.3;
+                  this.ctx.fillStyle = `hsla(${hue2}, ${saturation + 10}%, ${lightness + 15}%, ${shimmerAlpha})`;
+                  this.ctx.fillText(char.char, x + 0.5, y + 0.5);
+                }
+              }
+            }
+          }
+        }
+        
+        animate(currentTime) {
+          if (!this.isVisible) return;
+          
+          const deltaTime = currentTime - this.lastTime;
+          this.lastTime = currentTime;
+          
+          if (deltaTime < 100) { // Cap delta time to prevent large jumps
+            this.updateStreams(deltaTime);
+            this.renderStreams();
+          }
+          
+          this.animationId = requestAnimationFrame((time) => this.animate(time));
+        }
+        
+        start() {
+          if (this.animationId) return;
+          this.lastTime = performance.now();
+          this.animate(this.lastTime);
+        }
+        
+        stop() {
+          if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+          }
+        }
+        
+        setupEventListeners() {
+          // Handle window resize
+          window.addEventListener('resize', () => {
+            this.resize();
+            this.setupCanvas();
+            this.createStreams();
+          });
+          
+          // Pause animation when tab is not visible
+          document.addEventListener('visibilitychange', () => {
+            this.isVisible = !document.hidden;
+            if (this.isVisible) {
+              this.lastTime = performance.now();
+              this.start();
+            } else {
+              this.stop();
+            }
+          });
+          
+          // Handle reduced motion changes
+          const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+          mediaQuery.addEventListener('change', (e) => {
+            if (e.matches) {
+              this.stop();
+              const background = document.getElementById('matrix-rain-background');
+              if (background) background.style.display = 'none';
+            }
+          });
+        }
+        
+        destroy() {
+          this.stop();
+          window.removeEventListener('resize', this.resize);
+          document.removeEventListener('visibilitychange', this.visibilityHandler);
+        }
+      }
+      
+      // Initialize Matrix Rain
+      function initMatrixRain() {
+        console.log('Matrix Rain: Initializing...');
+        console.log('Matrix Rain: Document ready state:', document.readyState);
+        
+        // Wait for DOM to be fully loaded
+        if (document.readyState === 'loading') {
+          console.log('Matrix Rain: Waiting for DOM...');
+          document.addEventListener('DOMContentLoaded', () => {
+            console.log('Matrix Rain: DOM loaded, creating MatrixRain...');
+            try {
+              new MatrixRain();
+            } catch (error) {
+              console.error('Matrix Rain: Error creating MatrixRain:', error);
+            }
+          });
+        } else {
+          console.log('Matrix Rain: DOM already loaded, creating MatrixRain...');
+          try {
+            new MatrixRain();
+          } catch (error) {
+            console.error('Matrix Rain: Error creating MatrixRain:', error);
+          }
+        }
+      }
+      
+      // Start the effect
+      initMatrixRain();
+      
+    })();
   </script>
 </body>
 

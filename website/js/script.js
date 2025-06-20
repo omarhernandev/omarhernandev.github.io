@@ -994,10 +994,10 @@
               // Immediate animation for reduced motion preference
               addClass(item, 'animate-in');
             } else {
-              // Staggered animation with 300ms delay between each card
+              // Much quicker staggered animation with 50ms delay between each card
               setTimeout(function() {
                 addClass(item, 'animate-in');
-              }, achievementNumber * 300);
+              }, achievementNumber * 50);
             }
             
             // Stop observing this item once animated
@@ -1005,8 +1005,8 @@
           }
         });
       }, {
-        threshold: 0.2, // Trigger when 20% of the element is visible
-        rootMargin: '0px 0px -50px 0px' // Trigger slightly before the element comes into view
+        threshold: 0.1, // Trigger when 10% of the element is visible (more responsive)
+        rootMargin: '0px 0px -20px 0px' // Trigger earlier for better responsiveness
       });
 
       // Start observing all achievement items
@@ -1023,7 +1023,7 @@
           } else {
             setTimeout(function() {
               addClass(item, 'animate-in');
-            }, index * 300);
+            }, index * 50);
           }
         });
       }
