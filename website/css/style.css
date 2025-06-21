@@ -604,11 +604,14 @@ body.dark-mode .project-tool {
   transition: all 0.3s ease;
 }
 
-/* Home page specific header styling - black background to match hero image */
-.home-page .header {
-  background: #000000 !important;
-  background-color: #000000 !important;
+/* Global hero header styling - consistent across all pages */
+.hero-header .header {
+  background: transparent url('/images/Home/Homepage.jpg') center center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  position: relative;
   /* Safari-specific fixes */
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
@@ -617,7 +620,47 @@ body.dark-mode .project-tool {
   will-change: transform;
 }
 
-/* Additional Safari fix for home page header background */
+/* Enhanced header overlay for text readability */
+.hero-header .header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: -1;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Ensure header text remains visible on all pages */
+.hero-header .header .menu__link {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Add hover effect for navigation links on all pages */
+.hero-header .header .menu__link:hover {
+  color: var(--accent-light) !important;
+}
+
+/* Legacy support: Keep home-page class for backward compatibility */
+.home-page .header {
+  background: transparent url('/images/Home/Homepage.jpg') center center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  position: relative;
+  /* Safari-specific fixes */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
 .home-page .header::before {
   content: '';
   position: absolute;
@@ -625,10 +668,19 @@ body.dark-mode .project-tool {
   left: 0;
   right: 0;
   bottom: 0;
-  background: #000000;
+  background: rgba(0, 0, 0, 0.6);
   z-index: -1;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
+}
+
+.home-page .header .menu__link {
+  color: #ffffff !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+}
+
+.home-page .header .menu__link:hover {
+  color: var(--accent-light) !important;
 }
 
 
@@ -915,7 +967,7 @@ body.dark-mode .page {
   position: relative;
   overflow: hidden;
   min-height: 85vh;
-  background: #0d1b2a;
+  background: transparent;
   margin-top: -90px;
   padding-top: 90px;
 }
@@ -966,68 +1018,51 @@ body.dark-mode .main__image {
   position: relative;
 }
 
-/* Subtle overlay for better content readability */
-.main__container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: -1;
-  pointer-events: none;
-}
+/* Overlay removed for flat background */
 
 .main__content {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  border: none;
   border-radius: 24px;
   padding: 2rem 2.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: none;
   max-width: 800px;
   width: 100%;
-  animation: glassAppear 1.2s ease-out;
+  animation: fadeInUp 1.2s ease-out;
   overflow: visible;
 }
 
-@keyframes glassAppear {
+@keyframes fadeInUp {
   0% { 
     opacity: 0; 
-    transform: translateY(30px) scale(0.95);
-    -webkit-backdrop-filter: blur(0px);
-    backdrop-filter: blur(0px);
+    transform: translateY(30px);
   }
   100% { 
     opacity: 1; 
-    transform: translateY(0) scale(1);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
+    transform: translateY(0);
   }
 }
 
 .main__caption {
   font-size: 1.5rem;
   letter-spacing: 0.12em;
-  color: white;
+  color: #333333;
   font-weight: 500;
   margin-bottom: 1rem;
   transition: all 0.3s ease;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: none;
 }
 
 body.dark-mode .main {
-  background: #0a0a0a;
+  background: transparent;
 }
 
 
 
 body.dark-mode .main__content {
-  background: rgba(57, 255, 20, 0.08);
-  border: 1px solid rgba(57, 255, 20, 0.2);
-  box-shadow: 0 8px 32px rgba(57, 255, 20, 0.2);
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 body.dark-mode .main__caption {
@@ -4560,7 +4595,7 @@ body.dark-mode .contact-form label {
 }
 
 .contact-form textarea {
-  min-height: 8rem;
+  min-height: 5rem;
   resize: vertical;
 }
 
@@ -4986,11 +5021,11 @@ body.dark-mode .main__quote {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(212, 164, 55, 0.1);
   border-radius: 50%;
-  color: #ffffff;
+  color: var(--accent-color);
   transition: all 0.3s ease;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(212, 164, 55, 0.3);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -5849,19 +5884,14 @@ body.dark-mode .achievements__subtitle {
   margin-top: 40px;
 }
 
+/* Enhanced consistent heights for all achievement cards */
 .achievements__item {
-  opacity: 0;
-  transform: translateY(20px) scale(0.95);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform, opacity;
+  display: flex;
+  min-height: 340px;
+  height: 100%;
 }
 
-.achievements__item.animate-in {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.achievement-card {
+.achievements__item.achievement-card {
   background: #fff;
   border-radius: 16px;
   padding: 32px 24px;
@@ -5873,26 +5903,33 @@ body.dark-mode .achievements__subtitle {
   overflow: hidden;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  min-height: 340px;
+  height: 100%;
   will-change: transform, box-shadow;
 }
 
-body.dark-mode .achievement-card {
+.achievements__item.animate-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+body.dark-mode .achievements__item.achievement-card {
   background: rgba(17, 25, 40, 0.85);
   border: 1px solid rgba(0, 255, 0, 0.2);
   box-shadow: 0 8px 32px rgba(0, 255, 0, 0.1);
 }
 
-.achievement-card:hover {
+.achievements__item.achievement-card:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: 0 20px 40px rgba(0, 191, 255, 0.15);
   border-color: rgba(0, 191, 255, 0.3);
 }
 
-body.dark-mode .achievement-card:hover {
+body.dark-mode .achievements__item.achievement-card:hover {
   box-shadow: 0 20px 40px rgba(0, 255, 0, 0.2);
   border-color: rgba(0, 255, 0, 0.4);
 }
@@ -5941,8 +5978,9 @@ body.dark-mode .achievement-card:hover .achievement-card__logo {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   text-align: center;
+  margin-top: auto;
 }
 
 .achievement-card__title {
@@ -5980,8 +6018,9 @@ body.dark-mode .achievement-card__description {
     gap: 25px;
   }
   
-  .achievement-card {
+  .achievements__item.achievement-card {
     padding: 28px 20px;
+    min-height: 320px;
   }
   
   .achievement-card__logo {
@@ -6021,8 +6060,9 @@ body.dark-mode .achievement-card__description {
     gap: 20px;
   }
   
-  .achievement-card {
+  .achievements__item.achievement-card {
     padding: 24px 18px;
+    min-height: 300px;
   }
   
   .achievement-card__title {
@@ -6100,8 +6140,9 @@ body.dark-mode .achievement-card__description {
     font-size: 0.95rem;
   }
   
-  .achievement-card {
+  .achievements__item.achievement-card {
     padding: 24px 20px;
+    min-height: 280px;
   }
   
   .achievement-card__logo {
@@ -7035,80 +7076,61 @@ body.dark-mode .decrypt-text:hover .char.letter {
   }
 }
 
-/* === NEURAL NETWORK BACKGROUND === */
-/* Canvas positioned behind hero content */
-.neural-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-  opacity: 0.9;
+
+
+/* === MOBILE BACKGROUND FIXES FOR HERO SECTION ONLY === */
+@media (max-width: 900px) {
+  .main {
+    background-position: center center !important;
+    background-attachment: scroll !important;
+  }
 }
 
-/* Main section positioning */
-.main {
-  position: relative;
-  overflow: hidden;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@media (max-width: 600px) {
+  .main {
+    background-position: center center !important;
+    margin-top: -80px !important;
+    padding-top: 80px !important;
+  }
 }
 
-/* Ensure content is above the canvas */
-.main__container {
-  position: relative;
-  z-index: 1;
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(2px);
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+/* ACHIEVEMENT CARDS HEIGHT FIX - Force consistent heights */
+.achievements__grid .achievements__item {
+  min-height: 320px !important;
+  display: flex !important;
 }
 
-/* Enhanced hero text visibility */
-.main__content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
+.achievements__grid .achievement-card {
+  min-height: 320px !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
-/* Dark mode adjustments for neural background */
-body.dark-mode .neural-background {
-  background: linear-gradient(135deg, #000000 0%, #0f0f23 50%, #1a1a2e 100%);
-  opacity: 0.95;
+@media (max-width: 1200px) {
+  .achievements__grid .achievement-card {
+    min-height: 280px !important;
+  }
 }
 
-body.dark-mode .main__container {
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(3px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+@media (max-width: 900px) {
+  .achievements__grid .achievement-card {
+    min-height: 260px !important;
+  }
 }
 
-/* Mobile optimizations */
 @media (max-width: 768px) {
-  .neural-background {
-    opacity: 0.7;
-  }
-  
-  .main__container {
-    backdrop-filter: blur(1px);
-    padding: 1.5rem;
+  .achievements__grid .achievement-card {
+    min-height: 240px !important;
   }
 }
 
-/* Accessibility - respect reduced motion preference */
-@media (prefers-reduced-motion: reduce) {
-  .neural-background {
-    opacity: 0.3;
+@media (max-width: 480px) {
+  .achievements__grid .achievement-card {
+    min-height: 220px !important;
   }
 }
 
-/* Performance optimization - will-change for smooth animations */
-.neural-background {
-  will-change: transform;
-  transform: translateZ(0);
-}
+
+
+
