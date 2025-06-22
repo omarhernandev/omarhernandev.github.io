@@ -42,6 +42,49 @@
     }
 
     /* Ensure content appears above matrix rain */
+    .projects-layout,
+    .projects-header {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Projects header styling */
+    .projects-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 0 1.5rem;
+    }
+
+    .projects-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin: 0;
+      transition: all 0.3s ease;
+    }
+
+    body.dark-mode .projects-title {
+      color: var(--text-primary-dark);
+      text-shadow: 0 0 15px rgba(57, 255, 20, 0.6);
+    }
+
+    @media (max-width: 900px) {
+      .projects-title {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .projects-title {
+        font-size: 2rem;
+      }
+      
+      .projects-header {
+        margin-bottom: 2rem;
+      }
+    }
+
+    /* Ensure content appears above matrix rain */
     .projects-layout {
       position: relative;
       z-index: 2;
@@ -109,6 +152,11 @@
         <!-- Matrix Rain Background -->
         <div id="matrix-rain-background">
           <canvas id="matrix-rain-canvas"></canvas>
+        </div>
+        <div class="projects-header">
+          <h1 class="projects-title title">
+            <span class="decrypt-text" data-text="Projects" tabindex="0" aria-label="Projects" role="button" title="Hover to see decoding animation">Projects</span>
+          </h1>
         </div>
         <div class="projects-layout">
           <aside class="projects-filter">
