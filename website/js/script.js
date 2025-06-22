@@ -207,122 +207,176 @@
 
     // Enhanced Letter Animation for Name
     function initDecryptAnimation() {
-      var decryptElement = document.querySelector('.decrypt-text');
-      if (!decryptElement) return;
+      var decryptElements = document.querySelectorAll('.decrypt-text');
+      if (!decryptElements.length) return;
 
-      var targetText = decryptElement.getAttribute('data-text') || 'Omar Hernandez';
       var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
       var decryptDuration = 1500; // 1.5 seconds for faster decoding experience
-      var isAnimating = false; // Flag to prevent animation overlap
-      var animationTimeout = null; // For debouncing
-      var charElements = [];
       
       // Chrome mobile detection and optimization
       var isChromeMobile = /Chrome/.test(navigator.userAgent) && /Mobile/.test(navigator.userAgent);
-      if (isChromeMobile) {
-        // Optimize for Chrome mobile performance
-        decryptElement.style.willChange = 'transform';
-        decryptElement.style.webkitTransform = 'translateZ(0)';
-        decryptElement.style.transform = 'translateZ(0)';
+      
+      // Initialize each decrypt element
+      for (var elementIndex = 0; elementIndex < decryptElements.length; elementIndex++) {
+        initSingleDecryptElement(decryptElements[elementIndex]);
       }
       
-      // Add accessibility attributes
-      decryptElement.setAttribute('aria-label', targetText);
-      decryptElement.setAttribute('role', 'text');
-      
-      // Initialize character spans with enhanced letter animation support
-      function initCharSpans() {
-        console.log('Initializing character spans with letter animation...');
-        decryptElement.innerHTML = '';
-        charElements = [];
+      function initSingleDecryptElement(decryptElement) {
+        var targetText = decryptElement.getAttribute('data-text') || decryptElement.textContent;
+        var isAnimating = false; // Flag to prevent animation overlap
+        var animationTimeout = null; // For debouncing
+        var charElements = [];
         
-        for (var i = 0; i < targetText.length; i++) {
-          var charSpan = document.createElement('span');
-          
-          if (targetText[i] === ' ') {
-            charSpan.className = 'space';
-            charSpan.innerHTML = '&nbsp;';
-            console.log('Created space element at index', i);
-          } else {
-            charSpan.className = 'char letter locked';
-            charSpan.textContent = targetText[i];
-            console.log('Created letter element for "' + targetText[i] + '" at index', i, 'with classes:', charSpan.className);
-          }
-          
-          // Chrome mobile optimization for individual characters
-          if (isChromeMobile) {
-            charSpan.style.webkitTransform = 'translateZ(0)';
-            charSpan.style.transform = 'translateZ(0)';
-            charSpan.style.webkitBackfaceVisibility = 'hidden';
-            charSpan.style.backfaceVisibility = 'hidden';
-          }
-          
-          charElements.push(charSpan);
-          decryptElement.appendChild(charSpan);
+        if (isChromeMobile) {
+          // Optimize for Chrome mobile performance
+          decryptElement.style.willChange = 'transform';
+          decryptElement.style.webkitTransform = 'translateZ(0)';
+          decryptElement.style.transform = 'translateZ(0)';
         }
         
-        console.log('Character spans initialized. Total elements:', charElements.length);
-        console.log('Final HTML structure:', decryptElement.innerHTML);
-      }
-      
-      function getRandomChar() {
-        return chars[Math.floor(Math.random() * chars.length)];
-      }
-      
-      // Main decryption animation function
-      function startDecryptAnimation() {
-        // Prevent overlapping animations
-        if (isAnimating) return;
+        // Add accessibility attributes
+        decryptElement.setAttribute('aria-label', targetText);
+        decryptElement.setAttribute('role', 'text');
         
-        isAnimating = true;
-        var startTime = Date.now();
-        var lockedChars = 0;
-        
-        // Reset all characters to decrypting state
-        for (var i = 0; i < charElements.length; i++) {
-          if (targetText[i] !== ' ') {
-            removeClass(charElements[i], 'locked');
-            addClass(charElements[i], 'decrypting');
-            charElements[i].textContent = getRandomChar();
-          }
-        }
-        
-        function animate() {
-          var elapsed = Date.now() - startTime;
-          var progress = Math.min(elapsed / decryptDuration, 1);
+        // Initialize character spans with enhanced letter animation support
+        function initCharSpans() {
+          console.log('Initializing character spans for:', targetText);
+          decryptElement.innerHTML = '';
+          charElements = [];
           
-          // Determine how many characters should be locked by now
-          var shouldBeLocked = Math.floor(progress * targetText.length);
-          
-          // Lock characters that should be locked
-          while (lockedChars < shouldBeLocked && lockedChars < targetText.length) {
-            var charElement = charElements[lockedChars];
-            if (targetText[lockedChars] === ' ') {
-              charElement.innerHTML = '&nbsp;';
+          for (var i = 0; i < targetText.length; i++) {
+            var charSpan = document.createElement('span');
+            
+            if (targetText[i] === ' ') {
+              charSpan.className = 'space';
+              charSpan.innerHTML = '&nbsp;';
             } else {
-              charElement.textContent = targetText[lockedChars];
+              charSpan.className = 'char letter locked';
+              charSpan.textContent = targetText[i];
             }
-            removeClass(charElement, 'decrypting');
-            addClass(charElement, 'locked');
-            // Ensure letter class is maintained for animation
-            if (targetText[lockedChars] !== ' ' && !hasClass(charElement, 'letter')) {
-              addClass(charElement, 'letter');
+            
+            // Chrome mobile optimization for individual characters
+            if (isChromeMobile) {
+              charSpan.style.webkitTransform = 'translateZ(0)';
+              charSpan.style.transform = 'translateZ(0)';
+              charSpan.style.webkitBackfaceVisibility = 'hidden';
+              charSpan.style.backfaceVisibility = 'hidden';
             }
-            lockedChars++;
+            
+            charElements.push(charSpan);
+            decryptElement.appendChild(charSpan);
           }
           
-          // Update still-decrypting characters with random chars
-          for (var i = lockedChars; i < charElements.length; i++) {
-            if (targetText[i] !== ' ') { // Don't randomize spaces
+          console.log('Character spans initialized for:', targetText, 'Total elements:', charElements.length);
+        }
+        
+        function getRandomChar() {
+          return chars[Math.floor(Math.random() * chars.length)];
+        }
+        
+        // Main decryption animation function
+        function startDecryptAnimation() {
+          // Prevent overlapping animations
+          if (isAnimating) return;
+          
+          isAnimating = true;
+          var startTime = Date.now();
+          var lockedChars = 0;
+          
+          // Reset all characters to decrypting state
+          for (var i = 0; i < charElements.length; i++) {
+            if (targetText[i] !== ' ') {
+              removeClass(charElements[i], 'locked');
+              addClass(charElements[i], 'decrypting');
               charElements[i].textContent = getRandomChar();
             }
           }
           
-          // Continue animation if not complete
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          } else {
-            // Ensure all characters are properly locked
+          function animate() {
+            var elapsed = Date.now() - startTime;
+            var progress = Math.min(elapsed / decryptDuration, 1);
+            
+            // Determine how many characters should be locked by now
+            var shouldBeLocked = Math.floor(progress * targetText.length);
+            
+            // Lock characters that should be locked
+            while (lockedChars < shouldBeLocked && lockedChars < targetText.length) {
+              var charElement = charElements[lockedChars];
+              if (targetText[lockedChars] === ' ') {
+                charElement.innerHTML = '&nbsp;';
+              } else {
+                charElement.textContent = targetText[lockedChars];
+              }
+              removeClass(charElement, 'decrypting');
+              addClass(charElement, 'locked');
+              // Ensure letter class is maintained for animation
+              if (targetText[lockedChars] !== ' ' && !hasClass(charElement, 'letter')) {
+                addClass(charElement, 'letter');
+              }
+              lockedChars++;
+            }
+            
+            // Update still-decrypting characters with random chars
+            for (var i = lockedChars; i < charElements.length; i++) {
+              if (targetText[i] !== ' ') { // Don't randomize spaces
+                charElements[i].textContent = getRandomChar();
+              }
+            }
+            
+            // Continue animation if not complete
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            } else {
+              // Ensure all characters are properly locked
+              for (var i = 0; i < charElements.length; i++) {
+                var charElement = charElements[i];
+                if (targetText[i] === ' ') {
+                  charElement.innerHTML = '&nbsp;';
+                } else {
+                  charElement.textContent = targetText[i];
+                }
+                removeClass(charElement, 'decrypting');
+                addClass(charElement, 'locked');
+                // Ensure letter class is maintained for animation
+                if (targetText[i] !== ' ' && !hasClass(charElement, 'letter')) {
+                  addClass(charElement, 'letter');
+                }
+              }
+              isAnimating = false;
+            }
+          }
+          
+          // Reset locked character counter
+          lockedChars = 0;
+          animate();
+        }
+        
+        // Initialize character spans
+        initCharSpans();
+        
+        // Add hover functionality with debouncing
+        addEvent(decryptElement, 'mouseenter', function() {
+          // Clear any pending animation timeout
+          if (animationTimeout) {
+            clearTimeout(animationTimeout);
+          }
+          
+          // Debounce hover events to prevent rapid triggering
+          animationTimeout = setTimeout(function() {
+            startDecryptAnimation();
+          }, 100);
+        });
+        
+        // Ensure text stays decoded on mouse leave
+        addEvent(decryptElement, 'mouseleave', function() {
+          // Clear any pending animation timeout
+          if (animationTimeout) {
+            clearTimeout(animationTimeout);
+            animationTimeout = null;
+          }
+          
+          // If animation is not running, ensure all characters are properly locked
+          if (!isAnimating) {
             for (var i = 0; i < charElements.length; i++) {
               var charElement = charElements[i];
               if (targetText[i] === ' ') {
@@ -337,79 +391,26 @@
                 addClass(charElement, 'letter');
               }
             }
-            isAnimating = false;
           }
-        }
+        });
         
-        // Reset locked character counter
-        lockedChars = 0;
-        animate();
+        // Focus/blur events for keyboard accessibility
+        addEvent(decryptElement, 'focus', function() {
+          if (animationTimeout) {
+            clearTimeout(animationTimeout);
+          }
+          animationTimeout = setTimeout(function() {
+            startDecryptAnimation();
+          }, 100);
+        });
+        
+        addEvent(decryptElement, 'blur', function() {
+          if (animationTimeout) {
+            clearTimeout(animationTimeout);
+            animationTimeout = null;
+          }
+        });
       }
-      
-      // Initialize character spans
-      initCharSpans();
-      
-      // Add hover functionality with debouncing
-      addEvent(decryptElement, 'mouseenter', function() {
-        // Clear any pending animation timeout
-        if (animationTimeout) {
-          clearTimeout(animationTimeout);
-        }
-        
-        // Debounce hover events to prevent rapid triggering
-        animationTimeout = setTimeout(function() {
-          startDecryptAnimation();
-        }, 100);
-      });
-      
-      // Ensure name stays decoded on mouse leave
-      addEvent(decryptElement, 'mouseleave', function() {
-        // Clear any pending animation timeout
-        if (animationTimeout) {
-          clearTimeout(animationTimeout);
-          animationTimeout = null;
-        }
-        
-        // If animation is not running, ensure all characters are properly locked
-        if (!isAnimating) {
-          for (var i = 0; i < charElements.length; i++) {
-            var charElement = charElements[i];
-            if (targetText[i] === ' ') {
-              charElement.innerHTML = '&nbsp;';
-            } else {
-              charElement.textContent = targetText[i];
-            }
-            removeClass(charElement, 'decrypting');
-            addClass(charElement, 'locked');
-            // Ensure letter class is maintained for animation
-            if (targetText[i] !== ' ' && !hasClass(charElement, 'letter')) {
-              addClass(charElement, 'letter');
-            }
-          }
-        }
-      });
-      
-      // Focus/blur events for keyboard accessibility
-      addEvent(decryptElement, 'focus', function() {
-        if (animationTimeout) {
-          clearTimeout(animationTimeout);
-        }
-        animationTimeout = setTimeout(function() {
-          startDecryptAnimation();
-        }, 100);
-      });
-      
-      addEvent(decryptElement, 'blur', function() {
-        if (animationTimeout) {
-          clearTimeout(animationTimeout);
-          animationTimeout = null;
-        }
-      });
-      
-      // Initial page load animation - start after a brief delay
-      setTimeout(function() {
-        startDecryptAnimation();
-      }, 500);
     }
 
     // Initialize when DOM is ready

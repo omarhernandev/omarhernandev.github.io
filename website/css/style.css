@@ -7212,6 +7212,64 @@ body .header.header-hidden {
   will-change: transform !important;
 }
 
+/* Section header decrypt animation support */
+.title .decrypt-text {
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.title .decrypt-text:hover {
+  transform: scale(1.02);
+}
+
+/* Ensure decrypt animation works in section headers */
+.about__title .decrypt-text,
+.projects__title .decrypt-text,
+.achievements__title .decrypt-text,
+.nonprofits__title .decrypt-text {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* Responsive adjustments for section header decrypt text */
+@media (max-width: 768px) {
+  .title .decrypt-text:hover {
+    transform: scale(1.01);
+  }
+}
 
 
 
+
+
+/* Section header decrypt animation support */
+.title .decrypt-text {
+  display: inline-block;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.title .decrypt-text:hover {
+  transform: scale(1.02);
+}
+
+/* Ensure decrypt animation works in section headers */
+.about__title .decrypt-text,
+.projects__title .decrypt-text,
+.achievements__title .decrypt-text,
+.nonprofits__title .decrypt-text {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* Responsive adjustments for section header decrypt text */
+@media (max-width: 768px) {
+  .title .decrypt-text:hover {
+    transform: scale(1.01);
+  }
+}
