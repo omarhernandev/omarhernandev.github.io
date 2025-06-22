@@ -253,51 +253,141 @@
     /* Responsive adjustments */
     @media (max-width: 900px) {
       #terminal-container {
-        margin: 20px;
-        max-width: calc(100% - 40px);
+        margin: 20px 15px;
+        max-width: calc(100% - 30px);
+        border-radius: 15px;
       }
       
       #terminal-output {
         font-size: 16px;
+        line-height: 1.7;
       }
       
       #terminal-header {
-        font-size: 10px;
-        padding: 6px 12px;
+        font-size: 11px;
+        padding: 8px 14px;
       }
       
       #refresh-btn {
-        padding: 6px 12px;
+        padding: 8px 14px;
         font-size: 10px;
+        top: 12px;
+        right: 12px;
+      }
+
+      #terminal-box {
+        padding: 18px;
       }
     }
 
     @media (max-width: 600px) {
+      #terminal-container {
+        margin: 15px 10px;
+        max-width: calc(100% - 20px);
+        border-radius: 12px;
+        border-width: 3px;
+      }
+
       #terminal-box {
-        padding: 15px;
-        min-height: 350px;
+        padding: 15px 12px;
+        min-height: 320px;
       }
       
       #terminal-output {
-        font-size: 15px;
+        font-size: 14px;
         line-height: 1.6;
       }
       
       #terminal-header {
         font-size: 9px;
+        padding: 6px 10px;
       }
 
       .control-btn {
-        width: 10px;
-        height: 10px;
+        width: 9px;
+        height: 9px;
       }
 
       .terminal-controls {
-        gap: 6px;
+        gap: 5px;
       }
 
       .terminal-text {
-        margin-right: 24px;
+        margin-right: 20px;
+        font-size: 8px;
+      }
+
+      #refresh-btn {
+        padding: 6px 10px;
+        font-size: 9px;
+        top: 8px;
+        right: 8px;
+        border-radius: 4px;
+      }
+
+      #cursor {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #terminal-container {
+        margin: 10px 5px;
+        max-width: calc(100% - 10px);
+        border-radius: 10px;
+        border-width: 2px;
+      }
+
+      #terminal-box {
+        padding: 12px 8px;
+        min-height: 280px;
+      }
+      
+      #terminal-output {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      
+      #terminal-header {
+        font-size: 8px;
+        padding: 5px 8px;
+      }
+
+      .control-btn {
+        width: 8px;
+        height: 8px;
+      }
+
+      .terminal-controls {
+        gap: 4px;
+      }
+
+      .terminal-text {
+        margin-right: 16px;
+        font-size: 7px;
+      }
+
+      #refresh-btn {
+        padding: 5px 8px;
+        font-size: 8px;
+        top: 6px;
+        right: 6px;
+        border-radius: 3px;
+      }
+
+      #cursor {
+        font-size: 13px;
+      }
+
+      /* Adjust scanlines for mobile */
+      #scanlines {
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 1.5px,
+          rgba(0, 255, 150, 0.03) 1.5px,
+          rgba(0, 255, 150, 0.03) 3px
+        );
       }
     }
 
@@ -388,7 +478,7 @@
   </style>
 </head>
 
-<body>
+<body class="hero-header">
   <div class="wrapper">
     <header class="header">
       <div class="header__container">
@@ -471,7 +561,7 @@
       <!-- Photo Gallery Section -->
       <section class="page__gallery gallery">
         <div class="gallery__container">
-          <h2 class="gallery__title title">Work & Impact</h2>
+          <h2 class="gallery__title title">Gallery</h2>
           <div class="gallery__grid">
             <!-- Photo gallery content will go here -->
             <div class="gallery__placeholder">

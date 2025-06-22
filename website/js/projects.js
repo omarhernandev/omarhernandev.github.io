@@ -3,13 +3,13 @@ const projects = [
   {
     title: 'Keystone',
     year: 2024,
-    description: 'Contract work for a FinTech startup',
+    description: 'Full-stack sentiment-analysis tool used for analyzing customer feedback and improving product quality',
     tools: ['Python', 'AWS', 'CI/CD', 'Git', 'PostgreSQL', 'Apache Airflow']
   },
   {
     title: 'Accessing Cortical Excitability',
     year: 2018,
-    description: 'School project as part of the EIP',
+    description: 'Predicting motor cortex excitability in older patients with stroke history in response to high intensity internval training (HIIT), to improve rehabilitation outcomes',
     tools: ['Python', 'Matlab', 'Neuroscience', 'AFNI', 'fMRI']
   },
   {
@@ -19,10 +19,10 @@ const projects = [
     tools: ['Python', 'AI (Yolo V5)', 'Robotics']
   },
   {
-    title: 'Point Cloud Visualization',
+    title: 'Neural Prosthesis Control',
     year: 2022,
-    description: 'Project carried out as part of my internship at ALERION',
-    tools: ['ReactJS', 'Docker']
+    description: 'Neural prosthesis control system for a patient with a spinal cord injury',
+    tools: ['Python', 'PsychoPy', 'Matlab','Neuroscience', 'fMRI']
   }
   // Add more projects as needed
 ];
