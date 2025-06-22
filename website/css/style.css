@@ -602,6 +602,9 @@ body.dark-mode .project-tool {
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
   transition: all 0.3s ease;
+  /* Enhanced fixed header properties */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 /* Global hero header styling - consistent across all pages */
@@ -611,7 +614,8 @@ body.dark-mode .project-tool {
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  position: relative;
+  /* Keep header fixed for proper sticky behavior */
+  position: fixed;
   /* Safari-specific fixes */
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
@@ -652,7 +656,8 @@ body.dark-mode .project-tool {
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  position: relative;
+  /* Keep header fixed for proper sticky behavior */
+  position: fixed;
   /* Safari-specific fixes */
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
