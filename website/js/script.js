@@ -1249,6 +1249,52 @@
       }
     }
 
+    // Fixed header scroll effect functionality
+    function initHeaderScrollEffect() {
+      var header = document.querySelector('.header');
+      if (!header) return;
+
+      var lastScrollTop = 0;
+      var ticking = false;
+
+      function handleHeaderScroll() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // Add scrolled class when scrolled past 50px
+        if (scrollTop > 50) {
+          addClass(header, 'scrolled');
+        } else {
+          removeClass(header, 'scrolled');
+        }
+        
+        lastScrollTop = scrollTop;
+        ticking = false;
+      }
+
+      // Throttle scroll events for better performance
+      function requestHeaderUpdate() {
+        if (!ticking) {
+          if (window.requestAnimationFrame) {
+            requestAnimationFrame(handleHeaderScroll);
+          } else {
+            setTimeout(handleHeaderScroll, 16); // ~60fps fallback
+          }
+          ticking = true;
+        }
+      }
+
+      // Initialize scroll listener
+      addEvent(window, 'scroll', requestHeaderUpdate);
+      
+      // Initial call to set correct state
+      handleHeaderScroll();
+      
+      console.log('Fixed header scroll effect initialized');
+    }
+
+    // Initialize fixed header functionality
+    initHeaderScrollEffect();
+
   });
 
 })();

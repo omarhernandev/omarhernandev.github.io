@@ -607,6 +607,17 @@ body.dark-mode .project-tool {
   -webkit-backdrop-filter: blur(10px);
 }
 
+/* Optional: Header scroll effect - subtle opacity change on scroll */
+.header.scrolled {
+  background: rgba(22, 52, 64, 0.95);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+.hero-header .header.scrolled {
+  background: rgba(0, 0, 0, 0.85) !important;
+}
+
 /* Global hero header styling - consistent across all pages */
 .hero-header .header {
   background: transparent url('/images/Home/Homepage.jpg') center center !important;
