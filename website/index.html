@@ -42,10 +42,41 @@
       position: relative;
     }
 
+    /* Falling animation for Welcome text */
+    .main__caption {
+      animation: fallIntoPlace 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      opacity: 0;
+      transform: translateY(-60px);
+    }
+
+    @keyframes fallIntoPlace {
+      0% {
+        opacity: 0;
+        transform: translateY(-60px);
+      }
+      60% {
+        opacity: 0.8;
+        transform: translateY(8px);
+      }
+      80% {
+        opacity: 1;
+        transform: translateY(-3px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     /* Accessibility: Respect reduced motion preference */
     @media (prefers-reduced-motion: reduce) {
       #matrix-rain-background {
         display: none !important;
+      }
+      .main__caption {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
       }
     }
   </style>
@@ -145,6 +176,9 @@
             <div class="about__text">
               <p>
                 I'm a <strong>Software Engineer</strong> and <strong>Data Scientist</strong> with a background in <strong>neuroscience</strong> and a focus on <strong>AI-driven automation</strong>. From building <strong>ETL systems</strong> and <strong>predictive models</strong> to deploying <strong>secure cloud infrastructure</strong>, I create <strong>scalable solutions</strong> that bridge <strong>tech</strong>, <strong>healthcare</strong>, and <strong>business</strong>.
+              </p>
+              <p>
+                Oh! I also <strong>develop websites</strong> and turn <strong>pain points</strong> into <strong>capital!</strong>
               </p>
             </div>
           </div>
@@ -315,7 +349,7 @@
               </a>
               <div class="achievement-card__content">
                 <h3 class="achievement-card__title">STEM Research Presenter at SACNAS Conference</h3>
-                <p class="achievement-card__description">Communicated research findings at premier diversity STEM conference in Honolulu, Hawaii</p>
+                <p class="achievement-card__description">Communicated research findings at premier diversity STEM conference in Honolulu, Hawai'i</p>
               </div>
             </div>
             
@@ -363,7 +397,7 @@
               </a>
               <div class="nonprofit-card__content">
                 <h3 class="nonprofit-card__title">KDSAP Project Manager</h3>
-                <p class="nonprofit-card__description">Project manager leading kidney disease screening and monitoring for 2,000+ patients</p>
+                <p class="nonprofit-card__description">Led kidney disease screening and monitoring for 2,500+ patients in Atlanta</p>
               </div>
             </div>
             
@@ -371,7 +405,7 @@
               <a href="https://www.linkedin.com/company/emory-hope17/?viewAsMember=true" target="_blank" rel="noopener noreferrer" class="nonprofit-card__logo-link" aria-label="Visit Emory HOPE LinkedIn page">
                 <div class="nonprofit-card__logo">
                   <img src="../images/achievements/hope.png" alt="Emory HOPE Project Logo" />
-                </div>
+                </div> 
               </a>
               <div class="nonprofit-card__content">
                 <h3 class="nonprofit-card__title">Emory HOPE Treasurer</h3>

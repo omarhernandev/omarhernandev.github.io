@@ -1249,22 +1249,59 @@
       }
     }
 
-    // Fixed header scroll effect functionality
+    // Enhanced header scroll effect functionality with hide/show behavior
     function initHeaderScrollEffect() {
       var header = document.querySelector('.header');
       if (!header) return;
 
       var lastScrollTop = 0;
       var ticking = false;
+      var hideTimeout = null;
+      var scrollThreshold = 5; // Minimum scroll distance to trigger hide/show
+      var hideDelay = 150; // Delay before hiding header (in ms)
+
+      // Check if user prefers reduced motion
+      var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       function handleHeaderScroll() {
         var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        var scrollDelta = scrollTop - lastScrollTop;
+        
+        // Prevent negative scroll values (overscroll behavior)
+        if (scrollTop < 0) {
+          scrollTop = 0;
+        }
         
         // Add scrolled class when scrolled past 50px
         if (scrollTop > 50) {
           addClass(header, 'scrolled');
         } else {
           removeClass(header, 'scrolled');
+        }
+        
+        // Skip hide/show logic if reduced motion is preferred or scrolled less than threshold
+        if (prefersReducedMotion || Math.abs(scrollDelta) < scrollThreshold) {
+          lastScrollTop = scrollTop;
+          ticking = false;
+          return;
+        }
+        
+        // Clear any pending hide timeout
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+        
+        // Show header when scrolling up or at the top
+        if (scrollDelta < 0 || scrollTop <= 100) {
+          removeClass(header, 'header-hidden');
+        }
+        // Hide header when scrolling down (with delay to prevent flickering)
+        else if (scrollDelta > 0 && scrollTop > 100) {
+          hideTimeout = setTimeout(function() {
+            addClass(header, 'header-hidden');
+            hideTimeout = null;
+          }, hideDelay);
         }
         
         lastScrollTop = scrollTop;
@@ -1283,13 +1320,77 @@
         }
       }
 
-      // Initialize scroll listener
+      // Show header when mouse moves to top of screen
+      function handleMouseMove(e) {
+        if (prefersReducedMotion) return;
+        
+        // Show header when mouse is near the top (within 100px)
+        if (e.clientY <= 100) {
+          removeClass(header, 'header-hidden');
+          // Clear any pending hide timeout
+          if (hideTimeout) {
+            clearTimeout(hideTimeout);
+            hideTimeout = null;
+          }
+        }
+      }
+
+      // Handle window focus - always show header when window gains focus
+      function handleWindowFocus() {
+        removeClass(header, 'header-hidden');
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+      }
+
+      // Handle orientation change - reset header state
+      function handleOrientationChange() {
+        setTimeout(function() {
+          removeClass(header, 'header-hidden');
+          if (hideTimeout) {
+            clearTimeout(hideTimeout);
+            hideTimeout = null;
+          }
+          // Reset last scroll position
+          lastScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        }, 100);
+      }
+
+      // Initialize event listeners
       addEvent(window, 'scroll', requestHeaderUpdate);
+      addEvent(document, 'mousemove', handleMouseMove);
+      addEvent(window, 'focus', handleWindowFocus);
+      addEvent(window, 'orientationchange', handleOrientationChange);
+      
+      // Listen for reduced motion preference changes
+      if (window.matchMedia) {
+        var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        var updateMotionPreference = function() {
+          prefersReducedMotion = motionQuery.matches;
+          if (prefersReducedMotion) {
+            removeClass(header, 'header-hidden');
+            if (hideTimeout) {
+              clearTimeout(hideTimeout);
+              hideTimeout = null;
+            }
+          }
+        };
+        
+        // Modern browsers
+        if (motionQuery.addEventListener) {
+          motionQuery.addEventListener('change', updateMotionPreference);
+        }
+        // Legacy browsers
+        else if (motionQuery.addListener) {
+          motionQuery.addListener(updateMotionPreference);
+        }
+      }
       
       // Initial call to set correct state
       handleHeaderScroll();
       
-      console.log('Fixed header scroll effect initialized');
+      console.log('Enhanced header scroll effect with hide/show initialized');
     }
 
     // Initialize fixed header functionality

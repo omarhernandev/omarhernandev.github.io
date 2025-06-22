@@ -599,12 +599,59 @@ body.dark-mode .project-tool {
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   /* Ensure consistent height across browsers */
   height: 90px;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  transition: all 0.3s ease;
   /* Enhanced fixed header properties */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  /* Header hide/show on scroll functionality */
+  transform: translateY(0) translateZ(0);
+  -webkit-transform: translateY(0) translateZ(0);
+  -moz-transform: translateY(0) translateZ(0);
+  -ms-transform: translateY(0) translateZ(0);
+  -o-transform: translateY(0) translateZ(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, backdrop-filter 0.3s ease;
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+  -moz-transition: -moz-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+  -ms-transition: -ms-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+  -o-transition: -o-transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+}
+
+/* Header hidden state - slides up out of view */
+.header.header-hidden {
+  transform: translateY(-100%) translateZ(0);
+  -webkit-transform: translateY(-100%) translateZ(0);
+  -moz-transform: translateY(-100%) translateZ(0);
+  -ms-transform: translateY(-100%) translateZ(0);
+  -o-transform: translateY(-100%) translateZ(0);
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .header {
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
+    -webkit-transition: background 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+    -moz-transition: background 0.3s ease;
+    -ms-transition: background 0.3s ease;
+    -o-transition: background 0.3s ease;
+  }
+  
+  .header.header-hidden {
+    transform: translateY(0) translateZ(0);
+    -webkit-transform: translateY(0) translateZ(0);
+    -moz-transform: translateY(0) translateZ(0);
+    -ms-transform: translateY(0) translateZ(0);
+    -o-transform: translateY(0) translateZ(0);
+  }
+}
+
+/* Ensure header hide/show works on mobile devices */
+@media (max-width: 768px) {
+  .header {
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, backdrop-filter 0.3s ease;
+    -webkit-transition: -webkit-transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+    -moz-transition: -moz-transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+    -ms-transition: -ms-transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+    -o-transition: -o-transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+  }
 }
 
 /* Optional: Header scroll effect - subtle opacity change on scroll */
