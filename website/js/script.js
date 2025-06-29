@@ -1320,3 +1320,128 @@
   });
 
 })();
+
+  // === DROPDOWN MENU FUNCTIONALITY ===
+  function initDropdownMenus() {
+    var dropdownItems = document.querySelectorAll('.menu__item--dropdown');
+    
+    if (!dropdownItems.length) {
+      console.log('No dropdown menu items found');
+      return;
+    }
+
+    console.log('Initializing dropdown menus for', dropdownItems.length, 'items');
+
+    dropdownItems.forEach(function(dropdownItem) {
+      var toggle = dropdownItem.querySelector('.menu__dropdown-toggle');
+      var dropdown = dropdownItem.querySelector('.menu__dropdown');
+      
+      if (!toggle || !dropdown) {
+        console.log('Dropdown toggle or menu not found');
+        return;
+      }
+
+      // Handle click events for mobile and desktop
+      addEvent(toggle, 'click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Close other dropdowns first
+        dropdownItems.forEach(function(otherItem) {
+          if (otherItem !== dropdownItem) {
+            removeClass(otherItem, 'active');
+          }
+        });
+        
+        // Toggle current dropdown
+        toggleClass(dropdownItem, 'active');
+        
+        console.log('Dropdown toggled:', hasClass(dropdownItem, 'active') ? 'opened' : 'closed');
+      });
+
+      // Handle keyboard navigation
+      addEvent(toggle, 'keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggle.click();
+        }
+        if (e.key === 'Escape') {
+          removeClass(dropdownItem, 'active');
+          toggle.focus();
+        }
+      });
+
+      // Handle keyboard navigation within dropdown
+      var dropdownLinks = dropdown.querySelectorAll('.menu__dropdown-link');
+      dropdownLinks.forEach(function(link, index) {
+        addEvent(link, 'keydown', function(e) {
+          if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            var nextIndex = (index + 1) % dropdownLinks.length;
+            dropdownLinks[nextIndex].focus();
+          }
+          if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            var prevIndex = (index - 1 + dropdownLinks.length) % dropdownLinks.length;
+            dropdownLinks[prevIndex].focus();
+          }
+          if (e.key === 'Escape') {
+            removeClass(dropdownItem, 'active');
+            toggle.focus();
+          }
+        });
+      });
+
+      // For desktop: Handle hover events
+      if (window.innerWidth > 768) {
+        addEvent(dropdownItem, 'mouseenter', function() {
+          addClass(dropdownItem, 'active');
+        });
+
+        addEvent(dropdownItem, 'mouseleave', function() {
+          removeClass(dropdownItem, 'active');
+        });
+      }
+    });
+
+    // Close dropdowns when clicking outside
+    addEvent(document, 'click', function(e) {
+      var isDropdownClick = false;
+      
+      // Check if click is inside any dropdown
+      dropdownItems.forEach(function(dropdownItem) {
+        if (dropdownItem.contains(e.target)) {
+          isDropdownClick = true;
+        }
+      });
+      
+      // Close all dropdowns if click is outside
+      if (!isDropdownClick) {
+        dropdownItems.forEach(function(dropdownItem) {
+          removeClass(dropdownItem, 'active');
+        });
+      }
+    });
+
+    // Handle window resize for responsive behavior
+    addEvent(window, 'resize', function() {
+      clearTimeout(window.dropdownResizeTimeout);
+      window.dropdownResizeTimeout = setTimeout(function() {
+        // Reset hover behavior based on screen size
+        dropdownItems.forEach(function(dropdownItem) {
+          if (window.innerWidth <= 768) {
+            // Mobile: remove hover events
+            removeClass(dropdownItem, 'active');
+          }
+        });
+      }, 250);
+    });
+
+    console.log('Dropdown menu functionality initialized successfully');
+  }
+
+  // Initialize dropdown menus when DOM is ready
+  ready(function() {
+    initDropdownMenus();
+  });
+
