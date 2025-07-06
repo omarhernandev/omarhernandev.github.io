@@ -449,7 +449,30 @@
     .education__grid {
       display: grid;
       gap: 24px;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 768px) {
+      .education__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .education__card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .education__card-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .education__card-link:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+      border-radius: 12px;
     }
 
     .education__card {
@@ -460,6 +483,20 @@
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+    }
+
+    /* Make scholarship card span full width */
+    .education__card-link:nth-child(3) {
+      grid-column: 1 / -1;
+    }
+
+    .education__card--scholarship {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05));
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+    
+    .education__card-link:last-child {
+      grid-column: 1 / -1;
     }
 
     .education__card:hover {
@@ -505,11 +542,22 @@
       border-color: #ef4444;
     }
 
+    .education__logo--gates {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      border-color: #f59e0b;
+    }
+
     .education__logo-text {
       font-size: 24px;
       font-weight: bold;
       color: white;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .education__card--scholarship:hover {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.1));
+      border-color: rgba(251, 191, 36, 0.4);
+      box-shadow: 0 8px 25px rgba(251, 191, 36, 0.2);
     }
 
     .education__status {
@@ -669,6 +717,17 @@
       color: #2c2c2c;
     }
 
+    body:not(.dark-mode) .education__card--scholarship {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.08), rgba(245, 158, 11, 0.04));
+      border: 1px solid rgba(251, 191, 36, 0.25);
+    }
+
+    body:not(.dark-mode) .education__card--scholarship:hover {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(245, 158, 11, 0.08));
+      border-color: rgba(251, 191, 36, 0.35);
+      box-shadow: 0 8px 25px rgba(251, 191, 36, 0.15);
+    }
+
     /* Mobile responsive for education cards */
     @media (max-width: 768px) {
       .education__grid {
@@ -788,7 +847,7 @@
           <div class="main__content">
             <h2 class="main__caption">Welcome, I am</h2>
             <h3 class="main__title">
-              <span id="animated-name" class="decrypt-text" data-text="Omar Hernandez" tabindex="0" aria-label="Omar Hernandez" role="button" title="Hover to see decoding animation"></span>
+              <span id="animated-name" class="decrypt-text" data-text="OMAR HERNANDEZ" tabindex="0" aria-label="Omar Hernandez" role="button" title="Hover to see decoding animation"></span>
             </h3>
             <div class="main__typewriter" role="text" aria-label="Job title typewriter animation">
               <span id="typewriter-text" class="typewriter-text"></span>
@@ -811,6 +870,9 @@
                 </svg>
               </a>
             </div>
+            <div class="main__tagline">
+              Building scalable agentic systems that turn data into decisions across healthcare, fintech, and automation
+            </div>
           </div>
         </div>
       </section>
@@ -823,11 +885,12 @@
             </h2>
             <div class="about__text">
               <p>
-                I'm a <strong>Software Engineer</strong> and <strong>Data Scientist</strong> with a background in <strong>neuroscience</strong> and a focus on <strong>AI-driven automation</strong>. From building <strong>ETL systems</strong> and <strong>predictive models</strong> to deploying <strong>secure cloud infrastructure</strong>, I create <strong>scalable solutions</strong> that bridge <strong>tech</strong>, <strong>healthcare</strong>, and <strong>business</strong>.
+                I'm a systems-driven <strong>Software Engineer</strong>,<strong>Data Scientist</strong> and <strong>Consultant </strong> who builds <strong>AI-first solutions</strong> at the intersection of <strong>healthcare</strong>, <strong>neuroscience</strong>, and <strong>business automation</strong>.<br>
+                As an <strong>NIH-funded researcher</strong>, I've architected pipelines processing <strong>30TB+</strong> of neuroimaging data and led wearable studies with <strong>100+ Apple Watches</strong> to decode human learning and performance.<br>
+                Most recently, I engineered a <strong>financial automation stack</strong> that reduced manual workflows from hours to seconds, driving <strong>$1M+</strong> in daily deal flows.
               </p>
               <p>
-                Oh! I also <strong>develop websites</strong> and turn <strong>pain points</strong> into <strong>capital!</strong>
-              </p>
+              
               
               <!-- Modal trigger buttons -->
               <button id="open-modal" class="about__toggle-button button" type="button">
@@ -893,90 +956,78 @@
           </div>
           <div class="modal__content">
             <div class="education__grid">
-              <!-- Gates Millennium Scholar -->
-              <div class="education__card">
-                <div class="education__card-header">
-                  <div class="education__logo">
-                    <img src="../images/achievements/gms.png" alt="Gates Millennium Scholars Logo" />
-                  </div>
-                  <div class="education__status">
-                    <span class="education__badge education__badge--scholarship">Scholarship</span>
-                  </div>
-                </div>
-                <div class="education__card-content">
-                  <h3 class="education__title">Gates Millennium Scholar</h3>
-                  <p class="education__description">Full funding for undergraduate and graduate education</p>
-                  <div class="education__meta">
-                    <span class="education__duration">2016 - Present</span>
-                  </div>
-                </div>
-              </div>
-
               <!-- Emory University -->
-              <div class="education__card">
-                <div class="education__card-header">
-                  <div class="education__logo education__logo--emory">
-                    <img src="../images/About/emory.jpeg" alt="Emory University Logo" />
+              <a href="https://www.emory.edu/home/index.html" target="_blank" rel="noopener noreferrer" class="education__card-link">
+                <div class="education__card">
+                  <div class="education__card-header">
+                    <div class="education__logo education__logo--emory">
+                      <img src="../images/About/emory.jpeg" alt="Emory University Logo" />
+                    </div>
+                    <div class="education__status">
+                      <span class="education__badge education__badge--completed">Completed</span>
+                    </div>
                   </div>
-                  <div class="education__status">
-                    <span class="education__badge education__badge--completed">Completed</span>
+                  <div class="education__card-content">
+                    <h3 class="education__title">Emory University</h3>
+                    <div class="education__degree">
+                      <h4>Bachelor of Science</h4>
+                      <p>Neuroscience & Behavioral Biology</p>
+                    </div>
+                    <div class="education__meta">
+                      <span class="education__duration">2016 - 2021</span>
+                    </div>
                   </div>
                 </div>
-                <div class="education__card-content">
-                  <h3 class="education__title">Emory University</h3>
-                  <div class="education__degree">
-                    <h4>Bachelor of Science</h4>
-                    <p>Neuroscience & Behavioral Biology</p>
-                  </div>
-                  <div class="education__meta">
-                    <span class="education__duration">2016 - 2021</span>
-                  </div>
-                </div>
-              </div>
+              </a>
 
               <!-- Boston University -->
-              <div class="education__card">
-                <div class="education__card-header">
-                  <div class="education__logo education__logo--bu">
-                    <img src="../images/About/bu.png" alt="Boston University Logo" />
+              <a href="https://www.bu.edu" target="_blank" rel="noopener noreferrer" class="education__card-link">
+                <div class="education__card">
+                  <div class="education__card-header">
+                    <div class="education__logo education__logo--bu">
+                      <img src="../images/About/bu.png" alt="Boston University Logo" />
+                    </div>
+                    <div class="education__status">
+                      <span class="education__badge education__badge--progress">50% Complete</span>
+                    </div>
                   </div>
-                  <div class="education__status">
-                    <span class="education__badge education__badge--progress">50% Complete</span>
+                  <div class="education__card-content">
+                    <h3 class="education__title">Boston University</h3>
+                    <div class="education__degree">
+                      <h4>Master of Science</h4>
+                      <p>Information Systems, <span class="education__highlight">Cybersecurity</span> & Data Analytics</p>
+                    </div>
+                    <div class="education__meta">
+                      <span class="education__duration">In Progress</span>
+                    </div>
                   </div>
                 </div>
-                <div class="education__card-content">
-                  <h3 class="education__title">Boston University</h3>
-                  <div class="education__degree">
-                    <h4>Master of Science</h4>
-                    <p>Information Systems, <span class="education__highlight">Cybersecurity</span> & Data Analytics</p>
-                  </div>
-                  <div class="education__meta">
-                    <span class="education__duration">In Progress</span>
-                  </div>
-                </div>
-              </div>
+              </a>
 
-              <!-- Epic University -->
-              <div class="education__card">
-                <div class="education__card-header">
-                  <div class="education__logo">
-                    <img src="../images/achievements/Epic.jpeg" alt="Epic Systems Logo" />
+              <!-- Gates Millennium Scholarship -->
+              <a href="https://gmsp.org" target="_blank" rel="noopener noreferrer" class="education__card-link">
+                <div class="education__card education__card--scholarship">
+                  <div class="education__card-header">
+                    <div class="education__logo education__logo--gates">
+                      <img src="../images/About/gms.png" alt="Gates Millennium Scholarship Logo" />
+                    </div>
+                    <div class="education__status">
+                      <span class="education__badge education__badge--scholarship">2016-Present</span>
+                    </div>
                   </div>
-                  <div class="education__status">
-                    <span class="education__badge education__badge--accreditation">Accreditation</span>
+                  <div class="education__card-content">
+                    <h3 class="education__title">
+                      Gates Millennium Scholarship
+                    </h3>
+                    <div class="education__description">
+                      Prestigious national scholarship program recognizing outstanding academic achievement and leadership potential. Provided full tuition coverage and ongoing mentorship support throughout undergraduate and graduate studies.
+                    </div>
+                    <div class="education__meta">
+                      <span class="education__duration">2016 - Present</span>
+                    </div>
                   </div>
                 </div>
-                <div class="education__card-content">
-                  <h3 class="education__title">Epic University</h3>
-                  <div class="education__degree">
-                    <h4>Educator</h4>
-                    <p>Clinical Documentation | <span class="education__highlight">Beacon</span></p>
-                  </div>
-                  <div class="education__meta">
-                    <span class="education__duration">Certified 2023</span>
-                  </div>
-                </div>
-              </div>
+              </a>
             </div>
           </div>
         </div>
@@ -1040,7 +1091,9 @@
               <div class="projects__column">
                 <div class="projects__item item-projects">
                   <div class="item-projects__image">
-                    <div class="project-img gloss-effect" aria-hidden="true"></div>
+                    <div class="project-img gloss-effect">
+                      <img src="../images/Home/finance.jpeg" alt="Financial Reporting and Automated Invoices" />
+                    </div>
                   </div>
                   <div class="item-projects__content">
                     <h3 class="item-projects__title">Financial Reporting: Automated Invoices</h3>
@@ -1054,7 +1107,9 @@
               <div class="projects__column">
                 <div class="projects__item item-projects">
                   <div class="item-projects__image">
-                    <div class="project-img gloss-effect" aria-hidden="true"></div>
+                    <div class="project-img gloss-effect">
+                      <img src="../images/Home/lead.png" alt="Lead Tracking and Management System" />
+                    </div>
                   </div>
                   <div class="item-projects__content">
                     <h3 class="item-projects__title">Lead Tracking</h3>
@@ -1097,93 +1152,6 @@
           </div>
         </div>
       </section>
-
-      <section class="page__achievements achievements">
-        <div class="achievements__container">
-          <div class="achievements__header">
-            <h2 class="achievements__title title">
-              <span class="decrypt-text" data-text="Achievements & Milestones" tabindex="0" aria-label="Achievements & Milestones" role="button" title="Hover to see decoding animation">Achievements & Milestones</span>
-            </h2>
-            <p class="achievements__subtitle">Recognition of Excellence and Impact</p>
-          </div>
-          <div class="achievements__grid">
-            <div class="achievements__item achievement-card" data-achievement="1">
-              <a href="https://grants.nih.gov/grants/guide/pa-files/par-14-121.html" target="_blank" rel="noopener noreferrer" class="achievement-card__logo-link" aria-label="Visit NIH grants website">
-                <div class="achievement-card__logo">
-                  <img src="../images/achievements/nih.jpeg" alt="National Institute of Health Logo" />
-                </div>
-              </a>
-              <div class="achievement-card__content">
-                <h3 class="achievement-card__title">National Institute of Health Funded</h3>
-                <p class="achievement-card__description">NIH-funded researcher advancing healthcare innovation in neuroscience</p>
-              </div>
-            </div>
-            
-            <div class="achievements__item achievement-card" data-achievement="2">
-              <a href="https://gmsp.org/" target="_blank" rel="noopener noreferrer" class="achievement-card__logo-link" aria-label="Visit Gates Millennium Scholars website">
-                <div class="achievement-card__logo">
-                  <img src="../images/achievements/gms.png" alt="Gates Millennium Scholars Logo" />
-                </div>
-              </a>
-              <div class="achievement-card__content">
-                <h3 class="achievement-card__title">Gates Millennium Scholar</h3>
-                <p class="achievement-card__description">Gates Foundation scholar recognized for academic excellence</p>
-              </div>
-            </div>
-            
-            <div class="achievements__item achievement-card" data-achievement="3">
-              <a href="https://www.hsf.net/" target="_blank" rel="noopener noreferrer" class="achievement-card__logo-link" aria-label="Visit Hispanic Scholarship Fund website">
-                <div class="achievement-card__logo">
-                  <img src="../images/achievements/hsf.png" alt="Hispanic Scholarship Fund Logo" />
-                </div>
-              </a>
-              <div class="achievement-card__content">
-                <h3 class="achievement-card__title">Hispanic Scholarship Fund Scholar</h3>
-                <p class="achievement-card__description">HSF scholar promoting diversity in STEM education</p>
-              </div>
-            </div>
-            
-            <div class="achievements__item achievement-card" data-achievement="4">
-              <a href="https://www.sacnas.org/" target="_blank" rel="noopener noreferrer" class="achievement-card__logo-link" aria-label="Visit SACNAS website">
-                <div class="achievement-card__logo">
-                  <img src="../images/achievements/sacnas.jpeg" alt="SACNAS Conference Logo" />
-                </div>
-              </a>
-              <div class="achievement-card__content">
-                <h3 class="achievement-card__title">STEM Research Presenter at SACNAS Conference</h3>
-                <p class="achievement-card__description">Communicated research findings at premier diversity STEM conference in Honolulu, Hawai'i</p>
-              </div>
-            </div>
-            
-            <div class="achievements__item achievement-card" data-achievement="5">
-              <a href="https://www.epic.com/" target="_blank" rel="noopener noreferrer" class="achievement-card__logo-link" aria-label="Visit Epic Systems website">
-                <div class="achievement-card__logo">
-                  <img src="../images/achievements/Epic.jpeg" alt="Epic Systems Logo" />
-                </div>
-              </a>
-              <div class="achievement-card__content">
-                <h3 class="achievement-card__title">Epic Credentialed</h3>
-                <p class="achievement-card__description">ClinDoc & Beacon certified healthcare technology professional</p>
-              </div>
-            </div>
-            
-            <div class="achievements__item achievement-card" data-achievement="6">
-              <a href="https://www.va.gov/atlanta-health-care/" target="_blank" rel="noopener noreferrer" class="achievement-card__logo-link" aria-label="Visit VA Atlanta Health Care website">
-                <div class="achievement-card__logo">
-                  <img src="../images/achievements/valogo-new.jpg" alt="Department of Veterans Affairs Logo" />
-                </div>
-              </a>
-              <div class="achievement-card__content">
-                <h3 class="achievement-card__title">VA Researcher</h3>
-                <p class="achievement-card__description">Department of Veterans Affairs research contributor for 3+ years</p>
-              </div>
-            </div>
-            
-
-          </div>
-        </div>
-      </section>
-
 
     </main>
     <footer class="footer">
@@ -1298,13 +1266,33 @@
         }
         
         createStream() {
+          // Create depth layers for more varied opacity
+          const depthLayer = Math.random();
+          let baseOpacity, opacityVariation;
+          
+          if (depthLayer < 0.3) {
+            // Background layer - lower opacity
+            baseOpacity = config.minOpacity;
+            opacityVariation = 0.3;
+          } else if (depthLayer < 0.7) {
+            // Middle layer - medium opacity
+            baseOpacity = config.minOpacity + 0.2;
+            opacityVariation = 0.4;
+          } else {
+            // Foreground layer - higher opacity
+            baseOpacity = config.minOpacity + 0.4;
+            opacityVariation = 0.5;
+          }
+          
           const stream = {
             x: Math.random() * this.width,
             y: -Math.random() * this.height,
             speed: config.minSpeed + Math.random() * (config.maxSpeed - config.minSpeed),
             length: config.minStreamLength + Math.floor(Math.random() * (config.maxStreamLength - config.minStreamLength)),
             characters: [],
-            opacity: config.minOpacity + Math.random() * (config.maxOpacity - config.minOpacity)
+            opacity: baseOpacity + Math.random() * opacityVariation,
+            depthLayer: depthLayer, // Store depth layer for rendering
+            opacityFlicker: Math.random() * Math.PI * 2 // Random phase for opacity fluctuation
           };
           
           // Generate mixed character stream (40% binary, 35% programming, 25% kanji)
@@ -1323,9 +1311,14 @@
               charSet = japaneseKanji;
             }
             
+            // Add individual character opacity variation for more depth
+            const trailOpacity = 1 - (i / stream.length) * 0.8; // Base trail effect
+            const charOpacityVariation = 0.7 + Math.random() * 0.3; // Individual variation (0.7-1.0)
+            
             stream.characters.push({
               char: charSet[Math.floor(Math.random() * charSet.length)],
-              opacity: 1 - (i / stream.length) * 0.8 // Fade trail effect
+              opacity: trailOpacity * charOpacityVariation, // Combined opacity
+              individualFlicker: Math.random() * Math.PI * 2 // Individual flicker phase
             });
           }
           
@@ -1381,7 +1374,29 @@
               const y = stream.y + (i * config.fontSize);
               
               if (y > -config.fontSize && y < this.height) {
-                const opacity = Math.min(stream.opacity * char.opacity, config.maxOpacity);
+                // Enhanced opacity calculation with depth and flickering
+                let baseOpacity = stream.opacity * char.opacity;
+                
+                // Add subtle time-based opacity fluctuation for depth simulation
+                const streamFlicker = Math.sin(time * 1.5 + stream.opacityFlicker) * 0.1;
+                const charFlicker = Math.sin(time * 2.2 + char.individualFlicker) * 0.05;
+                
+                // Apply depth-based opacity modulation
+                const depthModulation = stream.depthLayer < 0.3 ? 
+                  (0.6 + Math.sin(time * 0.8 + x * 0.005) * 0.2) : // Background layer - slower, more subtle
+                  stream.depthLayer < 0.7 ? 
+                  (0.8 + Math.sin(time * 1.2 + x * 0.008) * 0.15) : // Middle layer
+                  (0.9 + Math.sin(time * 1.8 + x * 0.012) * 0.1); // Foreground layer - faster, less variation
+                
+                // Distance-based opacity variation to simulate atmospheric perspective
+                const distanceFromCenter = Math.abs(x - this.width / 2) / (this.width / 2);
+                const atmosphericFade = 1 - (distanceFromCenter * 0.15); // Slight fade towards edges
+                
+                // Combine all opacity factors
+                const finalOpacity = Math.min(
+                  baseOpacity * depthModulation * atmosphericFade * (1 + streamFlicker + charFlicker),
+                  config.maxOpacity
+                );
                 
                 // Create iridescent color effect
                 const positionFactor = (x / this.width) * 360; // Horizontal color shift
@@ -1392,19 +1407,20 @@
                 // Calculate HSL values for iridescent effect
                 const hue = (positionFactor + verticalFactor + timeFactor + streamFactor) % 360;
                 const saturation = 70 + (Math.sin(time * 2 + x * 0.01) * 20); // Dynamic saturation
-                const lightness = 50 + (opacity * 30); // Brighter with higher opacity
+                const lightness = 50 + (finalOpacity * 30); // Brighter with higher opacity
                 
                 // Create shimmering effect with dual-tone
                 const hue2 = (hue + 60) % 360; // Complementary hue
-                const alpha = opacity * (0.8 + 0.2 * Math.sin(time * 3 + x * 0.02 + y * 0.01));
+                const alpha = finalOpacity * (0.8 + 0.2 * Math.sin(time * 3 + x * 0.02 + y * 0.01));
                 
                 // Primary iridescent color
                 this.ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
                 this.ctx.fillText(char.char, x, y);
                 
                 // Add subtle second layer for extra shimmer on leading characters
-                if (i < 3) { // Only for first few characters in stream
-                  const shimmerAlpha = alpha * 0.3;
+                // Only apply shimmer to higher opacity (foreground) characters
+                if (i < 3 && stream.depthLayer > 0.5) { // Only for first few characters in foreground streams
+                  const shimmerAlpha = alpha * 0.3 * (stream.depthLayer - 0.5) * 2; // Scale shimmer with depth
                   this.ctx.fillStyle = `hsla(${hue2}, ${saturation + 10}%, ${lightness + 15}%, ${shimmerAlpha})`;
                   this.ctx.fillText(char.char, x + 0.5, y + 0.5);
                 }

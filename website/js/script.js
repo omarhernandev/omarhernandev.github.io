@@ -634,7 +634,7 @@
       var jobTitles = [
         "Software Engineer",
         "Data Engineer", 
-        "Research Scientist",
+        "Research Engineer",
         "Full-stack Developer",
         "AI Developer",
         "Cloud Engineer",
@@ -647,7 +647,14 @@
         "R&D Engineer",
         "Product Engineer",
         "Healthcare Technologist",
-        "Backend Developer"
+        "Backend Developer",
+        "Prompt Engineer",
+        "Agentic Developer",
+        "Product Manager",
+        "Consultant",
+        "Front End Developer",
+        "API Developer",  
+        "Context Engineer",
       ];
 
       // Fisher-Yates shuffle algorithm for randomizing array
@@ -1012,114 +1019,7 @@
     // Initialize projects scroll functionality
     initProjectsScroll();
 
-    // Achievements section scroll animations
-    function initAchievementsAnimations() {
-      var achievementItems = document.querySelectorAll('.achievements__item');
-      if (!achievementItems.length) return;
-
-      // Check if user prefers reduced motion
-      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      
-      // Intersection Observer for scroll animations
-      var achievementObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            var item = entry.target;
-            var achievementNumber = parseInt(item.getAttribute('data-achievement')) || 0;
-            
-            if (prefersReducedMotion) {
-              // Immediate animation for reduced motion preference
-              addClass(item, 'animate-in');
-            } else {
-              // Much quicker staggered animation with 50ms delay between each card
-              setTimeout(function() {
-                addClass(item, 'animate-in');
-              }, achievementNumber * 50);
-            }
-            
-            // Stop observing this item once animated
-            achievementObserver.unobserve(item);
-          }
-        });
-      }, {
-        threshold: 0.1, // Trigger when 10% of the element is visible (more responsive)
-        rootMargin: '0px 0px -20px 0px' // Trigger earlier for better responsiveness
-      });
-
-      // Start observing all achievement items
-      achievementItems.forEach(function(item) {
-        achievementObserver.observe(item);
-      });
-
-      // Fallback for browsers without Intersection Observer support
-      if (!window.IntersectionObserver) {
-        console.log('Intersection Observer not supported, applying immediate animations');
-        achievementItems.forEach(function(item, index) {
-          if (prefersReducedMotion) {
-            addClass(item, 'animate-in');
-          } else {
-            setTimeout(function() {
-              addClass(item, 'animate-in');
-            }, index * 50);
-          }
-        });
-      }
-
-      // Handle window resize for responsive behavior
-      addEvent(window, 'resize', function() {
-        // Debounce resize events for performance
-        clearTimeout(window.achievementsResizeTimeout);
-        window.achievementsResizeTimeout = setTimeout(function() {
-          // Re-trigger animations if items are in viewport after resize
-          achievementItems.forEach(function(item) {
-            if (hasClass(item, 'animate-in')) {
-              var rect = item.getBoundingClientRect();
-              var isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
-              
-              if (!isInViewport) {
-                removeClass(item, 'animate-in');
-                achievementObserver.observe(item);
-              }
-            }
-          });
-        }, 250);
-      });
-    }
-
-    // Enhanced scroll performance for achievements
-    function optimizeAchievementsPerformance() {
-      var achievementCards = document.querySelectorAll('.achievement-card');
-      
-      // Add performance optimizations
-      achievementCards.forEach(function(card) {
-        // Enable hardware acceleration
-        card.style.transform = 'translateZ(0)';
-        card.style.backfaceVisibility = 'hidden';
-        card.style.perspective = '1000px';
-        
-        // Optimize hover animations
-        addEvent(card, 'mouseenter', function() {
-          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            card.style.willChange = 'transform, box-shadow';
-          }
-        });
-        
-        addEvent(card, 'mouseleave', function() {
-          card.style.willChange = 'auto';
-        });
-      });
-    }
-
-    // Initialize achievements section when DOM is ready
-    if (document.querySelector('.achievements')) {
-      initAchievementsAnimations();
-      optimizeAchievementsPerformance();
-      
-      // Log initialization for debugging
-      console.log('Achievements section initialized with', document.querySelectorAll('.achievements__item').length, 'items');
-    }
-
-    // Non-Profit Affiliations section scroll animations
+    // Remove achievement-related functions and initialization
     function initNonProfitAnimations() {
       var nonprofitItems = document.querySelectorAll('.nonprofits__item');
       if (!nonprofitItems.length) return;
@@ -1217,13 +1117,13 @@
       });
     }
 
-    // Initialize non-profit section when DOM is ready
+    // Initialize nonprofit section when DOM is ready
     if (document.querySelector('.nonprofits')) {
       initNonProfitAnimations();
       optimizeNonProfitPerformance();
       
       // Log initialization for debugging
-      console.log('Non-Profit section initialized with', document.querySelectorAll('.nonprofits__item').length, 'items');
+      console.log('Nonprofit section initialized with', document.querySelectorAll('.nonprofits__item').length, 'items');
     }
 
     // Listen for reduced motion preference changes
@@ -1236,11 +1136,6 @@
           if (motionQuery.matches) {
             console.log('Reduced motion preference detected, disabling complex animations');
             // Apply immediate animations if preference changes to reduced motion
-            var achievementItems = document.querySelectorAll('.achievements__item:not(.animate-in)');
-            achievementItems.forEach(function(item) {
-              addClass(item, 'animate-in');
-            });
-            
             var nonprofitItems = document.querySelectorAll('.nonprofits__item:not(.animate-in)');
             nonprofitItems.forEach(function(item) {
               addClass(item, 'animate-in');
