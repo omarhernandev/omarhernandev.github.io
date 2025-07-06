@@ -764,6 +764,231 @@
         margin-top: 8px;
       }
     }
+
+    /* Toolbox Modal Styles */
+    .modal__container--toolbox {
+      max-width: 95vw;
+      width: 1200px;
+      max-height: 90vh;
+    }
+
+    .toolbox__subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 30px;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+
+    .toolbox__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+
+    .toolbox__category {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .toolbox__category:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .toolbox__category-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .toolbox__category-icon {
+      font-size: 2.5rem;
+      margin-right: 16px;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .toolbox__category-info {
+      flex: 1;
+    }
+
+    .toolbox__category-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 0 0 8px 0;
+      color: inherit;
+      line-height: 1.2;
+    }
+
+    .toolbox__category-description {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .toolbox__badge {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      position: absolute;
+      top: -4px;
+      right: -8px;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+    }
+
+    .toolbox__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .toolbox__tag {
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.9);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .toolbox__tag:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .toolbox__tag--highlight {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: white;
+      border-color: #3b82f6;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .toolbox__tag--highlight:hover {
+      background: linear-gradient(135deg, #2563eb, #1e40af);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
+    /* Light mode toolbox styles */
+    body:not(.dark-mode) .toolbox__subtitle {
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    body:not(.dark-mode) .toolbox__category {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.01));
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      color: #333333;
+    }
+
+    body:not(.dark-mode) .toolbox__category:hover {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.02));
+      border-color: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    body:not(.dark-mode) .toolbox__category-title {
+      color: #2c2c2c;
+    }
+
+    body:not(.dark-mode) .toolbox__category-description {
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    body:not(.dark-mode) .toolbox__tag {
+      background: rgba(0, 0, 0, 0.05);
+      color: rgba(0, 0, 0, 0.8);
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    body:not(.dark-mode) .toolbox__tag:hover {
+      background: rgba(0, 0, 0, 0.08);
+      border-color: rgba(0, 0, 0, 0.15);
+      color: rgba(0, 0, 0, 0.9);
+    }
+
+    /* Mobile responsive for toolbox */
+    @media (max-width: 768px) {
+      .toolbox__grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .toolbox__category {
+        padding: 20px;
+      }
+      
+      .toolbox__category-header {
+        margin-bottom: 16px;
+      }
+      
+      .toolbox__category-icon {
+        font-size: 2rem;
+        margin-right: 12px;
+      }
+      
+      .toolbox__category-title {
+        font-size: 1.2rem;
+      }
+      
+      .toolbox__badge {
+        position: static;
+        margin-top: 8px;
+        align-self: flex-start;
+      }
+      
+      .toolbox__tags {
+        gap: 6px;
+      }
+      
+      .toolbox__tag {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .toolbox__subtitle {
+        font-size: 1rem;
+        margin-bottom: 20px;
+      }
+      
+      .toolbox__category {
+        padding: 16px;
+      }
+      
+      .toolbox__category-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .toolbox__category-icon {
+        margin-right: 0;
+        margin-bottom: 8px;
+      }
+    }
   </style>
 </head>
 
@@ -899,6 +1124,9 @@
               <button id="open-education-modal" class="about__toggle-button button" type="button">
                 + Education
               </button>
+              <button id="open-toolbox-modal" class="about__toggle-button button" type="button">
+                + Toolbox
+              </button>
             </div>
           </div>
         </div>
@@ -1028,6 +1256,156 @@
                   </div>
                 </div>
               </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toolbox Modal -->
+      <div id="toolbox-modal" class="modal" role="dialog" aria-labelledby="toolbox-modal-title" aria-hidden="true">
+        <div class="modal__backdrop"></div>
+        <div class="modal__container modal__container--toolbox">
+          <div class="modal__header">
+            <h2 id="toolbox-modal-title" class="modal__title">
+              <span class="decrypt-text" data-text="Technical Toolkit" tabindex="0">Technical Toolkit</span>
+            </h2>
+            <button id="close-toolbox-modal" class="modal__close" type="button" aria-label="Close toolbox modal">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="modal__content">
+            <div class="toolbox__subtitle">
+              Enterprise-grade technologies for secure AI automation & infrastructure
+            </div>
+            <div class="toolbox__grid">
+              <!-- AI & Machine Learning -->
+              <div class="toolbox__category">
+                <div class="toolbox__category-header">
+                  <div class="toolbox__category-icon">🤖</div>
+                  <div class="toolbox__category-info">
+                    <h3 class="toolbox__category-title">AI & Machine Learning</h3>
+                    <p class="toolbox__category-description">Intelligent automation & predictive models</p>
+                  </div>
+                </div>
+                <div class="toolbox__tags">
+                  <span class="toolbox__tag">Python</span>
+                  <span class="toolbox__tag">TensorFlow</span>
+                  <span class="toolbox__tag">PyTorch</span>
+                  <span class="toolbox__tag">Scikit-learn</span>
+                  <span class="toolbox__tag">OpenAI API</span>
+                  <span class="toolbox__tag">Transformers</span>
+                  <span class="toolbox__tag">GANs</span>
+                  <span class="toolbox__tag">CNNs</span>
+                </div>
+              </div>
+
+              <!-- Security & Cryptography -->
+              <div class="toolbox__category">
+                <div class="toolbox__category-header">
+                  <div class="toolbox__category-icon">🔒</div>
+                  <div class="toolbox__category-info">
+                    <h3 class="toolbox__category-title">Security & Cryptography</h3>
+                    <p class="toolbox__category-description">Zero-trust architecture & encryption</p>
+                  </div>
+                  <div class="toolbox__badge">ENTERPRISE</div>
+                </div>
+                <div class="toolbox__tags">
+                  <span class="toolbox__tag">RSA</span>
+                  <span class="toolbox__tag">AES</span>
+                  <span class="toolbox__tag">PKI</span>
+                  <span class="toolbox__tag">IPsec</span>
+                  <span class="toolbox__tag">Digital Signatures</span>
+                  <span class="toolbox__tag">Firewalls</span>
+                  <span class="toolbox__tag">Risk Assessment</span>
+                  <span class="toolbox__tag">Incident Response</span>
+                </div>
+              </div>
+
+              <!-- Cloud & Infrastructure -->
+              <div class="toolbox__category">
+                <div class="toolbox__category-header">
+                  <div class="toolbox__category-icon">☁️</div>
+                  <div class="toolbox__category-info">
+                    <h3 class="toolbox__category-title">Cloud & Infrastructure</h3>
+                    <p class="toolbox__category-description">Scalable, secure cloud-native solutions</p>
+                  </div>
+                </div>
+                <div class="toolbox__tags">
+                  <span class="toolbox__tag">AWS</span>
+                  <span class="toolbox__tag">Azure</span>
+                  <span class="toolbox__tag">Docker</span>
+                  <span class="toolbox__tag">Kubernetes</span>
+                  <span class="toolbox__tag">Terraform</span>
+                  <span class="toolbox__tag">CI/CD</span>
+                  <span class="toolbox__tag">Serverless</span>
+                  <span class="toolbox__tag">Microservices</span>
+                </div>
+              </div>
+
+              <!-- Data & Analytics -->
+              <div class="toolbox__category">
+                <div class="toolbox__category-header">
+                  <div class="toolbox__category-icon">📊</div>
+                  <div class="toolbox__category-info">
+                    <h3 class="toolbox__category-title">Data & Analytics</h3>
+                    <p class="toolbox__category-description">ETL pipelines & predictive insights</p>
+                  </div>
+                </div>
+                <div class="toolbox__tags">
+                  <span class="toolbox__tag">SQL</span>
+                  <span class="toolbox__tag">PostgreSQL</span>
+                  <span class="toolbox__tag">Oracle</span>
+                  <span class="toolbox__tag">Pandas</span>
+                  <span class="toolbox__tag">Apache Airflow</span>
+                  <span class="toolbox__tag">Power BI</span>
+                  <span class="toolbox__tag">Tableau</span>
+                  <span class="toolbox__tag toolbox__tag--highlight">Data Modeling</span>
+                </div>
+              </div>
+
+              <!-- Automation & Integration -->
+              <div class="toolbox__category">
+                <div class="toolbox__category-header">
+                  <div class="toolbox__category-icon">⚡</div>
+                  <div class="toolbox__category-info">
+                    <h3 class="toolbox__category-title">Automation & Integration</h3>
+                    <p class="toolbox__category-description">Workflow optimization & API orchestration</p>
+                  </div>
+                </div>
+                <div class="toolbox__tags">
+                  <span class="toolbox__tag">Zapier</span>
+                  <span class="toolbox__tag">Make</span>
+                  <span class="toolbox__tag">REST APIs</span>
+                  <span class="toolbox__tag">GraphQL</span>
+                  <span class="toolbox__tag">Webhooks</span>
+                  <span class="toolbox__tag">RPA</span>
+                  <span class="toolbox__tag">Process Mining</span>
+                  <span class="toolbox__tag">Lead Generation</span>
+                </div>
+              </div>
+
+              <!-- Development & DevOps -->
+              <div class="toolbox__category">
+                <div class="toolbox__category-header">
+                  <div class="toolbox__category-icon">🛠️</div>
+                  <div class="toolbox__category-info">
+                    <h3 class="toolbox__category-title">Development & DevOps</h3>
+                    <p class="toolbox__category-description">Secure software development lifecycle</p>
+                  </div>
+                </div>
+                <div class="toolbox__tags">
+                  <span class="toolbox__tag">Java</span>
+                  <span class="toolbox__tag">JavaScript</span>
+                  <span class="toolbox__tag">React</span>
+                  <span class="toolbox__tag">Node.js</span>
+                  <span class="toolbox__tag">Git</span>
+                  <span class="toolbox__tag">Static Analysis</span>
+                  <span class="toolbox__tag">Security Testing</span>
+                  <span class="toolbox__tag">UML</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1676,6 +2054,11 @@
       const educationModal = document.getElementById('education-modal');
       const educationBackdrop = educationModal?.querySelector('.modal__backdrop');
       
+      const openToolboxModalBtn = document.getElementById('open-toolbox-modal');
+      const closeToolboxModalBtn = document.getElementById('close-toolbox-modal');
+      const toolboxModal = document.getElementById('toolbox-modal');
+      const toolboxBackdrop = toolboxModal?.querySelector('.modal__backdrop');
+      
       const body = document.body;
       
       // Calculate scrollbar width for body padding compensation
@@ -1756,6 +2139,11 @@
       closeEducationModalBtn?.addEventListener('click', () => closeModal(educationModal, openEducationModalBtn));
       educationBackdrop?.addEventListener('click', () => closeModal(educationModal, openEducationModalBtn));
       
+      // Toolbox modal event listeners
+      openToolboxModalBtn?.addEventListener('click', () => openModal(toolboxModal, closeToolboxModalBtn, openToolboxModalBtn));
+      closeToolboxModalBtn?.addEventListener('click', () => closeModal(toolboxModal, openToolboxModalBtn));
+      toolboxBackdrop?.addEventListener('click', () => closeModal(toolboxModal, openToolboxModalBtn));
+      
       // Keyboard navigation
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
@@ -1763,6 +2151,8 @@
             closeModal(modal, openModalBtn);
           } else if (educationModal?.classList.contains('active')) {
             closeModal(educationModal, openEducationModalBtn);
+          } else if (toolboxModal?.classList.contains('active')) {
+            closeModal(toolboxModal, openToolboxModalBtn);
           }
         }
       });
@@ -1773,6 +2163,8 @@
           closeModal(modal, openModalBtn);
         } else if (educationModal?.classList.contains('active')) {
           closeModal(educationModal, openEducationModalBtn);
+        } else if (toolboxModal?.classList.contains('active')) {
+          closeModal(toolboxModal, openToolboxModalBtn);
         }
       });
     });
