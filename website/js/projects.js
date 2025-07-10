@@ -8,6 +8,8 @@ const projectsData = [
         tags: ['Full-Stack', 'FinTech', 'Automation'],
         techStack: ['React', 'Flask', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
         category: 'Full-Stack',
+        timeIndicator: '1 min',
+        primaryMetric: 'processing time by 98%',
         impact: {
             processingTime: { before: '60 min', after: '1 min' },
             users: '50+ daily',
@@ -58,8 +60,10 @@ const projectsData = [
         shortDesc: 'Real-time analytics platform for 10,000+ tumor database',
         icon: '🏥',
         tags: ['Full-Stack', 'Healthcare', 'Data Viz'],
-        techStack: ['React', 'Node.js', 'MongoDB', 'D3.js', 'AWS Lambda'],
+        techStack: ['React', 'Node.js', 'MongoDB', 'Chart.js', 'AWS'],
         category: 'Full-Stack',
+        timeIndicator: '10,000+ tumors',
+        primaryMetric: '10,000+ tumor database',
         impact: {
             dataPoints: '10,000+ tumors',
             users: '300+ researchers',
@@ -75,7 +79,7 @@ const projectsData = [
             'Machine learning insights'
         ],
         architecture: {
-            frontend: ['React', 'D3.js', 'Material-UI', 'WebSockets'],
+            frontend: ['React', 'Chart.js', 'Material-UI', 'WebSockets'],
             backend: ['Node.js', 'Express', 'JWT Authentication'],
             database: ['MongoDB', 'Redis Cache'],
             devops: ['AWS Lambda', 'CloudWatch', 'S3']
@@ -89,6 +93,8 @@ const projectsData = [
         tags: ['Backend', 'Healthcare', 'Machine Learning'],
         techStack: ['Python', 'FastAPI', 'PostgreSQL', 'TensorFlow', 'Docker'],
         category: 'Backend',
+        timeIndicator: '<100ms',
+        primaryMetric: '85% matching accuracy',
         impact: {
             endpoints: '25+ RESTful',
             matching: '85% accuracy',
@@ -116,8 +122,10 @@ const projectsData = [
         shortDesc: 'Real-time scheduling with SMS notifications',
         icon: '📱',
         tags: ['Frontend', 'Healthcare', 'Real-time'],
-        techStack: ['Vue.js', 'TypeScript', 'Socket.io', 'Twilio', 'Google Calendar API'],
+        techStack: ['Vue.js', 'TypeScript', 'Socket.io', 'Twilio', 'Google Calendar'],
         category: 'Frontend',
+        timeIndicator: '40% reduction',
+        primaryMetric: '40% no-show reduction',
         impact: {
             appointments: '1000+ daily',
             reduction: '40% no-shows',
@@ -145,8 +153,10 @@ const projectsData = [
         shortDesc: 'Full-stack sentiment analysis platform for customer feedback',
         icon: '🧠',
         tags: ['Full-Stack', 'AI/ML', 'Analytics'],
-        techStack: ['Python', 'AWS', 'CI/CD', 'Git', 'PostgreSQL', 'Apache Airflow'],
-        category: 'Full-Stack',
+        techStack: ['Python', 'AWS', 'TensorFlow', 'PostgreSQL', 'Apache Airflow'],
+        category: 'Data Engineering',
+        timeIndicator: '92% accuracy',
+        primaryMetric: '92% sentiment accuracy',
         impact: {
             feedback: '10,000+ analyzed',
             accuracy: '92% sentiment accuracy',
@@ -166,35 +176,6 @@ const projectsData = [
             backend: ['Python', 'FastAPI', 'Apache Airflow'],
             database: ['PostgreSQL', 'Redis'],
             cloud: ['AWS Lambda', 'S3', 'CloudWatch']
-        }
-    },
-    {
-        id: 'neural-prosthesis',
-        title: 'Neural Prosthesis Control System',
-        shortDesc: 'Advanced control system for spinal cord injury patients',
-        icon: '🧬',
-        tags: ['Research', 'Neuroscience', 'Medical Device'],
-        techStack: ['Python', 'PsychoPy', 'Matlab', 'Neuroscience', 'fMRI'],
-        category: 'Research',
-        impact: {
-            patients: '15+ participants',
-            accuracy: '78% control accuracy',
-            improvement: '45% mobility improvement'
-        },
-        challenge: 'Patients with spinal cord injuries needed better control systems for neural prosthetics to improve their quality of life and independence.',
-        solution: 'Developed an advanced neural prosthesis control system using brain-computer interface technology and machine learning algorithms for improved movement control.',
-        features: [
-            'Brain-computer interface integration',
-            'Real-time signal processing',
-            'Adaptive learning algorithms',
-            'Patient-specific calibration',
-            'Safety monitoring systems'
-        ],
-        architecture: {
-            processing: ['Python', 'NumPy', 'SciPy', 'Matplotlib'],
-            analysis: ['Matlab', 'PsychoPy', 'fMRI Analysis'],
-            hardware: ['Neural Interfaces', 'Signal Amplifiers'],
-            research: ['Clinical Protocols', 'Data Collection']
         }
     }
 ];
@@ -218,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Render filter buttons
 function renderFilters() {
-    const filters = ['All', 'Full-Stack', 'Backend', 'Frontend', 'Research'];
+    const filters = ['All', 'Full-Stack', 'Backend', 'Frontend', 'Data Engineering'];
     
     filterButtons.innerHTML = filters.map(filter => `
         <button class="filter-btn ${filter === currentFilter ? 'active' : ''}" 
@@ -244,9 +225,17 @@ function renderProjects() {
     projectsGrid.innerHTML = filteredProjects.map(project => `
         <div class="project-card" onclick="showProjectDetail('${project.id}')">
             <div class="project-card-header">
-                <span class="project-icon">${project.icon}</span>
+                <div class="project-icon-container">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    </svg>
+                </div>
                 <span class="project-category">${project.category}</span>
             </div>
+            
             <h3 class="project-title">${project.title}</h3>
             <p class="project-desc">${project.shortDesc}</p>
             
@@ -255,24 +244,18 @@ function renderProjects() {
                     `<span class="tech-badge">${tech}</span>`
                 ).join('')}
                 ${project.techStack.length > 3 ? 
-                    `<span class="tech-badge" style="background-color: #f3f4f6; color: #6b7280;">
-                        +${project.techStack.length - 3} more
-                    </span>` : ''
+                    `<span class="tech-badge tech-badge-more">+${project.techStack.length - 3} more</span>` : ''
                 }
             </div>
             
             <div class="project-footer">
-                <div class="impact-metric">
-                    <span class="impact-value">
-                        ${getFirstImpactValue(project.impact)}
-                    </span>
-                </div>
-                <span class="view-details">
-                    View Details 
+                <span class="time-indicator">${project.timeIndicator}</span>
+                <div class="view-details">
+                    <span>View Details</span>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M9 18l6-6-6-6"/>
+                        <path d="m9 18 6-6-6-6"/>
                     </svg>
-                </span>
+                </div>
             </div>
         </div>
     `).join('');
