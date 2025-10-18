@@ -1,6 +1,0 @@
-#ABOUT ME PAGE
-
-I'm a Software Engineer and Data Scientist with a neuroscience background and a passion for building AI-powered solutions that deliver real-world impact. From modeling stroke recovery with Emory Healthcare, the National Institute of Health (NIH), and the Atlanta VA Medical Center, using machine learning to engineering ETL pipelines that process over 400,000 financial records daily – my work bridges science, automation, and business value. I also curated a cloud-based tumor bank with over 10,000 samples, supporting research, drug discovery, and presentations at leading medical and academic conferences with UHealth's Sylvester Comprehensive Cancer Center.
-
-I build scalable systems using Apache Airflow, PostgreSQL, and Python, and maintain clean, modular code with GitHub best practices and CI/CD workflows. My AWS experience includes IAM role and policy management for secure cloud deployments. Currently pursuing a Master's in Computer Information Systems with a concentration in Cybersecurity at Boston University, I focus on blending automation, intelligence, and secure design across FinTech, healthcare, and beyond.
-
