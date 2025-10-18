@@ -1,0 +1,328 @@
+---
+import Base from "../layouts/Base.astro";
+import Container from "../components/base/Container.astro";
+import Section from "../components/base/Section.astro";
+---
+
+<Base title="Experience | Omar Hernandez">
+  <main id="main" class="experience-page hero-header">
+    <div class="wrapper">
+      <main class="page">
+        <!-- Matrix Rain Background -->
+        <div id="matrix-rain-background">
+          <canvas id="matrix-rain-canvas"></canvas>
+        </div>
+        <!-- Professional Experience Section -->
+        <section class="page__experience page__experience--timeline experience experience-timeline animate-page-section">
+          <div class="experience__container animate-page-container">
+            <div class="experience__header">
+              <div class="page-header animate-page-header">
+                <h2 class="page-header__title">
+                  <span class="decrypt-text wave-text wave-ripple" data-text="EXPERIENCE" tabindex="0" aria-label="EXPERIENCE" role="button">EXPERIENCE</span>
+                </h2>
+              </div>
+            </div>
+
+            <div class="experience__timeline-wrapper animate-page-content">
+              <div class="experience-timeline">
+                <!-- Timeline line (curved SVG) -->
+                <div class="timeline-line">
+                  <svg viewBox="0 0 100 1000" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id="timeline-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" class="timeline-gradient-stop-1" />
+                        <stop offset="100%" class="timeline-gradient-stop-2" />
+                      </linearGradient>
+                    </defs>
+                    <path d="M50 0 Q55 200 50 400 Q45 600 50 800 Q55 1000 50 1000" />
+                  </svg>
+                </div>
+                
+                <!-- Timeline Item 1: Debt Consultants Group -->
+                <div class="timeline-item timeline-item--right" data-spoller>
+                  <div class="timeline-content">
+                    <a href="https://debtconsultantsgroup.com/iso/" target="_blank" rel="noopener noreferrer" class="timeline-header-link">
+                      <div class="timeline-header">
+                        <div class="experience-card__logo experience-card__logo--dcg">
+                          <img src="assets/icons/experience/dcg.jpeg" alt="Debt Consultants Group Logo" />
+                        </div>
+                        <h3 class="timeline-company">Debt Consultants Group</h3>
+                        <p class="timeline-location">Downtown Miami, FL</p>
+                      </div>
+                    </a>
+                    <div class="timeline-role">Software Engineer & Product Manager</div>
+                    <div class="timeline-dates">January 2025 - April 2025</div>
+                    
+                    <!-- Toggle button with chevron -->
+                    <button class="spollers-faq__button timeline-toggle" type="button">
+                      <span>View Achievements</span>
+                      <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"/>
+                      </svg>
+                    </button>
+                    
+                    <!-- Collapsible content -->
+                    <div class="spollers-faq__text timeline-achievements">
+                      <ul>
+                        <li><strong>400K+ daily data points</strong> processed through AI-powered ETL pipeline</li>
+                        <li><strong>60% accuracy improvement</strong> and <strong>25% conversion increase</strong> in decision-making</li>
+                        <li><strong>Real-time SMS analytics app</strong> built with Python and PostgreSQL</li>
+                        <li><strong>98% time reduction</strong> in client-lender ledger generation (1 hour → 1 minute)</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Timeline Item 2: UHealth Sylvester -->
+                <div class="timeline-item timeline-item--left" data-spoller>
+                  <div class="timeline-content">
+                    <a href="https://umiamihealth.org/en/sylvester-comprehensive-cancer-center/research/research-resources/shared-resources/cancer-modeling-shared-resource" target="_blank" rel="noopener noreferrer" class="timeline-header-link">
+                      <div class="timeline-header">
+                        <div class="experience-card__logo experience-card__logo--minimal-bg experience-card__logo--sylvester">
+                          <img src="assets/icons/experience/sylvester.png" alt="UHealth Sylvester Comprehensive Cancer Center Logo" />
+                        </div>
+                        <h3 class="timeline-company">UHealth | Sylvester Comprehensive Cancer Center</h3>
+                        <p class="timeline-location">Miami, FL</p>
+                      </div>
+                    </a>
+                    <div class="timeline-role">Data Engineer</div>
+                    <div class="timeline-dates">August 2023 - August 2024</div>
+                    
+                    <!-- Toggle button with chevron -->
+                    <button class="spollers-faq__button timeline-toggle" type="button">
+                      <span>View Achievements</span>
+                      <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"/>
+                      </svg>
+                    </button>
+                    
+                    <!-- Collapsible content -->
+                    <div class="spollers-faq__text timeline-achievements">
+                      <ul>
+                        <li><strong>10,000+ tumor samples</strong> database architected for AI-driven diagnostic models</li>
+                        <li><strong>15+ TB of histopathology data</strong> ingested and transformed</li>
+                        <li><strong>300+ users</strong> supported with cloud-based digital pathology systems</li>
+                        <li><strong>Enhanced research collaboration</strong> and data security protocols</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Timeline Item 3: UHealth Epic -->
+                <div class="timeline-item timeline-item--right" data-spoller>
+                  <div class="timeline-content">
+                    <a href="https://www.epic.com" target="_blank" rel="noopener noreferrer" class="timeline-header-link">
+                      <div class="timeline-header">
+                        <div class="experience-card__logo experience-card__logo--epic">
+                          <img src="assets/icons/experience/epic.jpeg" alt="Epic Systems Logo" />
+                        </div>
+                        <h3 class="timeline-company">UHealth | Epic Systems</h3>
+                        <p class="timeline-location">Remote</p>
+                      </div>
+                    </a>
+                    <div class="timeline-role">Software Instructor</div>
+                    <div class="timeline-dates">January 2023 - June 2023</div>
+                    
+                    <!-- Toggle button with chevron -->
+                    <button class="spollers-faq__button timeline-toggle" type="button">
+                      <span>View Achievements</span>
+                      <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"/>
+                      </svg>
+                    </button>
+                    
+                    <!-- Collapsible content -->
+                    <div class="spollers-faq__text timeline-achievements">
+                      <ul>
+                        <li><strong>60+ research coordinators</strong> and medical staff trained cross-functionally</li>
+                        <li><strong>95% user adoption rate</strong> achieved through 10+ live Microsoft Teams sessions</li>
+                        <li><strong>25% reduction</strong> in ramp-up time through process optimization</li>
+                        <li><strong>Epic module teams</strong> collaboration to optimize clinical trial workflows</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Timeline Item 4: NIH -->
+                <div class="timeline-item timeline-item--left" data-spoller>
+                  <div class="timeline-content">
+                    <a href="https://www.nih.gov" target="_blank" rel="noopener noreferrer" class="timeline-header-link">
+                      <div class="timeline-header">
+                        <div class="experience-card__logo experience-card__logo--nih">
+                          <img src="assets/icons/experience/nih.jpeg" alt="National Institute of Health Logo" />
+                        </div>
+                        <h3 class="timeline-company">National Institute of Health</h3>
+                        <p class="timeline-location">North Druid Hills, GA</p>
+                      </div>
+                    </a>
+                    <div class="timeline-role">Machine Learning Engineer</div>
+                    <div class="timeline-dates">January 2019 - June 2021</div>
+                    
+                    <!-- Toggle button with chevron -->
+                    <button class="spollers-faq__button timeline-toggle" type="button">
+                      <span>View Achievements</span>
+                      <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"/>
+                      </svg>
+                    </button>
+                    
+                    <!-- Collapsible content -->
+                    <div class="spollers-faq__text timeline-achievements">
+                      <ul>
+                        <li><strong>Predictive ML models</strong> optimized for motor network recovery in stroke patients</li>
+                        <li><strong>25% efficiency improvement</strong> in data extraction through enhanced NLP algorithms</li>
+                        <li><strong>Automated unsupervised learning</strong> pipelines for fMRI data processing</li>
+                        <li><strong>Neurobiological BOLD signal</strong> extraction protocols established</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Timeline Item 5: Emory -->
+                <div class="timeline-item timeline-item--right" data-spoller>
+                  <div class="timeline-content">
+                    <a href="https://med.emory.edu/research/index.html" target="_blank" rel="noopener noreferrer" class="timeline-header-link">
+                      <div class="timeline-header">
+                        <div class="experience-card__logo--emory-container">
+                          <div class="experience-card__logo experience-card__logo--minimal-bg experience-card__logo--va">
+                            <img src="assets/icons/experience/va.png" alt="VA Logo" />
+                          </div>
+                          <div class="experience-card__logo experience-card__logo--emory">
+                            <img src="assets/icons/experience/emory.png" alt="Emory University Logo" />
+                          </div>
+                        </div>
+                        <h3 class="timeline-company">Emory University School of Medicine</h3>
+                        <p class="timeline-location">Atlanta, GA</p>
+                      </div>
+                    </a>
+                    <div class="timeline-role">Data Engineer</div>
+                    <div class="timeline-dates">January 2018 - January 2019</div>
+                    
+                    <!-- Toggle button with chevron -->
+                    <button class="spollers-faq__button timeline-toggle" type="button">
+                      <span>View Achievements</span>
+                      <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"/>
+                      </svg>
+                    </button>
+                    
+                    <!-- Collapsible content -->
+                    <div class="spollers-faq__text timeline-achievements">
+                      <ul>
+                        <li><strong>250GB+ multimodal neuroimaging</strong> datasets processed through streamlined ETL workflows</li>
+                        <li><strong>30% reduction</strong> in data processing time through workflow optimization</li>
+                        <li><strong>DICOM to NIfTI transformation</strong> using Bash scripting for fMRI research</li>
+                        <li><strong>TMS data processing</strong> for motor cortex excitability analysis in cognitive decline</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Nonprofit Experience Section -->
+        <section class="page__experience experience animate-page-section">
+          <div class="experience__container animate-page-container">
+            <div class="experience__header">
+              <div class="page-header animate-page-header">
+                <h2 class="page-header__title">
+                  <span class="decrypt-text wave-text wave-ripple" data-text="NONPROFIT" tabindex="0" aria-label="NONPROFIT" role="button">NONPROFIT</span>
+                </h2>
+              </div>
+            </div>
+            
+            <div class="experience__interactive animate-page-content">
+              <!-- Left Column: Company Navigation -->
+              <div class="experience__nav">
+                <div class="experience__nav-item active nonprofit-selected" data-company="kdsap">
+                  <span class="experience__nav-text">KDSAP</span>
+                </div>
+                <div class="experience__nav-item nonprofit-unselected" data-company="emory-hope">
+                  <span class="experience__nav-text">Emory HOPE</span>
+                </div>
+                <div class="experience__nav-item nonprofit-unselected" data-company="emory-alumni">
+                  <span class="experience__nav-text">Emory Alumni</span>
+                </div>
+                <div class="experience__nav-item nonprofit-unselected" data-company="global-brigades">
+                  <span class="experience__nav-text">Global Brigades</span>
+                </div>
+              </div>
+              
+              <!-- Right Column: Company Details -->
+              <div class="experience__content">
+                <div class="experience__detail active" data-company="kdsap">
+                  <h3 class="experience__detail-title">
+                    <span class="experience__role-title">Project Manager</span>
+                    <span class="experience__company-name"><a href="https://kdsap.org/" target="_blank" rel="noopener noreferrer">@ KDSAP</a></span>
+                  </h3>
+                  <p class="experience__detail-dates">2023 - Present</p>
+                  <ul class="experience__detail-list">
+                    <li>Led kidney disease screening and monitoring for 2,500+ patients in Atlanta</li>
+                    <li>Coordinated volunteer teams and medical professionals for community health initiatives</li>
+                    <li>Managed patient data and screening results for healthcare providers</li>
+                    <li>Organized educational outreach programs for kidney disease awareness</li>
+                  </ul>
+                </div>
+                
+                <div class="experience__detail" data-company="emory-hope">
+                  <h3 class="experience__detail-title">
+                    <span class="experience__role-title">Treasurer</span>
+                    <span class="experience__company-name"><a href="https://www.instagram.com/emory.hope/" target="_blank" rel="noopener noreferrer">@ Emory HOPE</a></span>
+                  </h3>
+                  <p class="experience__detail-dates">2022 - 2024</p>
+                  <ul class="experience__detail-list">
+                    <li>Oversaw budget and fundraising efforts to advance hospice and palliative care community health programs in Atlanta</li>
+                    <li>Managed financial records and budget allocation for student organization</li>
+                    <li>Coordinated fundraising events and donor relations</li>
+                    <li>Provided financial reporting and transparency to organization members</li>
+                  </ul>
+                </div>
+                
+                <div class="experience__detail" data-company="emory-alumni">
+                  <h3 class="experience__detail-title">
+                    <span class="experience__role-title">Social Media Chair</span>
+                    <span class="experience__company-name"><a href="https://together.emory.edu/alumni/grads" target="_blank" rel="noopener noreferrer">@ Emory Alumni Association</a></span>
+                  </h3>
+                  <p class="experience__detail-dates">2021 - 2023</p>
+                  <ul class="experience__detail-list">
+                    <li>Alumni engagement leader and communications specialist</li>
+                    <li>Managed social media presence across multiple platforms</li>
+                    <li>Created engaging content to connect alumni with current students</li>
+                    <li>Organized virtual and in-person networking events</li>
+                  </ul>
+                </div>
+                
+                <div class="experience__detail" data-company="global-brigades">
+                  <h3 class="experience__detail-title">
+                    <span class="experience__role-title">Medical & Dental Volunteer</span>
+                    <span class="experience__company-name"><a href="https://www.globalbrigades.org" target="_blank" rel="noopener noreferrer">@ Global Brigades</a></span>
+                  </h3>
+                  <p class="experience__detail-dates">2022</p>
+                  <ul class="experience__detail-list">
+                    <li>Provided clinical care and supplies to over 1,000 Honduran locals in 1 week</li>
+                    <li>Assisted medical professionals in patient care and treatment</li>
+                    <li>Participated in community health education and prevention programs</li>
+                    <li>Collaborated with international medical teams for sustainable healthcare solutions</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    
+    <!-- Matrix Rain Control Button -->
+    <button class="matrix-control auto-hide" 
+            type="button" 
+            id="matrix-control-btn"
+            aria-label="Pause/Resume Matrix Rain Animation"
+            title="Click to pause/resume matrix rain">
+      <svg class="matrix-control-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path id="matrix-control-icon-path" d="M8 5v14l11-7z"/>
+      </svg>
+    </button>
+  </main>
+</Base>

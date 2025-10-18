@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Skip link accessibility */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+  
+  .sr-only.focus\:not-sr-only:focus {
+    @apply static w-auto h-auto p-2 m-0 overflow-visible whitespace-normal;
+    clip: auto;
+  }
+}
+
+@layer components {
+  /* Starter utilities; expand later per mapping */
+  .btn { 
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-md font-medium shadow-sm; 
+  }
+  .card { 
+    @apply rounded-xl p-6 shadow; 
+  }
+}

@@ -1,0 +1,38 @@
+---
+export interface Props {
+  as?: 'div' | 'section' | 'main' | 'article' | 'aside';
+  class?: string;
+}
+
+const { as = 'div', class: className = '' } = Astro.props;
+---
+
+{as === 'div' && (
+  <div class={className}>
+    <slot />
+  </div>
+)}
+
+{as === 'section' && (
+  <section class={className}>
+    <slot />
+  </section>
+)}
+
+{as === 'main' && (
+  <main class={className}>
+    <slot />
+  </main>
+)}
+
+{as === 'article' && (
+  <article class={className}>
+    <slot />
+  </article>
+)}
+
+{as === 'aside' && (
+  <aside class={className}>
+    <slot />
+  </aside>
+)}

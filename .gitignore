@@ -52,4 +52,37 @@ temp/
 
 # Build outputs
 dist/
-build/ 
+build/
+
+# Astro / Node
+node_modules
+.astro
+dist
+.vercel
+.netlify
+.env*
+*.local
+
+# OS/Editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# Tests/coverage/logs
+coverage
+*.log
+
+# SENSITIVE FILES - Hide from GitHub
+# Migration and planning documents
+docs/
+*.md
+*.txt
+PRE_PUBLISHING_CHECKLIST.md
+sanity_check/
+experience_content.txt
+legacy_move.txt
+migration.txt
+
+# Keep only the site/ directory visible
+# Everything outside site/ will be hidden
