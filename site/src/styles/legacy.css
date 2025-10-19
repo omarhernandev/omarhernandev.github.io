@@ -1750,6 +1750,15 @@ body.dark-mode .about::before {
   width: 100%;
 }
 
+/* Base button styles */
+.about__toggle-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
 /* Desktop/Tablet (481px+): Always horizontal */
 @media (min-width: 481px) {
   .about__buttons {
@@ -1779,6 +1788,7 @@ body.dark-mode .about::before {
   /* All buttons should stretch to the width of their grid cell */
   .about__toggle-button {
     width: 100%;
+    justify-content: center;
   }
 }
 
