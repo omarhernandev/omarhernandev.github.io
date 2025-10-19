@@ -1766,6 +1766,9 @@ body.dark-mode .about::before {
     gap: 8px;
     max-width: 300px;
     margin: 16px auto 0;
+    /* Ensure grid children fill their tracks for consistent alignment */
+    justify-items: stretch;
+    align-items: stretch;
   }
   
   /* More details spans full width on top */
@@ -1773,9 +1776,8 @@ body.dark-mode .about::before {
     grid-column: 1 / -1;
   }
   
-  /* Education and Toolbox on bottom row */
-  .about__toggle-button:nth-child(2),
-  .about__toggle-button:nth-child(3) {
+  /* All buttons should stretch to the width of their grid cell */
+  .about__toggle-button {
     width: 100%;
   }
 }
