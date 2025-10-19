@@ -1750,6 +1750,15 @@ body.dark-mode .about::before {
   width: 100%;
 }
 
+/* Base button styles */
+.about__toggle-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  white-space: nowrap;
+}
+
 /* Desktop/Tablet (481px+): Always horizontal */
 @media (min-width: 481px) {
   .about__buttons {
@@ -1777,6 +1786,7 @@ body.dark-mode .about::before {
   .about__toggle-button:nth-child(2),
   .about__toggle-button:nth-child(3) {
     width: 100%;
+    justify-content: center;
   }
 }
 
