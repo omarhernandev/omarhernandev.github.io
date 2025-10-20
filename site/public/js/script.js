@@ -1233,12 +1233,37 @@
         removeClass(scrollContainer, 'dragging');
         scrollContainer.style.cursor = '';
         
-        // Apply momentum scrolling with boundary enforcement
+        // Apply momentum scrolling with improved boundary enforcement for touch
         var momentumDuration = Math.min(Math.abs(velocity) * 100, 2000);
-        var targetScroll = scrollContainer.scrollLeft + velocity * momentumDuration / 60;
-        targetScroll = enforceScrollBounds(targetScroll);
+        var currentScroll = scrollContainer.scrollLeft;
+        var bounds = getScrollBounds();
         
-        if (momentumDuration > 0) {
+        // Calculate momentum target, but be more conservative for touch devices
+        var momentumDistance = velocity * momentumDuration / 60;
+        
+        // Reduce momentum if we're near boundaries to prevent aggressive snap-back
+        var distanceFromStart = currentScroll - bounds.minScroll;
+        var distanceFromEnd = bounds.maxScroll - currentScroll;
+        var minDistance = Math.min(distanceFromStart, distanceFromEnd);
+        
+        // If we're close to a boundary, reduce momentum proportionally
+        if (minDistance < 100) {
+          var reductionFactor = minDistance / 100;
+          momentumDistance *= reductionFactor;
+        }
+        
+        var targetScroll = currentScroll + momentumDistance;
+        
+        // Only enforce bounds if the target is significantly outside valid range
+        // This prevents the aggressive snap-back behavior
+        if (targetScroll < bounds.minScroll - 50) {
+          targetScroll = bounds.minScroll;
+        } else if (targetScroll > bounds.maxScroll + 50) {
+          targetScroll = bounds.maxScroll;
+        }
+        
+        // Only apply momentum if we have significant movement and duration
+        if (momentumDuration > 100 && Math.abs(targetScroll - currentScroll) > 10) {
           smoothScrollTo(scrollContainer, targetScroll, momentumDuration);
         }
       }
@@ -1252,7 +1277,17 @@
         var deltaX = currentX - startX;
         var deltaTime = currentTime - lastTime;
         
-        var newScrollLeft = enforceScrollBounds(scrollLeft - deltaX);
+        // Allow some overscroll during drag for natural feel, but limit it
+        var newScrollLeft = scrollLeft - deltaX;
+        var bounds = getScrollBounds();
+        
+        // Allow slight overscroll (50px) for natural touch feel
+        if (newScrollLeft < bounds.minScroll - 50) {
+          newScrollLeft = bounds.minScroll - 50;
+        } else if (newScrollLeft > bounds.maxScroll + 50) {
+          newScrollLeft = bounds.maxScroll + 50;
+        }
+        
         scrollContainer.scrollLeft = newScrollLeft;
         
         // Calculate velocity for momentum
@@ -1311,7 +1346,14 @@
       function smoothScrollTo(element, target, duration) {
         var start = element.scrollLeft;
         var bounds = getScrollBounds();
-        target = enforceScrollBounds(target);
+        
+        // Only enforce strict bounds if target is way outside valid range
+        if (target < bounds.minScroll - 100) {
+          target = bounds.minScroll;
+        } else if (target > bounds.maxScroll + 100) {
+          target = bounds.maxScroll;
+        }
+        
         var change = target - start;
         var startTime = performance.now ? performance.now() : Date.now();
         
@@ -1323,7 +1365,21 @@
           var easeProgress = 1 - Math.pow(1 - progress, 3);
           
           var newScrollLeft = start + change * easeProgress;
-          element.scrollLeft = enforceScrollBounds(newScrollLeft);
+          
+          // During animation, allow slight overscroll but gently pull back to bounds
+          if (newScrollLeft < bounds.minScroll) {
+            var overscroll = bounds.minScroll - newScrollLeft;
+            if (overscroll > 30) {
+              newScrollLeft = bounds.minScroll - 30 + (overscroll - 30) * 0.3;
+            }
+          } else if (newScrollLeft > bounds.maxScroll) {
+            var overscroll = newScrollLeft - bounds.maxScroll;
+            if (overscroll > 30) {
+              newScrollLeft = bounds.maxScroll + 30 + (overscroll - 30) * 0.3;
+            }
+          }
+          
+          element.scrollLeft = newScrollLeft;
           
           if (progress < 1) {
             if (window.requestAnimationFrame) {
@@ -1332,6 +1388,14 @@
               setTimeout(function() {
                 animateScroll(Date.now());
               }, 16);
+            }
+          } else {
+            // At the end of animation, gently snap to bounds if needed
+            if (element.scrollLeft < bounds.minScroll || element.scrollLeft > bounds.maxScroll) {
+              var finalTarget = enforceScrollBounds(element.scrollLeft);
+              if (Math.abs(finalTarget - element.scrollLeft) > 5) {
+                smoothScrollTo(element, finalTarget, 200);
+              }
             }
           }
         }
