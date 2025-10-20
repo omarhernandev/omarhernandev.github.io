@@ -1235,7 +1235,8 @@
         
         // Apply momentum scrolling with boundary enforcement
         var momentumDuration = Math.min(Math.abs(velocity) * 100, 2000);
-        var targetScroll = scrollContainer.scrollLeft + velocity * momentumDuration / 60;
+        // Pointer velocity is opposite to scrollLeft direction; invert so momentum continues naturally
+        var targetScroll = scrollContainer.scrollLeft - velocity * momentumDuration / 60;
         targetScroll = enforceScrollBounds(targetScroll);
         
         if (momentumDuration > 0) {
