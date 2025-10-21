@@ -1195,6 +1195,7 @@
       var velocity = 0;
       var lastX = 0;
       var lastTime = 0;
+      var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
       
       // Get scroll boundaries
       function getScrollBounds() {
@@ -1210,10 +1211,13 @@
         return Math.max(bounds.minScroll, Math.min(bounds.maxScroll, targetScroll));
       }
       
-      // Mouse/touch drag scrolling
+      // Mouse drag scrolling (desktop only)
       function startDrag(e) {
+        // Skip touch events - let browser handle native touch scrolling
+        if (e.type === 'touchstart') return;
+        
         isDragging = true;
-        startX = (e.pageX || e.touches[0].pageX) - scrollContainer.offsetLeft;
+        startX = e.pageX - scrollContainer.offsetLeft;
         scrollLeft = scrollContainer.scrollLeft;
         lastX = startX;
         lastTime = Date.now();
@@ -1222,7 +1226,7 @@
         addClass(scrollContainer, 'dragging');
         scrollContainer.style.cursor = 'grabbing';
         
-        // Prevent text selection
+        // Prevent text selection for mouse only
         e.preventDefault();
       }
       
@@ -1233,7 +1237,7 @@
         removeClass(scrollContainer, 'dragging');
         scrollContainer.style.cursor = '';
         
-        // Apply momentum scrolling with boundary enforcement
+        // Apply momentum scrolling with boundary enforcement (mouse only)
         var momentumDuration = Math.min(Math.abs(velocity) * 100, 2000);
         var targetScroll = scrollContainer.scrollLeft + velocity * momentumDuration / 60;
         targetScroll = enforceScrollBounds(targetScroll);
@@ -1246,8 +1250,11 @@
       function drag(e) {
         if (!isDragging) return;
         
+        // Only handle mouse drag, not touch
+        if (e.type === 'touchmove') return;
+        
         e.preventDefault();
-        var currentX = (e.pageX || e.touches[0].pageX) - scrollContainer.offsetLeft;
+        var currentX = e.pageX - scrollContainer.offsetLeft;
         var currentTime = Date.now();
         var deltaX = currentX - startX;
         var deltaTime = currentTime - lastTime;
@@ -1264,15 +1271,15 @@
         lastTime = currentTime;
       }
       
-      // Mouse events
-      addEvent(scrollContainer, 'mousedown', startDrag);
-      addEvent(document, 'mouseup', stopDrag);
-      addEvent(document, 'mousemove', drag);
+      // Only enable mouse drag on non-touch devices
+      if (!isTouchDevice) {
+        // Mouse events for desktop
+        addEvent(scrollContainer, 'mousedown', startDrag);
+        addEvent(document, 'mouseup', stopDrag);
+        addEvent(document, 'mousemove', drag);
+      }
       
-      // Touch events for mobile
-      addEvent(scrollContainer, 'touchstart', startDrag);
-      addEvent(document, 'touchend', stopDrag);
-      addEvent(document, 'touchmove', drag);
+      // Touch devices use native scrolling - no custom touch handlers needed
       
       // Keyboard navigation with boundary enforcement
       addEvent(scrollContainer, 'keydown', function(e) {
