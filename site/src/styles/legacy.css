@@ -4423,9 +4423,12 @@ body.dark-mode .projects {
   overflow-y: visible;
   scroll-behavior: smooth;
   padding: 20px 0 12px 0; /* Increased top padding from 12px to 20px */
+  -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on iOS */
+  overscroll-behavior-x: contain; /* Prevent scroll chaining on horizontal scroll */
+  touch-action: pan-x; /* Allow only horizontal touch scrolling */
 }
 
-/* Dragging state for enhanced scroll interaction */
+/* Dragging state for enhanced scroll interaction (mouse only) */
 .projects__scroll-container.dragging {
   cursor: grabbing;
   -webkit-user-select: none;
