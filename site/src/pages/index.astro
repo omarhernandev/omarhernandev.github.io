@@ -690,5 +690,18 @@ import Preloader from "../components/Preloader.astro";
         });
       }
     });
+    
+    // Handle "View Project" button clicks
+    const projectButtons = document.querySelectorAll('.item-projects__button[data-project-id]');
+    projectButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const projectId = button.getAttribute('data-project-id');
+        if (projectId) {
+          // Navigate to projects page with project ID as URL parameter
+          window.location.href = `/projects?project=${projectId}`;
+        }
+      });
+    });
   });
 </script>
