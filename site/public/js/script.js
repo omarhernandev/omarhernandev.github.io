@@ -1613,10 +1613,10 @@
           
           if (projectId) {
             // Navigate to projects page with project ID parameter
-            window.location.href = `projects.html?project=${projectId}`;
+            window.location.href = `/projects?project=${projectId}`;
           } else {
             // Fallback: navigate to projects page without specific project
-            window.location.href = 'projects.html';
+            window.location.href = '/projects';
           }
         });
       });
