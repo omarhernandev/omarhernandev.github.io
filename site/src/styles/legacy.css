@@ -4420,12 +4420,13 @@ body.dark-mode .projects {
 /* Horizontal Scroll Container */
 .projects__scroll-container {
   overflow-x: auto;
-  overflow-y: visible;
+  overflow-y: auto; /* Changed from visible to auto to enable vertical scrolling */
   scroll-behavior: smooth;
   padding: 20px 0 12px 0; /* Increased top padding from 12px to 20px */
   -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on iOS */
   overscroll-behavior-x: contain; /* Prevent scroll chaining on horizontal scroll */
-  touch-action: pan-x; /* Allow only horizontal touch scrolling */
+  overscroll-behavior-y: contain; /* Prevent scroll chaining on vertical scroll */
+  touch-action: pan-x pan-y; /* Allow both horizontal and vertical touch scrolling */
 }
 
 /* Dragging state for enhanced scroll interaction (mouse only) */
@@ -4466,6 +4467,19 @@ body.dark-mode .projects {
   gap: 20px;
   width: 100%; /* Simplified - let container control the width */
   padding: 16px 0;
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .projects__scroll-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-x pan-y;
+    /* Ensure vertical scrolling is available when content overflows */
+    max-height: 75vh;
+  }
 }
 
 /* Project Columns */
@@ -4665,6 +4679,16 @@ body.dark-mode .item-projects__button:hover {
     padding: 0 1rem;
   }
   
+  /* Enhanced touch scrolling for mobile devices */
+  .projects__scroll-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-x pan-y;
+    /* Ensure proper height for vertical scrolling */
+    max-height: 80vh;
+  }
   
   .projects__column {
     flex: 0 0 240px;
@@ -4689,6 +4713,17 @@ body.dark-mode .item-projects__button:hover {
 @media (max-width: 480px) {
   .projects__container {
     max-width: calc(2 * (220px + 20px) + 40px); /* ~480px - shows 2 cards on mobile */
+  }
+  
+  /* Enhanced touch scrolling for small mobile devices */
+  .projects__scroll-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-x pan-y;
+    /* Smaller height for mobile to ensure vertical scrolling is needed */
+    max-height: 70vh;
   }
   
   .projects__column {
