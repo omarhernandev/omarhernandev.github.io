@@ -324,7 +324,8 @@
       window.addEventListener('resize', () => {
         this.resize();
         this.setupCanvas();
-        this.createStreams();
+        // Don't recreate streams on resize to prevent reset during scroll
+        // Existing streams will continue seamlessly
       });
       
       // Pause animation when tab is not visible
