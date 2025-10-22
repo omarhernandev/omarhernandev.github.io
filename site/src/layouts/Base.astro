@@ -10,7 +10,10 @@ const { title = "Site" } = Astro.props;
     <script is:inline>
       try {
         const t = localStorage.getItem('theme');
-        if (t === 'dark') document.documentElement.classList.add('dark');
+        if (t === 'dark-mode') {
+          document.documentElement.classList.add('dark-mode');
+          document.body.classList.add('dark-mode');
+        }
       } catch (e) {}
     </script>
     
