@@ -78,6 +78,15 @@
       
       if (isDevelopment) console.log('Matrix Rain: Canvas dimensions:', width, 'x', height);
       
+      // Only resize if dimensions actually changed significantly
+      const widthChanged = Math.abs(width - (this.width || 0)) > 50; // Increased threshold
+      const heightChanged = Math.abs(height - (this.height || 0)) > 50; // Increased threshold
+      
+      if (!widthChanged && !heightChanged) {
+        if (isDevelopment) console.log('Matrix Rain: No significant size change, skipping resize');
+        return;
+      }
+      
       this.canvas.width = width * dpr;
       this.canvas.height = height * dpr;
       
@@ -87,6 +96,9 @@
       
       this.width = width;
       this.height = height;
+      
+      // Adjust existing streams instead of recreating them
+      this.adjustStreamsForResize();
       
       if (isDevelopment) console.log('Matrix Rain: Canvas resized to:', this.width, 'x', this.height);
     }
@@ -100,6 +112,41 @@
           this.createStream();
         }
       }
+    }
+    
+    adjustStreamsForResize() {
+      if (!this.streams || this.streams.length === 0) {
+        // If no streams exist, create them normally
+        this.createStreams();
+        return;
+      }
+      
+      const newStreamCount = Math.floor(config.streams * (this.width / 1920));
+      const currentStreamCount = this.streams.length;
+      
+      if (newStreamCount > currentStreamCount) {
+        // Add more streams if needed
+        const streamsToAdd = newStreamCount - currentStreamCount;
+        for (let i = 0; i < streamsToAdd; i++) {
+          if (Math.random() < config.spawnRate) {
+            this.createStream();
+          }
+        }
+      } else if (newStreamCount < currentStreamCount) {
+        // Remove excess streams (remove from the end)
+        const streamsToRemove = currentStreamCount - newStreamCount;
+        this.streams.splice(-streamsToRemove, streamsToRemove);
+      }
+      
+      // Adjust existing stream positions to fit new width
+      this.streams.forEach(stream => {
+        // Keep streams within bounds, but don't reset their Y position
+        if (stream.x > this.width) {
+          stream.x = Math.random() * this.width;
+        }
+      });
+      
+      if (isDevelopment) console.log('Matrix Rain: Adjusted streams for resize. Count:', this.streams.length);
     }
     
     createStream() {
@@ -320,11 +367,25 @@
     }
     
     setupEventListeners() {
-      // Handle window resize
+      // Handle window resize with debouncing
+      let resizeTimeout;
       window.addEventListener('resize', () => {
-        this.resize();
-        this.setupCanvas();
-        this.createStreams();
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          this.resize();
+          this.setupCanvas();
+        }, 150); // Debounce resize events
+      });
+      
+      // Handle scroll events to prevent unnecessary resizing
+      let scrollTimeout;
+      let isScrolling = false;
+      window.addEventListener('scroll', () => {
+        isScrolling = true;
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          isScrolling = false;
+        }, 100);
       });
       
       // Pause animation when tab is not visible
