@@ -1,6 +1,14 @@
 ---
-// Get current path from Astro context
+// Get current path from Astro context and normalize it
 const currentPath = Astro.url.pathname;
+
+// Normalize paths for comparison (remove trailing slashes except for root)
+const normalizePath = (path: string) => {
+  if (path === '/') return path;
+  return path.replace(/\/$/, '');
+};
+
+const normalizedCurrentPath = normalizePath(currentPath);
 
 // Define navigation items in one place
 const navItems = [
@@ -39,7 +47,7 @@ const socialLinks = [
       <a 
         href={href} 
         class="menu__link"
-        aria-current={currentPath === href ? 'page' : undefined}
+        aria-current={normalizedCurrentPath === normalizePath(href) ? 'page' : undefined}
       >
         {label}
       </a>
