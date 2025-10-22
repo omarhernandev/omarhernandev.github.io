@@ -1173,18 +1173,10 @@
       var lastTime = 0;
       var isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
       
-      // Get scroll boundaries
-      function getScrollBounds() {
-        return {
-          maxScroll: Math.max(0, scrollContainer.scrollWidth - scrollContainer.clientWidth),
-          minScroll: 0
-        };
-      }
-      
-      // Enforce scroll boundaries
-      function enforceScrollBounds(targetScroll) {
-        var bounds = getScrollBounds();
-        return Math.max(bounds.minScroll, Math.min(bounds.maxScroll, targetScroll));
+      // Unified boundary enforcement
+      function clampScroll(scroll) {
+        var max = Math.max(0, scrollContainer.scrollWidth - scrollContainer.clientWidth);
+        return Math.max(0, Math.min(max, scroll));
       }
       
       // Mouse drag scrolling (desktop only)
@@ -1213,38 +1205,33 @@
         removeClass(scrollContainer, 'dragging');
         scrollContainer.style.cursor = '';
         
-        // Apply momentum scrolling with boundary enforcement (mouse only)
-        var momentumDuration = Math.min(Math.abs(velocity) * 100, 2000);
-        var targetScroll = scrollContainer.scrollLeft + velocity * momentumDuration / 60;
-        targetScroll = enforceScrollBounds(targetScroll);
+        // Apply controlled momentum
+        var duration = Math.min(Math.abs(velocity) * 80, 1500);
+        var target = clampScroll(scrollContainer.scrollLeft + velocity * duration / 60);
         
-        if (momentumDuration > 0) {
-          smoothScrollTo(scrollContainer, targetScroll, momentumDuration);
+        if (duration > 0 && Math.abs(velocity) > 0.1) {
+          smoothScrollTo(scrollContainer, target, duration);
         }
       }
       
       function drag(e) {
-        if (!isDragging) return;
-        
-        // Only handle mouse drag, not touch
-        if (e.type === 'touchmove') return;
+        if (!isDragging || e.type === 'touchmove') return;
         
         e.preventDefault();
-        var currentX = e.pageX - scrollContainer.offsetLeft;
-        var currentTime = Date.now();
-        var deltaX = currentX - startX;
-        var deltaTime = currentTime - lastTime;
+        var x = e.pageX - scrollContainer.offsetLeft;
+        var time = Date.now();
+        var scroll = clampScroll(scrollLeft - (x - startX));
         
-        var newScrollLeft = enforceScrollBounds(scrollLeft - deltaX);
-        scrollContainer.scrollLeft = newScrollLeft;
+        scrollContainer.scrollLeft = scroll;
         
-        // Calculate velocity for momentum
-        if (deltaTime > 0) {
-          velocity = (currentX - lastX) / deltaTime * 16; // 60fps
-        }
+        // Calculate velocity for momentum (zero at boundaries)
+        var max = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+        velocity = (time - lastTime > 0 && scroll > 0 && scroll < max) 
+          ? (x - lastX) / (time - lastTime) * 16 
+          : 0;
         
-        lastX = currentX;
-        lastTime = currentTime;
+        lastX = x;
+        lastTime = time;
       }
       
       // Only enable mouse drag on non-touch devices
@@ -1255,116 +1242,83 @@
         addEvent(document, 'mousemove', drag);
       }
       
-      // Touch devices use native scrolling - no custom touch handlers needed
+      // Enforce boundaries during scroll
+      var lastCheck = 0;
+      addEvent(scrollContainer, 'scroll', function() {
+        var now = Date.now();
+        if (now - lastCheck < 16) return;
+        lastCheck = now;
+        scrollContainer.scrollLeft = clampScroll(scrollContainer.scrollLeft);
+      });
       
-      // Keyboard navigation with boundary enforcement
+      // Keyboard navigation
       addEvent(scrollContainer, 'keydown', function(e) {
-        // Get current viewport width to calculate appropriate scroll amount
-        var viewportWidth = window.innerWidth;
-        var cardWidth = viewportWidth <= 480 ? 220 + 20 :  // Mobile: 2 cards
-                       viewportWidth <= 768 ? 240 + 24 :   // Tablet: 3 cards  
-                       viewportWidth <= 1200 ? 260 + 20 :  // Desktop: 4 cards
-                       260 + 20; // Default desktop
-        var scrollAmount = cardWidth;
-        var bounds = getScrollBounds();
+        var w = window.innerWidth;
+        var amount = w <= 480 ? 240 : w <= 768 ? 264 : 280;
+        var curr = scrollContainer.scrollLeft;
+        var max = scrollContainer.scrollWidth - scrollContainer.clientWidth;
         
-        switch(e.keyCode) {
-          case 37: // Left arrow
-            e.preventDefault();
-            var targetLeft = enforceScrollBounds(scrollContainer.scrollLeft - scrollAmount);
-            smoothScrollTo(scrollContainer, targetLeft, 300);
-            break;
-          case 39: // Right arrow
-            e.preventDefault();
-            var targetRight = enforceScrollBounds(scrollContainer.scrollLeft + scrollAmount);
-            smoothScrollTo(scrollContainer, targetRight, 300);
-            break;
-          case 36: // Home
-            e.preventDefault();
-            smoothScrollTo(scrollContainer, bounds.minScroll, 500);
-            break;
-          case 35: // End
-            e.preventDefault();
-            smoothScrollTo(scrollContainer, bounds.maxScroll, 500);
-            break;
+        var targets = {
+          37: curr - amount,  // Left
+          39: curr + amount,  // Right
+          36: 0,              // Home
+          35: max             // End
+        };
+        
+        if (targets[e.keyCode] !== undefined) {
+          e.preventDefault();
+          smoothScrollTo(scrollContainer, targets[e.keyCode], e.keyCode > 36 ? 300 : 500);
         }
       });
       
-      // Enhanced smooth scroll helper function with boundary enforcement
+      // Smooth scroll with boundaries
       function smoothScrollTo(element, target, duration) {
         var start = element.scrollLeft;
-        var bounds = getScrollBounds();
-        target = enforceScrollBounds(target);
-        var change = target - start;
-        var startTime = performance.now ? performance.now() : Date.now();
+        var change = clampScroll(target) - start;
+        var startTime = Date.now();
         
-        function animateScroll(currentTime) {
-          var elapsed = currentTime - startTime;
-          var progress = Math.min(elapsed / duration, 1);
-          
-          // Easing function (ease-out-cubic)
-          var easeProgress = 1 - Math.pow(1 - progress, 3);
-          
-          var newScrollLeft = start + change * easeProgress;
-          element.scrollLeft = enforceScrollBounds(newScrollLeft);
+        function animate() {
+          var progress = Math.min((Date.now() - startTime) / duration, 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          element.scrollLeft = clampScroll(start + change * eased);
           
           if (progress < 1) {
-            if (window.requestAnimationFrame) {
-              requestAnimationFrame(animateScroll);
-            } else {
-              setTimeout(function() {
-                animateScroll(Date.now());
-              }, 16);
-            }
+            (window.requestAnimationFrame || setTimeout)(animate, 16);
           }
         }
-        
-        if (window.requestAnimationFrame) {
-          requestAnimationFrame(animateScroll);
-        } else {
-          animateScroll(Date.now());
-        }
+        animate();
       }
       
-      // Add scroll indicators (optional) with boundary awareness
+      // Optional scroll indicator
       var projectsSection = document.querySelector('.projects');
-      if (projectsSection) {
-        var bounds = getScrollBounds();
-        if (bounds.maxScroll > 50) { // Only show indicator if there's significant scrollable content
-          var scrollIndicator = document.createElement('div');
-          scrollIndicator.className = 'projects__scroll-indicator';
-          scrollIndicator.innerHTML = '<span>← Scroll for more projects →</span>';
-          scrollIndicator.style.cssText = 'text-align: center; padding: 10px; font-size: 0.9rem; opacity: 0.7; transition: opacity 0.3s ease;';
-          projectsSection.appendChild(scrollIndicator);
-          
-          // Hide indicator after first scroll or when at boundaries
-          var hasScrolled = false;
-          addEvent(scrollContainer, 'scroll', function() {
-            var currentScroll = scrollContainer.scrollLeft;
-            var bounds = getScrollBounds();
-            
-            if (!hasScrolled && currentScroll > 50) {
-              hasScrolled = true;
-              scrollIndicator.style.opacity = '0';
-              setTimeout(function() {
-                if (scrollIndicator.parentNode) {
-                  scrollIndicator.parentNode.removeChild(scrollIndicator);
-                }
-              }, 300);
-            }
-          });
-        }
+      var maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      
+      if (projectsSection && maxScroll > 50) {
+        var indicator = document.createElement('div');
+        indicator.className = 'projects__scroll-indicator';
+        indicator.innerHTML = '<span>← Scroll for more projects →</span>';
+        indicator.style.cssText = 'text-align: center; padding: 10px; font-size: 0.9rem; opacity: 0.7; transition: opacity 0.3s ease;';
+        projectsSection.appendChild(indicator);
+        
+        var shown = true;
+        addEvent(scrollContainer, 'scroll', function() {
+          if (shown && scrollContainer.scrollLeft > 50) {
+            shown = false;
+            indicator.style.opacity = '0';
+            setTimeout(function() {
+              indicator.parentNode && indicator.parentNode.removeChild(indicator);
+            }, 300);
+          }
+        });
       }
       
-      // Handle window resize to recalculate boundaries
+      // Handle resize
       addEvent(window, 'resize', function() {
-        // Debounce resize events
         clearTimeout(window.projectsResizeTimeout);
         window.projectsResizeTimeout = setTimeout(function() {
-          var bounds = getScrollBounds();
-          var currentScroll = scrollContainer.scrollLeft;
-          if (currentScroll > bounds.maxScroll) {
-            smoothScrollTo(scrollContainer, bounds.maxScroll, 300);
+          var max = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+          if (scrollContainer.scrollLeft > max) {
+            smoothScrollTo(scrollContainer, max, 300);
           }
         }, 250);
       });
