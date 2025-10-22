@@ -675,6 +675,15 @@ body.dark-mode .item-testimonial__caption {
   color: var(--brand-light) !important;
 }
 
+body.dark-mode .about__intro {
+  color: var(--text-primary-dark) !important;
+}
+
+body.dark-mode .about__research,
+body.dark-mode .about__recent {
+  color: var(--text-secondary-dark) !important;
+}
+
 body.dark-mode .main__title {
   color: var(--text-primary-dark);
   text-shadow: var(--text-glow-primary);
@@ -702,6 +711,15 @@ body.dark-mode .about__title {
 }
 
 body.dark-mode .about__text {
+  color: var(--text-secondary-dark);
+}
+
+body.dark-mode .about__intro {
+  color: var(--text-primary-dark);
+}
+
+body.dark-mode .about__research,
+body.dark-mode .about__recent {
   color: var(--text-secondary-dark);
 }
 
@@ -1721,21 +1739,46 @@ body.dark-mode .about::before {
 }
 
 .about__text {
-  max-width: clamp(280px, 65vw, 600px);
+  max-width: clamp(320px, 70vw, 650px);
   width: 100%;
-  text-align: center;
+  text-align: left;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .about__text p {
-  font-size: clamp(0.85rem, 2.5vw, 1rem);
-  line-height: clamp(1.5, 2vw, 1.7);
-  margin-bottom: clamp(0.8rem, 2vw, 1.2rem);
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
   text-wrap: balance; /* Modern browsers only */
   -webkit-hyphens: auto;
   hyphens: auto;
   word-break: break-word;
   overflow-wrap: break-word;
+  color: var(--text-secondary, #666);
+  font-weight: 400;
+}
+
+/* Specific paragraph styling for better hierarchy */
+.about__intro {
+  font-size: clamp(1rem, 2.4vw, 1.15rem);
+  line-height: 1.8;
+  margin-bottom: 1.75rem;
+  color: var(--text-primary, #333);
+  font-weight: 500;
+}
+
+.about__research,
+.about__recent {
+  font-size: clamp(0.9rem, 2vw, 1.05rem);
+  line-height: 1.7;
+  margin-bottom: 1.4rem;
+  color: var(--text-secondary, #666);
+}
+
+.about__recent {
+  margin-bottom: 0;
+  font-weight: 500;
 }
 
 /* === MODAL BUTTONS - UNIFORM LAYOUT SYSTEM === */
@@ -2215,6 +2258,11 @@ body.dark-mode .filter-label {
     text-align: center;
   }
   
+  .about__text {
+    text-align: center;
+    padding: 0;
+  }
+  
   
   /* Title visibility - show mobile title, hide desktop title when layout becomes column */
   .about__mobile-title {
@@ -2252,6 +2300,11 @@ body.dark-mode .filter-label {
   
   .about__content {
     text-align: center;
+  }
+  
+  .about__text {
+    text-align: center;
+    padding: 0;
   }
   
   /* Title visibility and ordering already handled at 900px breakpoint */
