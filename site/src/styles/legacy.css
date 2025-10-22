@@ -4422,13 +4422,12 @@ body.dark-mode .projects {
 /* Horizontal Scroll Container */
 .projects__scroll-container {
   overflow-x: auto;
-  overflow-y: auto; /* Changed from visible to auto to enable vertical scrolling */
+  overflow-y: visible; /* No vertical scroll on container - let page scroll */
   scroll-behavior: smooth;
   padding: 20px 0 12px 0; /* Increased top padding from 12px to 20px */
   -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on iOS */
   overscroll-behavior-x: contain; /* Prevent scroll chaining on horizontal scroll */
-  overscroll-behavior-y: contain; /* Prevent scroll chaining on vertical scroll */
-  touch-action: pan-x pan-y; /* Allow both horizontal and vertical touch scrolling */
+  touch-action: pan-x; /* Allow horizontal scrolling in container, vertical goes to page */
 }
 
 /* Dragging state for enhanced scroll interaction (mouse only) */
@@ -4475,12 +4474,10 @@ body.dark-mode .projects {
 @media (hover: none) and (pointer: coarse) {
   .projects__scroll-container {
     overflow-x: auto;
-    overflow-y: auto;
+    overflow-y: visible; /* No vertical scroll on container - let page scroll */
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    touch-action: pan-x pan-y;
-    /* Ensure vertical scrolling is available when content overflows */
-    max-height: 75vh;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x; /* Allow horizontal scrolling in container, vertical goes to page */
   }
 }
 
@@ -4684,12 +4681,10 @@ body.dark-mode .item-projects__button:hover {
   /* Enhanced touch scrolling for mobile devices */
   .projects__scroll-container {
     overflow-x: auto;
-    overflow-y: auto;
+    overflow-y: visible; /* No vertical scroll on container - let page scroll */
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    touch-action: pan-x pan-y;
-    /* Ensure proper height for vertical scrolling */
-    max-height: 80vh;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x; /* Allow horizontal scrolling in container, vertical goes to page */
   }
   
   .projects__column {
@@ -4720,12 +4715,10 @@ body.dark-mode .item-projects__button:hover {
   /* Enhanced touch scrolling for small mobile devices */
   .projects__scroll-container {
     overflow-x: auto;
-    overflow-y: auto;
+    overflow-y: visible; /* No vertical scroll on container - let page scroll */
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
-    touch-action: pan-y; /* Allow vertical scrolling on mobile phones */
-    /* Smaller height for mobile to ensure vertical scrolling is needed */
-    max-height: 70vh;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x; /* Allow horizontal scrolling in container, vertical goes to page */
   }
   
   .projects__column {
