@@ -1612,10 +1612,10 @@
           const projectId = this.getAttribute('data-project-id');
           
           if (projectId) {
-            // Navigate to projects page with project ID parameter
-            window.location.href = `/projects?project=${projectId}`;
+            // Navigate to projects route with project ID parameter
+            window.location.href = `/projects?project=${encodeURIComponent(projectId)}`;
           } else {
-            // Fallback: navigate to projects page without specific project
+            // Fallback: navigate to projects route without specific project
             window.location.href = '/projects';
           }
         });
