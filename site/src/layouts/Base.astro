@@ -14,6 +14,30 @@ const { title = "Site" } = Astro.props;
       } catch (e) {}
     </script>
     
+    <!-- Initial Load Redirect Guard -->
+    <script is:inline>
+      (function() {
+        try {
+          // Check if this is the initial external load (not internal navigation)
+          const hasVisited = sessionStorage.getItem('site_visited');
+          const currentPath = window.location.pathname;
+          
+          // Only redirect on first visit AND if not already on homepage
+          if (!hasVisited && currentPath !== '/') {
+            // Mark as visited BEFORE redirect to prevent loops
+            sessionStorage.setItem('site_visited', 'true');
+            // Redirect to homepage
+            window.location.replace('/');
+          } else if (!hasVisited) {
+            // Mark as visited if landing on homepage
+            sessionStorage.setItem('site_visited', 'true');
+          }
+        } catch (e) {
+          // Fail silently if sessionStorage is unavailable
+        }
+      })();
+    </script>
+    
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
