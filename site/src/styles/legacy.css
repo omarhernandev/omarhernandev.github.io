@@ -1721,9 +1721,9 @@ body.dark-mode .about::before {
 }
 
 .about__text {
-  max-width: clamp(280px, 65vw, 600px);
+  max-width: min(70ch, 90vw);
   width: 100%;
-  text-align: center;
+  text-align: left;
   margin: 0 auto;
 }
 
@@ -1731,9 +1731,7 @@ body.dark-mode .about::before {
   font-size: clamp(0.85rem, 2.5vw, 1rem);
   line-height: clamp(1.5, 2vw, 1.7);
   margin-bottom: clamp(0.8rem, 2vw, 1.2rem);
-  text-wrap: balance; /* Modern browsers only */
-  -webkit-hyphens: auto;
-  hyphens: auto;
+  text-align: left;
   word-break: break-word;
   overflow-wrap: break-word;
 }
