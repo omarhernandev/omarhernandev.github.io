@@ -2345,6 +2345,46 @@ body.dark-mode .filter-label {
   
   /* Title visibility and ordering already handled at 900px breakpoint */
   
+  /* ===== MOBILE READABILITY IMPROVEMENTS ===== */
+  /* Make About text more comfortable to read on phones */
+  .about__container {
+    width: 92vw;
+    max-width: none;
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+  
+  .about__text {
+    max-width: none; /* Remove restrictive max-width on mobile */
+    text-align: left; /* Left-align for better readability */
+    width: 100%;
+  }
+  
+  .about__text p {
+    text-align: left;
+    font-size: clamp(1rem, 3.2vw + 0.1rem, 1.1rem);
+    line-height: 1.65;
+    letter-spacing: normal;
+    max-width: none;
+    text-wrap: pretty; /* Modern text wrapping */
+    overflow-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    margin-bottom: 1.2rem;
+  }
+  
+  /* Keep headings centered for visual hierarchy */
+  .about h1,
+  .about h2,
+  .about h3,
+  .page__about .page-header__title,
+  .about__mobile-title,
+  .about__desktop-title {
+    text-align: center;
+    text-wrap: balance; /* Better line breaks for headings */
+  }
+  /* ===== END MOBILE READABILITY IMPROVEMENTS ===== */
+  
   .testimonial__container {
     padding: 2rem 1rem;
   }
