@@ -4421,29 +4421,22 @@ body.dark-mode .projects {
 
 /* Horizontal Scroll Container */
 .projects__scroll-container {
-  overflow-x: auto;
-  overflow-y: auto; /* Changed from visible to auto to enable vertical scrolling */
+  overflow: auto; /* Consolidated overflow-x and overflow-y */
   scroll-behavior: smooth;
-  padding: 20px 0 12px 0; /* Increased top padding from 12px to 20px */
-  -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on iOS */
-  overscroll-behavior: none; /* Prevent elastic bouncing completely */
-  overscroll-behavior-x: none; /* Prevent horizontal bounce */
-  overscroll-behavior-y: none; /* Prevent vertical bounce */
-  touch-action: pan-x pan-y; /* Allow both horizontal and vertical touch scrolling */
-  /* Prevent cards from bouncing beyond container bounds */
+  padding: 20px 0 12px 0;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none; /* Prevent elastic bouncing on all axes */
+  touch-action: pan-x pan-y;
   position: relative;
   max-width: 100%;
 }
 
-/* Dragging state for enhanced scroll interaction (mouse only) */
+/* Dragging state (mouse only) */
 .projects__scroll-container.dragging {
   cursor: grabbing;
-  -webkit-user-select: none;
   user-select: none;
   scroll-behavior: auto;
-  /* Disable smooth scrolling and elastic behavior while dragging */
-  overscroll-behavior: none;
-  -webkit-overflow-scrolling: auto; /* Disable momentum on iOS while dragging */
+  -webkit-overflow-scrolling: auto;
 }
 
 .projects__scroll-container:focus {
@@ -4484,14 +4477,6 @@ body.dark-mode .projects {
 /* Touch device optimizations */
 @media (hover: none) and (pointer: coarse) {
   .projects__scroll-container {
-    overflow-x: auto;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: none; /* Prevent bouncing on touch devices */
-    overscroll-behavior-x: none;
-    overscroll-behavior-y: none;
-    touch-action: pan-x pan-y;
-    /* Ensure vertical scrolling is available when content overflows */
     max-height: 75vh;
   }
 }
@@ -4693,16 +4678,7 @@ body.dark-mode .item-projects__button:hover {
     padding: 0 1rem;
   }
   
-  /* Enhanced touch scrolling for mobile devices */
   .projects__scroll-container {
-    overflow-x: auto;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: none; /* Prevent bouncing on mobile */
-    overscroll-behavior-x: none;
-    overscroll-behavior-y: none;
-    touch-action: pan-x pan-y;
-    /* Ensure proper height for vertical scrolling */
     max-height: 80vh;
   }
   
@@ -4731,16 +4707,7 @@ body.dark-mode .item-projects__button:hover {
     max-width: calc(2 * (220px + 20px) + 40px); /* ~480px - shows 2 cards on mobile */
   }
   
-  /* Enhanced touch scrolling for small mobile devices */
   .projects__scroll-container {
-    overflow-x: auto;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: none; /* Prevent bouncing on small mobile */
-    overscroll-behavior-x: none;
-    overscroll-behavior-y: none;
-    touch-action: pan-x pan-y;
-    /* Smaller height for mobile to ensure vertical scrolling is needed */
     max-height: 70vh;
   }
   
