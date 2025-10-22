@@ -324,7 +324,11 @@
       window.addEventListener('resize', () => {
         this.resize();
         this.setupCanvas();
-        this.createStreams();
+        // Avoid resetting streams on resize (e.g., mobile UI show/hide when scrolling)
+        // Only initialize if streams were somehow cleared
+        if (!this.streams || this.streams.length === 0) {
+          this.createStreams();
+        }
       });
       
       // Pause animation when tab is not visible
