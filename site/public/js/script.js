@@ -791,42 +791,18 @@
 
     // Initialize theme on page load with cross-browser support
     var savedTheme = getStorageItem('theme');
-    var prefersDark = false;
     
-    // Check for prefers-color-scheme with fallback
-    if (window.matchMedia) {
-      try {
-        prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
-        // Listen for system theme changes
-        var darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        if (darkModeQuery.addEventListener) {
-          darkModeQuery.addEventListener('change', function(e) {
-            // Only apply system preference if user hasn't manually set a theme
-            if (!getStorageItem('theme')) {
-              applyTheme(e.matches ? 'dark-mode' : 'light-mode');
-            }
-          });
-        }
-      } catch (e) {
-        prefersDark = false;
-      }
-    }
-
-    // Apply saved theme or system preference
-    // Always ensure we start in a known state - default to light mode
+    // Apply saved theme or default to light mode
+    // Always default to light mode unless user has explicitly chosen dark mode
     if (savedTheme) {
       applyTheme(savedTheme);
-    } else if (prefersDark) {
-      applyTheme('dark-mode');
     } else {
-      // Default to light mode - ensure no theme classes are applied initially
+      // Default to light mode - ignore system preference
       applyTheme('light-mode');
     }
     
-    // Force light mode as default on first visit if no saved preference
-    if (!savedTheme && !prefersDark) {
-      // Ensure we're definitely in light mode by removing any dark mode classes
+    // Ensure we're definitely in light mode by removing any dark mode classes if no saved preference
+    if (!savedTheme) {
       removeClass(document.documentElement, 'dark-mode');
       removeClass(document.body, 'dark-mode');
     }
