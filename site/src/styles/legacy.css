@@ -4426,9 +4426,13 @@ body.dark-mode .projects {
   scroll-behavior: smooth;
   padding: 20px 0 12px 0; /* Increased top padding from 12px to 20px */
   -webkit-overflow-scrolling: touch; /* Enable momentum scrolling on iOS */
-  overscroll-behavior-x: contain; /* Prevent scroll chaining on horizontal scroll */
-  overscroll-behavior-y: contain; /* Prevent scroll chaining on vertical scroll */
+  overscroll-behavior: none; /* Prevent elastic bouncing completely */
+  overscroll-behavior-x: none; /* Prevent horizontal bounce */
+  overscroll-behavior-y: none; /* Prevent vertical bounce */
   touch-action: pan-x pan-y; /* Allow both horizontal and vertical touch scrolling */
+  /* Prevent cards from bouncing beyond container bounds */
+  position: relative;
+  max-width: 100%;
 }
 
 /* Dragging state for enhanced scroll interaction (mouse only) */
@@ -4437,6 +4441,9 @@ body.dark-mode .projects {
   -webkit-user-select: none;
   user-select: none;
   scroll-behavior: auto;
+  /* Disable smooth scrolling and elastic behavior while dragging */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: auto; /* Disable momentum on iOS while dragging */
 }
 
 .projects__scroll-container:focus {
@@ -4467,6 +4474,9 @@ body.dark-mode .projects {
 .projects__row {
   display: flex;
   gap: 20px;
+  /* Ensure row doesn't cause bouncing */
+  min-width: min-content;
+  max-width: max-content;
   width: 100%; /* Simplified - let container control the width */
   padding: 16px 0;
 }
@@ -4477,7 +4487,9 @@ body.dark-mode .projects {
     overflow-x: auto;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    overscroll-behavior: none; /* Prevent bouncing on touch devices */
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: none;
     touch-action: pan-x pan-y;
     /* Ensure vertical scrolling is available when content overflows */
     max-height: 75vh;
@@ -4686,7 +4698,9 @@ body.dark-mode .item-projects__button:hover {
     overflow-x: auto;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    overscroll-behavior: none; /* Prevent bouncing on mobile */
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: none;
     touch-action: pan-x pan-y;
     /* Ensure proper height for vertical scrolling */
     max-height: 80vh;
@@ -4722,7 +4736,9 @@ body.dark-mode .item-projects__button:hover {
     overflow-x: auto;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain;
+    overscroll-behavior: none; /* Prevent bouncing on small mobile */
+    overscroll-behavior-x: none;
+    overscroll-behavior-y: none;
     touch-action: pan-x pan-y;
     /* Smaller height for mobile to ensure vertical scrolling is needed */
     max-height: 70vh;
