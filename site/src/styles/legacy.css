@@ -10112,4 +10112,54 @@ body.dark-mode .faq__social-link:hover {
   .faq__social-link:hover {
     transform: none;
   }
+}
+
+/* === ABOUT SECTION: MOBILE READABILITY (PHONES ONLY ≤600px) === */
+/* Match standard resume paragraph layout for better mobile reading experience */
+@media (max-width: 600px) {
+  /* Container: full-width mobile layout with safe padding */
+  .about,
+  .page__about,
+  .about__container {
+    width: 92vw;
+    max-width: 70ch; /* Target ~50-65 characters per line for optimal readability */
+    margin-inline: auto;
+    padding-inline: 16px;
+    align-self: stretch;
+  }
+  
+  /* Text wrapper: override desktop centering constraints */
+  .about__text {
+    max-width: none; /* Remove restrictive 280px minimum */
+    width: 100%;
+    text-align: left; /* Left-align for resume-style reading */
+  }
+  
+  /* Paragraphs: left-aligned, comfortable font size, taller line-height */
+  .about__text p,
+  .about p {
+    text-align: left !important; /* Override center alignment */
+    font-size: clamp(1rem, 3.2vw + 0.1rem, 1.1rem); /* ~16-18px on phones */
+    line-height: 1.6; /* Comfortable reading line-height */
+    letter-spacing: normal;
+    white-space: normal;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    text-wrap: pretty; /* Nicer line breaks where supported */
+    max-width: none; /* Remove any restrictive width caps */
+  }
+  
+  /* Headings: balanced text wrapping for nicer breaks */
+  .about h1,
+  .about h2,
+  .about h3,
+  .about__title {
+    text-wrap: balance; /* Better heading line breaks */
+  }
+  
+  /* Content wrapper: ensure left alignment cascades */
+  .about__content {
+    align-items: flex-start; /* Left-align flex children */
+  }
 } 
