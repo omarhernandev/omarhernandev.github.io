@@ -45,6 +45,8 @@ jspm_packages/
 
 # dotenv environment variables file
 .env
+.env.local
+.env*.local
 
 # Temporary folders
 tmp/
@@ -61,6 +63,7 @@ dist
 .vercel
 .netlify
 .env*
+!.env.example
 *.local
 
 # OS/Editor
