@@ -97,50 +97,56 @@ function validateFormData(data) {
   };
 }
 
-export default async function handler(req, res) {
-  // Only accept POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ 
-      success: false, 
-      message: 'Method not allowed' 
-    });
-  }
-
+// Astro API route handler
+export async function POST({ request }) {
   try {
     // Get client IP address for rate limiting
-    const clientIP = req.headers['x-forwarded-for'] || 
-                     req.headers['x-real-ip'] || 
-                     req.connection?.remoteAddress || 
-                     req.socket?.remoteAddress ||
+    const clientIP = request.headers.get('x-forwarded-for') || 
+                     request.headers.get('x-real-ip') || 
                      'unknown';
 
     // Check rate limit
     if (!checkRateLimit(clientIP)) {
-      return res.status(429).json({
+      return new Response(JSON.stringify({
         success: false,
         message: 'Too many requests. Please try again later.'
+      }), {
+        status: 429,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
     }
 
     // Parse JSON request body
-    const body = req.body;
+    const body = await request.json();
 
     // Honeypot validation - reject if website field has any value
     if (body.website && body.website.trim() !== '') {
       console.error('Honeypot triggered for IP:', clientIP);
-      return res.status(400).json({
+      return new Response(JSON.stringify({
         success: false,
         message: 'Invalid submission'
+      }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
     }
 
     // Server-side validation
     const validation = validateFormData(body);
     if (!validation.isValid) {
-      return res.status(400).json({
+      return new Response(JSON.stringify({
         success: false,
         message: 'Please check your input',
         errors: validation.errors
+      }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
     }
 
@@ -169,24 +175,39 @@ export default async function handler(req, res) {
 
       console.log('Email sent successfully:', emailData.id);
 
-      return res.status(200).json({
+      return new Response(JSON.stringify({
         success: true,
         message: 'Message sent successfully!'
+      }), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
     } catch (emailError) {
       console.error('Failed to send email:', emailError);
-      return res.status(500).json({
+      return new Response(JSON.stringify({
         success: false,
         message: 'Failed to send message. Please try again.'
+      }), {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
     }
 
   } catch (error) {
     console.error('Server error:', error);
-    return res.status(500).json({
+    return new Response(JSON.stringify({
       success: false,
       message: 'Failed to send message. Please try again.'
+    }), {
+      status: 500,
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
   }
 }
