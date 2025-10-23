@@ -9,7 +9,7 @@
   // Configuration object for fine-tuning the Matrix rain effect
   const config = {
     streams: 80,
-    fontSize: 11,
+    fontSize: 9,
     minSpeed: 40,
     maxSpeed: 120,
     minStreamLength: 10,
