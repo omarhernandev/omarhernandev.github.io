@@ -1982,6 +1982,10 @@ body.dark-mode .experience__subtitle {
     text-align: center;
   }
   
+  .experience__content .experience__detail-list li {
+    text-align: left;
+  }
+  
   .experience__title {
     font-size: 2rem;
   }
