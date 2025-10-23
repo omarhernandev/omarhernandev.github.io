@@ -115,31 +115,37 @@ import Section from "../components/base/Section.astro";
               </div>
             </div>
             <div class="contact__info">
-              <form class="contact-form">
-                <div class="form-row">
-                  <div class="form-group">
-                    <label for="firstName">First Name</label>
-                    <input type="text" id="firstName" name="firstName" placeholder="" />
-                  </div>
-                  <div class="form-group">
-                    <label for="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" placeholder="" />
-                  </div>
+              <form class="contact-form" id="contactForm">
+                <!-- Honeypot field - hidden from users but visible to bots -->
+                <div style="position: absolute; left: -9999px; opacity: 0;" aria-hidden="true">
+                  <label for="website">Website</label>
+                  <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+                </div>
+                
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" id="name" name="name" placeholder="" required />
                 </div>
                 <div class="form-group">
                   <label for="email">Email</label>
-                  <input type="email" id="email" name="email" placeholder="" />
+                  <input type="email" id="email" name="email" placeholder="" required />
                 </div>
                 <div class="form-group">
                   <label for="message">Message</label>
                   <div class="message-input-container">
-                    <textarea id="message" name="message" rows="3" placeholder=""></textarea>
+                    <textarea id="message" name="message" rows="3" placeholder="" required></textarea>
                     <div class="typewriter-placeholder" id="typewriter-placeholder">
                       <span class="typewriter-text" id="contact-typewriter-text"></span>
                     </div>
                   </div>
                 </div>
-                <button type="submit" class="send-message-button button">Send Message</button>
+                <button type="submit" class="send-message-button button" id="submitButton">
+                  <span class="button-text">Send Message</span>
+                  <span class="button-loading" style="display: none;">Sending...</span>
+                </button>
+                
+                <!-- Success/Error Messages -->
+                <div id="formMessage" class="form-message" style="display: none;"></div>
               </form>
             </div>
           </div>
@@ -202,11 +208,94 @@ import Section from "../components/base/Section.astro";
       });
     }
     
+    // Contact form submission handler
+    function initContactForm() {
+      const form = document.getElementById('contactForm');
+      const submitButton = document.getElementById('submitButton');
+      const buttonText = submitButton.querySelector('.button-text');
+      const buttonLoading = submitButton.querySelector('.button-loading');
+      const formMessage = document.getElementById('formMessage');
+      
+      if (!form) return;
+      
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        submitButton.disabled = true;
+        buttonText.style.display = 'none';
+        buttonLoading.style.display = 'inline';
+        formMessage.style.display = 'none';
+        
+        // Get form data
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get('name'),
+          email: formData.get('email'),
+          message: formData.get('message'),
+          website: formData.get('website') // honeypot field
+        };
+        
+        try {
+          const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            // Success
+            formMessage.textContent = result.message;
+            formMessage.className = 'form-message success';
+            formMessage.style.display = 'block';
+            form.reset();
+          } else {
+            // Error
+            formMessage.textContent = result.message;
+            formMessage.className = 'form-message error';
+            formMessage.style.display = 'block';
+            
+            // Show field-specific errors if available
+            if (result.errors) {
+              Object.keys(result.errors).forEach(fieldName => {
+                const field = form.querySelector(`[name="${fieldName}"]`);
+                if (field) {
+                  field.style.borderColor = '#ff4444';
+                  field.addEventListener('input', function() {
+                    this.style.borderColor = '';
+                  });
+                }
+              });
+            }
+          }
+        } catch (error) {
+          console.error('Form submission error:', error);
+          formMessage.textContent = 'Failed to send message. Please try again.';
+          formMessage.className = 'form-message error';
+          formMessage.style.display = 'block';
+        } finally {
+          // Reset button state
+          submitButton.disabled = false;
+          buttonText.style.display = 'inline';
+          buttonLoading.style.display = 'none';
+        }
+      });
+    }
+    
     // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initFAQ);
-    } else {
+    function init() {
       initFAQ();
+      initContactForm();
+    }
+    
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
     }
   })();
 </script>
