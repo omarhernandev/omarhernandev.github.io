@@ -748,10 +748,18 @@ function showProjectDetail(projectId) {
     currentProject = projectsData.find(p => p.id === projectId);
     currentTab = 'overview';
     
+    // Check if project is in development (after first 3 projects)
+    const projectIndex = projectsData.findIndex(p => p.id === projectId);
+    const isInDevelopment = projectIndex >= 3;
+    
     projectModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
     
-    renderProjectModal();
+    if (isInDevelopment) {
+        renderInProgressModal();
+    } else {
+        renderProjectModal();
+    }
 }
 
 // Close project modal
@@ -834,6 +842,32 @@ function renderProjectModal() {
         
         <div class="tab-content">
             ${renderTabContent()}
+        </div>
+    `;
+}
+
+// Render in-progress modal
+function renderInProgressModal() {
+    if (!currentProject) return;
+    
+    const modalContent = projectModal.querySelector('.modal-content');
+    modalContent.innerHTML = `
+        <button class="modal-back-button" onclick="closeProjectModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Projects
+        </button>
+        
+        <div class="in-progress-content">
+            <div class="in-progress-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+            </div>
+            <h2 class="in-progress-title">In Development</h2>
+            <p class="in-progress-description">This project is currently being developed. Check back soon for more details!</p>
         </div>
     `;
 }
