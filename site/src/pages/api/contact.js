@@ -51,10 +51,48 @@ function sanitizeInput(input) {
     .replace(/>/g, '&gt;');
 }
 
-// Validate email format
+// Validate email format with enhanced validation
 function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  // RFC 5322 compliant regex (simplified but more robust)
+  const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  
+  if (!emailRegex.test(email)) return false;
+  
+  // Additional validation checks
+  const parts = email.split('@');
+  if (parts.length !== 2) return false;
+  
+  const [local, domain] = parts;
+  
+  // Local part validation
+  if (local.length > 64) return false;
+  if (local.startsWith('.') || local.endsWith('.')) return false;
+  if (local.includes('..')) return false;
+  
+  // Domain validation
+  if (domain.length > 253) return false;
+  if (domain.startsWith('.') || domain.endsWith('.')) return false;
+  if (domain.includes('..')) return false;
+  
+  // Check for valid TLD
+  const domainParts = domain.split('.');
+  if (domainParts.length < 2) return false;
+  const tld = domainParts[domainParts.length - 1];
+  if (tld.length < 2) return false;
+  
+  // Check for common invalid patterns
+  const invalidPatterns = [
+    /\.{2,}/,           // Multiple consecutive dots
+    /@.*@/,             // Multiple @ symbols
+    /\.@/,               // Dot before @
+    /@\./,               // Dot after @
+    /^@/,                // Starts with @
+    /@$/,                // Ends with @
+    /\s/,                // Contains spaces
+    /[<>]/,              // Contains angle brackets
+  ];
+  
+  return !invalidPatterns.some(pattern => pattern.test(email));
 }
 
 // Server-side validation

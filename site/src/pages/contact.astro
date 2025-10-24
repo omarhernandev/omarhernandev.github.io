@@ -215,6 +215,80 @@ import Section from "../components/base/Section.astro";
       });
     }
     
+    // Enhanced email validation function
+    function isValidEmail(email) {
+      // More comprehensive regex
+      const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+      
+      // Additional checks
+      if (!emailRegex.test(email)) return false;
+      
+      // Check for common typos and invalid patterns
+      const invalidPatterns = [
+        /\.{2,}/,           // Multiple consecutive dots
+        /^\./,              // Starts with dot
+        /\.$/,              // Ends with dot
+        /@.*@/,             // Multiple @ symbols
+        /\.@/,               // Dot before @
+        /@\./,               // Dot after @
+        /^@/,                // Starts with @
+        /@$/,                // Ends with @
+        /\s/,                // Contains spaces
+        /[<>]/,              // Contains angle brackets
+      ];
+      
+      return !invalidPatterns.some(pattern => pattern.test(email));
+    }
+    
+    // Email validation functionality
+    function initEmailValidation() {
+      const emailField = document.getElementById('email');
+      
+      if (!emailField) return;
+      
+      // Create error message element
+      const emailError = document.createElement('div');
+      emailError.className = 'field-error';
+      emailError.style.display = 'none';
+      emailError.style.color = '#ff4444';
+      emailError.style.fontSize = '0.8rem';
+      emailError.style.marginTop = '0.25rem';
+      emailError.setAttribute('aria-live', 'polite');
+      
+      // Insert error message after the email field
+      emailField.parentNode.insertBefore(emailError, emailField.nextSibling);
+      
+      function showEmailError(message) {
+        emailError.textContent = message;
+        emailError.style.display = 'block';
+        emailField.style.borderColor = '#ff4444';
+        emailField.setAttribute('aria-invalid', 'true');
+      }
+      
+      function clearEmailError() {
+        emailError.style.display = 'none';
+        emailField.style.borderColor = '';
+        emailField.setAttribute('aria-invalid', 'false');
+      }
+      
+      // Validate email on blur (when user leaves the field)
+      emailField.addEventListener('blur', function() {
+        const email = this.value.trim();
+        if (email && !isValidEmail(email)) {
+          showEmailError('Please enter a valid email address');
+        } else {
+          clearEmailError();
+        }
+      });
+      
+      // Clear error on input (when user starts typing)
+      emailField.addEventListener('input', function() {
+        if (this.style.borderColor === '#ff4444') {
+          clearEmailError();
+        }
+      });
+    }
+    
     // Character counter functionality
     function initCharacterCounter() {
       const messageField = document.getElementById('message');
@@ -371,6 +445,7 @@ import Section from "../components/base/Section.astro";
     // Initialize when DOM is ready
     function init() {
       initFAQ();
+      initEmailValidation();
       initCharacterCounter();
       initContactForm();
     }
