@@ -138,6 +138,120 @@ function getTechIcon(techName) {
 // Projects data
 const projectsData = [
     {
+        id: 'apple-stock-analysis',
+        title: 'R Statistics: Apple Stock Analysis',
+        shortDesc: 'Reproducible R Markdown time-series analysis on 40+ years of Apple stock data for statistical investment insights.',
+        icon: '📊',
+        tags: ['Data Analysis', 'Time Series', 'Statistical Forecasting'],
+        techStack: ['R', 'tidyverse', 'ggplot2', 'RMarkdown'],
+        category: 'Data Analysis',
+        timeIndicator: '1980-2025',
+        primaryMetric: '45 years of data',
+        demoUrl: 'https://oohmxi.github.io/AppleStockAnalysis/',
+        githubUrl: 'https://github.com/oohmxi/AppleStockAnalysis',
+        impact: {
+            after: {
+                dataRange: '45+ Years of Data',
+                insights: 'Interactive Insights',
+                statistics: 'Applied Statistics'
+            }
+        },
+        challenge: 'Build a reproducible, long-horizon analysis of Apple\'s historical stock data and generate statistically sound forecasts to inform high-level investment thinking. The project aims to demonstrate end-to-end data science workflow skills: importing, cleaning, analyzing, sampling, validating statistical assumptions, and producing interactive visualizations.',
+        solution: 'Developed an R/RMarkdown time-series workflow on 1980–2025 AAPL data (Kaggle). The project included data import and preprocessing, exploratory analysis of categorical and numerical variables, distribution checks, and demonstrations of the Central Limit Theorem through random sampling. Data wrangling techniques were applied for structured insights, while seasonal decomposition and statistical analysis were used to model long-term stock trends. Interactive Plotly plots and a hosted HTML report were produced for transparency and reproducibility.',
+        features: [
+            'Data import, preprocessing, and wrangling in R',
+            'Exploratory analysis with visuals for categorical and numerical variables',
+            'Distribution analysis, random sampling, and Central Limit Theorem demonstration',
+            'Comparative insights from different sampling methods',
+            'Interactive data visualizations with Plotly',
+            'Advanced time series analysis and statistical forecasting',
+            'Long-term trend and seasonality insights',
+            'Hosted HTML report (GitHub Pages)'
+        ],
+        architecture: {
+            analysis: ['R Statistics', 'Time Series Analysis', 'Statistical Modeling'],
+            visualization: ['ggplot2', 'tidyverse', 'RMarkdown'],
+            data: ['Kaggle AAPL Dataset', 'Historical Stock Data', 'Time Series Data']
+        }
+    },
+    {
+        id: 'fmri-prosthetics',
+        title: 'fMRI: Prosthetics Feasability Study',
+        shortDesc: 'Advanced functional neuroimaging analysis to assess brain-computer interface viability for next-generation prosthetic control systems and neural rehabilitation.',
+        icon: '🧠',
+        tags: ['RESEARCH', 'fMRI', 'Data Analysis'],
+        techStack: ['Python', 'MATLAB', 'FSL', 'AFNI', 'R', 'Statistical Analysis'],
+        category: 'RESEARCH',
+        timeIndicator: 'Research Study',
+        primaryMetric: 'BCI Feasibility Assessment',
+        impact: {
+            before: {
+                research: 'Limited BCI research',
+                analysis: 'Manual signal analysis',
+                feasibility: 'Unclear feasibility'
+            },
+            after: {
+                accuracy: '92% classification rate',
+                subjects: '25+ participants studied',
+                applications: 'Clear prosthetic control viability'
+            }
+        },
+        challenge: 'Assess the feasibility of using functional magnetic resonance imaging (fMRI) to develop brain-computer interfaces for advanced prosthetic control systems.',
+        solution: 'Conducted comprehensive neuroimaging analysis using advanced signal processing techniques to identify optimal brain regions and neural patterns for prosthetic control.',
+        features: [
+            'Advanced fMRI data preprocessing',
+            'Machine learning classification algorithms',
+            'Real-time signal processing pipeline',
+            'Statistical analysis of neural patterns',
+            'Brain-computer interface prototyping'
+        ],
+        architecture: {
+            analysis: ['Python', 'MATLAB', 'R'],
+            imaging: ['FSL', 'AFNI', 'SPM'],
+            ml: ['scikit-learn', 'TensorFlow', 'PyTorch'],
+            stats: ['R', 'SciPy', 'Statistical Modeling']
+        },
+        githubUrl: 'https://github.com/oohmxi/fmri-semantic-neural-network'
+    },
+    {
+        id: 'neuroplasticity-stroke',
+        title: 'Neuroplasticity: Stroke Recovery',
+        shortDesc: 'A comprehensive data analysis and predictive modeling system for stroke recovery patterns and patient outcomes.',
+        icon: '🧠',
+        tags: ['RESEARCH', 'Data Analysis', 'Healthcare'],
+        techStack: ['Python', 'R', 'MATLAB', 'Statistical Analysis', 'Machine Learning'],
+        category: 'RESEARCH',
+        timeIndicator: 'Research Study',
+        primaryMetric: 'Stroke Recovery Modeling',
+        impact: {
+            before: {
+                rehabilitation: 'Generic rehabilitation',
+                prediction: 'Limited recovery prediction',
+                approach: 'One-size-fits-all approach'
+            },
+            after: {
+                accuracy: '87% recovery prediction accuracy',
+                patients: '200+ patients analyzed',
+                outcomes: 'Improved rehabilitation protocols'
+            }
+        },
+        challenge: 'Develop predictive models to understand neuroplasticity patterns in stroke recovery and optimize rehabilitation strategies for better patient outcomes.',
+        solution: 'Built comprehensive data analysis pipeline combining neuroimaging data, clinical assessments, and behavioral metrics to predict recovery trajectories and personalize treatment plans.',
+        features: [
+            'DTI brain imaging analysis',
+            'Predictive recovery modeling',
+            'Statistical pattern recognition',
+            'Clinical outcome correlation',
+            'Rehabilitation optimization'
+        ],
+        architecture: {
+            analysis: ['Python', 'R', 'MATLAB'],
+            imaging: ['DTI', 'FSL', 'AFNI'],
+            ml: ['scikit-learn', 'Statistical Modeling'],
+            data: ['Clinical Data', 'Neuroimaging', 'Behavioral Metrics']
+        }
+    },
+    {
         id: 'financial-ledger',
         title: 'Financial Ledger Automation Platform',
         shortDesc: 'Reduced processing time by 98% for client financial ledgers',
@@ -236,43 +350,6 @@ const projectsData = [
             backend: ['Node.js', 'Express', 'JWT Authentication'],
             database: ['MongoDB', 'Redis Cache'],
             devops: ['AWS Lambda', 'CloudWatch', 'S3']
-        }
-    },
-    {
-        id: 'apple-stock-analysis',
-        title: 'R Statistics: Apple Stock Analysis',
-        shortDesc: 'Reproducible R Markdown time-series analysis on 40+ years of Apple stock data for statistical investment insights.',
-        icon: '📊',
-        tags: ['Data Analysis', 'Time Series', 'Statistical Forecasting'],
-        techStack: ['R', 'tidyverse', 'ggplot2', 'RMarkdown'],
-        category: 'Data Analysis',
-        timeIndicator: '1980-2025',
-        primaryMetric: '45 years of data',
-        demoUrl: 'https://oohmxi.github.io/AppleStockAnalysis/',
-        githubUrl: 'https://github.com/oohmxi/AppleStockAnalysis',
-        impact: {
-            after: {
-                dataRange: '45+ Years of Data',
-                insights: 'Interactive Insights',
-                statistics: 'Applied Statistics'
-            }
-        },
-        challenge: 'Build a reproducible, long-horizon analysis of Apple\'s historical stock data and generate statistically sound forecasts to inform high-level investment thinking. The project aims to demonstrate end-to-end data science workflow skills: importing, cleaning, analyzing, sampling, validating statistical assumptions, and producing interactive visualizations.',
-        solution: 'Developed an R/RMarkdown time-series workflow on 1980–2025 AAPL data (Kaggle). The project included data import and preprocessing, exploratory analysis of categorical and numerical variables, distribution checks, and demonstrations of the Central Limit Theorem through random sampling. Data wrangling techniques were applied for structured insights, while seasonal decomposition and statistical analysis were used to model long-term stock trends. Interactive Plotly plots and a hosted HTML report were produced for transparency and reproducibility.',
-        features: [
-            'Data import, preprocessing, and wrangling in R',
-            'Exploratory analysis with visuals for categorical and numerical variables',
-            'Distribution analysis, random sampling, and Central Limit Theorem demonstration',
-            'Comparative insights from different sampling methods',
-            'Interactive data visualizations with Plotly',
-            'Advanced time series analysis and statistical forecasting',
-            'Long-term trend and seasonality insights',
-            'Hosted HTML report (GitHub Pages)'
-        ],
-        architecture: {
-            analysis: ['R Statistics', 'Time Series Analysis', 'Statistical Modeling'],
-            visualization: ['ggplot2', 'tidyverse', 'RMarkdown'],
-            data: ['Kaggle AAPL Dataset', 'Historical Stock Data', 'Time Series Data']
         }
     },
     {
@@ -390,45 +467,6 @@ const projectsData = [
         }
     },
     {
-        id: 'fmri-prosthetics',
-        title: 'fMRI: Prosthetics Feasability Study',
-        shortDesc: 'Advanced functional neuroimaging analysis to assess brain-computer interface viability for next-generation prosthetic control systems and neural rehabilitation.',
-        icon: '🧠',
-        tags: ['RESEARCH', 'fMRI', 'Data Analysis'],
-        techStack: ['Python', 'MATLAB', 'FSL', 'AFNI', 'R', 'Statistical Analysis'],
-        category: 'RESEARCH',
-        timeIndicator: 'Research Study',
-        primaryMetric: 'BCI Feasibility Assessment',
-        impact: {
-            before: {
-                research: 'Limited BCI research',
-                analysis: 'Manual signal analysis',
-                feasibility: 'Unclear feasibility'
-            },
-            after: {
-                accuracy: '92% classification rate',
-                subjects: '25+ participants studied',
-                applications: 'Clear prosthetic control viability'
-            }
-        },
-        challenge: 'Assess the feasibility of using functional magnetic resonance imaging (fMRI) to develop brain-computer interfaces for advanced prosthetic control systems.',
-        solution: 'Conducted comprehensive neuroimaging analysis using advanced signal processing techniques to identify optimal brain regions and neural patterns for prosthetic control.',
-        features: [
-            'Advanced fMRI data preprocessing',
-            'Machine learning classification algorithms',
-            'Real-time signal processing pipeline',
-            'Statistical analysis of neural patterns',
-            'Brain-computer interface prototyping'
-        ],
-        architecture: {
-            analysis: ['Python', 'MATLAB', 'R'],
-            imaging: ['FSL', 'AFNI', 'SPM'],
-            ml: ['scikit-learn', 'TensorFlow', 'PyTorch'],
-            stats: ['R', 'SciPy', 'Statistical Modeling']
-        },
-        githubUrl: 'https://github.com/oohmxi/fmri-semantic-neural-network'
-    },
-    {
         id: 'data-privacy',
         title: 'Data Privacy',
         shortDesc: 'Comprehensive data privacy and security framework ensuring TCPA compliance, HIPAA protections, and robust IPv4/IPv6 network security protocols.',
@@ -465,44 +503,6 @@ const projectsData = [
             compliance: ['HIPAA', 'TCPA', 'SOC 2'],
             network: ['IPv4/IPv6', 'Firewall', 'VPN'],
             monitoring: ['SIEM', 'Log Analysis', 'Threat Detection']
-        }
-    },
-    {
-        id: 'neuroplasticity-stroke',
-        title: 'Neuroplasticity: Stroke Recovery',
-        shortDesc: 'A comprehensive data analysis and predictive modeling system for stroke recovery patterns and patient outcomes.',
-        icon: '🧠',
-        tags: ['RESEARCH', 'Data Analysis', 'Healthcare'],
-        techStack: ['Python', 'R', 'MATLAB', 'Statistical Analysis', 'Machine Learning'],
-        category: 'RESEARCH',
-        timeIndicator: 'Research Study',
-        primaryMetric: 'Stroke Recovery Modeling',
-        impact: {
-            before: {
-                rehabilitation: 'Generic rehabilitation',
-                prediction: 'Limited recovery prediction',
-                approach: 'One-size-fits-all approach'
-            },
-            after: {
-                accuracy: '87% recovery prediction accuracy',
-                patients: '200+ patients analyzed',
-                outcomes: 'Improved rehabilitation protocols'
-            }
-        },
-        challenge: 'Develop predictive models to understand neuroplasticity patterns in stroke recovery and optimize rehabilitation strategies for better patient outcomes.',
-        solution: 'Built comprehensive data analysis pipeline combining neuroimaging data, clinical assessments, and behavioral metrics to predict recovery trajectories and personalize treatment plans.',
-        features: [
-            'DTI brain imaging analysis',
-            'Predictive recovery modeling',
-            'Statistical pattern recognition',
-            'Clinical outcome correlation',
-            'Rehabilitation optimization'
-        ],
-        architecture: {
-            analysis: ['Python', 'R', 'MATLAB'],
-            imaging: ['DTI', 'FSL', 'AFNI'],
-            ml: ['scikit-learn', 'Statistical Modeling'],
-            data: ['Clinical Data', 'Neuroimaging', 'Behavioral Metrics']
         }
     },
     {
