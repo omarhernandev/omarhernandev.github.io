@@ -745,14 +745,6 @@ function getFirstImpactValue(impact) {
 
 // Show project detail in modal
 function showProjectDetail(projectId) {
-    const projectIndex = projectsData.findIndex(p => p.id === projectId);
-    
-    // Show in-progress modal for projects 4+ (index 3+)
-    if (projectIndex >= 3) {
-        showInProgressModal();
-        return;
-    }
-    
     currentProject = projectsData.find(p => p.id === projectId);
     currentTab = 'overview';
     
@@ -760,33 +752,6 @@ function showProjectDetail(projectId) {
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
     
     renderProjectModal();
-}
-
-// Show in-progress modal
-function showInProgressModal() {
-    projectModal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    
-    const modalContent = projectModal.querySelector('.modal-content');
-    modalContent.innerHTML = `
-        <div style="display: flex; align-items: center; justify-content: center; min-height: 60vh;">
-            <div style="max-width: 500px; text-align: center; padding: 2rem;">
-                <div style="font-size: 4rem; margin-bottom: 1.5rem;">🚧</div>
-                <h2 style="font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: #1f2937;">
-                    Development in Progress
-                </h2>
-                <p style="font-size: 1.125rem; color: #6b7280; margin-bottom: 2rem; line-height: 1.6;">
-                    This project is currently under development. Check back soon for updates!
-                </p>
-                <button onclick="closeProjectModal()" 
-                        style="background: #3b82f6; color: white; padding: 0.75rem 2rem; 
-                               border-radius: 0.5rem; font-weight: 600; border: none; 
-                               cursor: pointer; font-size: 1rem;">
-                    Got it
-                </button>
-            </div>
-        </div>
-    `;
 }
 
 // Close project modal
