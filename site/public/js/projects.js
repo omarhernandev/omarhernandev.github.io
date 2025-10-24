@@ -748,10 +748,20 @@ function showProjectDetail(projectId) {
     currentProject = projectsData.find(p => p.id === projectId);
     currentTab = 'overview';
     
-    projectModal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    // Check if this is a production-ready project (first 3 projects)
+    const productionReadyProjects = ['apple-stock-analysis', 'fmri-prosthetics', 'neuroplasticity-stroke'];
     
-    renderProjectModal();
+    if (productionReadyProjects.includes(projectId)) {
+        // Show detailed modal for production-ready projects
+        projectModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        renderProjectModal();
+    } else {
+        // Show in-progress modal for development projects
+        projectModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        renderInProgressModal();
+    }
 }
 
 // Close project modal
@@ -834,6 +844,67 @@ function renderProjectModal() {
         
         <div class="tab-content">
             ${renderTabContent()}
+        </div>
+    `;
+}
+
+// Render in-progress modal
+function renderInProgressModal() {
+    if (!currentProject) return;
+    
+    const modalContent = projectModal.querySelector('.modal-content');
+    modalContent.innerHTML = `
+        <button class="modal-back-button" onclick="closeProjectModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Projects
+        </button>
+        
+        <div class="in-progress-modal">
+            <div class="in-progress-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+            </div>
+            
+            <h1 class="in-progress-title">In Progress</h1>
+            <p class="in-progress-subtitle">This project is currently under development. Check back soon for updates!</p>
+            
+            <div class="in-progress-details">
+                <div class="project-info">
+                    <h3>${currentProject.title}</h3>
+                    <p>${currentProject.shortDesc}</p>
+                </div>
+                
+                <div class="tech-stack-preview">
+                    <h4>Technologies</h4>
+                    <div class="tech-badges">
+                        ${currentProject.techStack.slice(0, 4).map(tech => {
+                            const iconUrl = getTechIcon(tech);
+                            return iconUrl ? 
+                                `<span class="tech-badge tech-badge--with-icon">
+                                    <img src="${iconUrl}" alt="${tech}" class="tech-badge__icon" />
+                                    <span class="tech-badge__text">${tech}</span>
+                                </span>` :
+                                `<span class="tech-badge">${tech}</span>`;
+                        }).join('')}
+                        ${currentProject.techStack.length > 4 ? 
+                            `<span class="tech-badge tech-badge-more">+${currentProject.techStack.length - 4} more</span>` : ''
+                        }
+                    </div>
+                </div>
+            </div>
+            
+            <div class="in-progress-actions">
+                <button class="btn btn-primary" onclick="closeProjectModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Projects
+                </button>
+            </div>
         </div>
     `;
 }
