@@ -746,12 +746,18 @@ function getFirstImpactValue(impact) {
 // Show project detail in modal
 function showProjectDetail(projectId) {
     currentProject = projectsData.find(p => p.id === projectId);
+    const projectIndex = projectsData.findIndex(p => p.id === projectId);
     currentTab = 'overview';
     
     projectModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
     
-    renderProjectModal();
+    // Show in-progress modal for projects 4+ (index 3+)
+    if (projectIndex >= 3) {
+        renderInProgressModal();
+    } else {
+        renderProjectModal();
+    }
 }
 
 // Close project modal
@@ -776,6 +782,44 @@ function checkUrlForProject() {
             }, 100);
         }
     }
+}
+
+// Render in-progress modal
+function renderInProgressModal() {
+    if (!currentProject) return;
+    
+    const modalContent = projectModal.querySelector('.modal-content');
+    modalContent.innerHTML = `
+        <button class="modal-back-button" onclick="closeProjectModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Projects
+        </button>
+        
+        <div class="in-progress-modal">
+            <div class="in-progress-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+            </div>
+            
+            <h1 class="modal-title" style="text-align: center; margin-bottom: 1rem;">${currentProject.title}</h1>
+            
+            <p class="modal-subtitle" style="text-align: center; color: #6b7280; margin-bottom: 1.5rem;">
+                ${currentProject.shortDesc}
+            </p>
+            
+            <div class="in-progress-badge">
+                In Development
+            </div>
+            
+            <p style="text-align: center; color: #6b7280; font-size: 1rem; margin-top: 1.5rem;">
+                This project is currently being developed. Check back soon for detailed information!
+            </p>
+        </div>
+    `;
 }
 
 // Render project modal

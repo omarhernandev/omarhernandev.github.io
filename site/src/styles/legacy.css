@@ -6454,6 +6454,45 @@ body:not(.dark-mode) .modal-overlay {
   height: 12px; /* 16px * 0.75 = 12px */
 }
 
+/* In-Progress Modal */
+.in-progress-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  min-height: 400px;
+}
+
+.in-progress-icon {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.in-progress-icon svg {
+  width: 80px;
+  height: 80px;
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.in-progress-badge {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: #f59e0b;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 999px;
+  text-align: center;
+}
+
 /* Modal Header */
 .modal-header {
   margin-bottom: 1.5rem; /* 2rem * 0.75 = 1.5rem */
@@ -6786,6 +6825,22 @@ body:not(.dark-mode) .modal-overlay {
     flex-direction: column;
   }
   
+  .in-progress-icon {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1.5rem;
+  }
+  
+  .in-progress-icon svg {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .in-progress-badge {
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
+  }
+  
   .comparison-grid {
     grid-template-columns: 1fr;
     gap: 1.125rem; /* 1.5rem * 0.75 = 1.125rem */
@@ -7016,6 +7071,27 @@ body:not(.dark-mode) .modal-overlay {
   
   .modal-actions {
     gap: 0.375rem; /* 0.5rem * 0.75 = 0.375rem */
+  }
+  
+  .in-progress-modal {
+    padding: 1.5rem 0.75rem;
+    min-height: 350px;
+  }
+  
+  .in-progress-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+  }
+  
+  .in-progress-icon svg {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .in-progress-badge {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.75rem;
   }
   
   .modal-metrics {
