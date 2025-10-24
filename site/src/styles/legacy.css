@@ -6428,6 +6428,85 @@ body:not(.dark-mode) .modal-overlay {
   padding: 1.5rem; /* 2rem * 0.75 = 1.5rem */
 }
 
+/* In-Progress Modal Styles */
+.in-progress-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+}
+
+.modal-close-x {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.modal-close-x:hover {
+  color: #4b5563;
+  transform: scale(1.1);
+}
+
+.modal-close-x svg {
+  width: 24px;
+  height: 24px;
+}
+
+.in-progress-content {
+  text-align: center;
+  max-width: 500px;
+  padding: 2rem;
+}
+
+.in-progress-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.in-progress-title {
+  font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--brand-dark);
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.in-progress-message {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.125rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.in-progress-btn {
+  min-width: 120px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+}
+
 /* Back Button */
 .modal-back-button {
   display: inline-flex;
@@ -6922,6 +7001,24 @@ body:not(.dark-mode) .modal-overlay {
   .challenge-item {
     padding: 0.938rem; /* 1.25rem * 0.75 = 0.938rem */
   }
+  
+  /* In-Progress Modal Responsive */
+  .in-progress-content {
+    padding: 1.5rem;
+  }
+  
+  .in-progress-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .in-progress-title {
+    font-size: 1.5rem;
+  }
+  
+  .in-progress-message {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -7038,6 +7135,35 @@ body:not(.dark-mode) .modal-overlay {
   /* Code tab placeholder text - reduce by 25% total */
   .project-modal .tab-panel p {
     font-size: 0.54rem !important; /* Reduced by additional 10% from 0.6rem */
+  }
+  
+  /* In-Progress Modal Responsive Small */
+  .in-progress-content {
+    padding: 1rem;
+  }
+  
+  .in-progress-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .in-progress-title {
+    font-size: 1.25rem;
+  }
+  
+  .in-progress-message {
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .modal-close-x {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+  
+  .modal-close-x svg {
+    width: 20px;
+    height: 20px;
   }
 }
 

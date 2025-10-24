@@ -746,12 +746,18 @@ function getFirstImpactValue(impact) {
 // Show project detail in modal
 function showProjectDetail(projectId) {
     currentProject = projectsData.find(p => p.id === projectId);
+    const projectIndex = projectsData.findIndex(p => p.id === projectId);
     currentTab = 'overview';
     
     projectModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
     
-    renderProjectModal();
+    // Show in-progress modal for projects 4 and onwards (index 3+)
+    if (projectIndex >= 3) {
+        renderInProgressModal();
+    } else {
+        renderProjectModal();
+    }
 }
 
 // Close project modal
@@ -776,6 +782,29 @@ function checkUrlForProject() {
             }, 100);
         }
     }
+}
+
+// Render in-progress modal
+function renderInProgressModal() {
+    if (!currentProject) return;
+    
+    const modalContent = projectModal.querySelector('.modal-content');
+    modalContent.innerHTML = `
+        <div class="in-progress-modal">
+            <button class="modal-close-x" onclick="closeProjectModal()" aria-label="Close modal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <div class="in-progress-content">
+                <div class="in-progress-icon">🚧</div>
+                <h2 class="in-progress-title">Development in Progress</h2>
+                <p class="in-progress-message">This project is currently under development. Check back soon for updates!</p>
+                <button class="btn btn-primary in-progress-btn" onclick="closeProjectModal()">Got it</button>
+            </div>
+        </div>
+    `;
 }
 
 // Render project modal
