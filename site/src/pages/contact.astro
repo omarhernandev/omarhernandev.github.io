@@ -124,7 +124,7 @@ import Section from "../components/base/Section.astro";
                 
                 <div class="form-group">
                   <label for="name">Name</label>
-                  <input type="text" id="name" name="name" placeholder="" required />
+                  <input type="text" id="name" name="name" placeholder="" minlength="2" maxlength="100" required />
                 </div>
                 <div class="form-group">
                   <label for="email">Email</label>
@@ -133,9 +133,13 @@ import Section from "../components/base/Section.astro";
                 <div class="form-group">
                   <label for="message">Message</label>
                   <div class="message-input-container">
-                    <textarea id="message" name="message" rows="3" placeholder="" required></textarea>
+                    <textarea id="message" name="message" rows="3" placeholder="" minlength="10" maxlength="1000" required></textarea>
                     <div class="typewriter-placeholder" id="typewriter-placeholder">
                       <span class="typewriter-text" id="contact-typewriter-text"></span>
+                    </div>
+                    <!-- Character counter -->
+                    <div class="character-counter" id="characterCounter">
+                      <span id="charCount">0</span>/1000 characters
                     </div>
                   </div>
                 </div>
@@ -166,6 +170,9 @@ import Section from "../components/base/Section.astro";
     </button>
   </main>
 </Base>
+
+<!-- Load confetti library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script is:inline>
   (function() {
@@ -208,6 +215,61 @@ import Section from "../components/base/Section.astro";
       });
     }
     
+    // Character counter functionality
+    function initCharacterCounter() {
+      const messageField = document.getElementById('message');
+      const charCount = document.getElementById('charCount');
+      const characterCounter = document.getElementById('characterCounter');
+      
+      if (!messageField || !charCount || !characterCounter) return;
+      
+      function updateCounter() {
+        const length = messageField.value.length;
+        charCount.textContent = length;
+        
+        // Change color when approaching limit
+        if (length >= 950) {
+          characterCounter.style.color = '#ff4444';
+        } else if (length >= 800) {
+          characterCounter.style.color = '#ff8800';
+        } else {
+          characterCounter.style.color = '';
+        }
+      }
+      
+      messageField.addEventListener('input', updateCounter);
+      updateCounter(); // Initialize counter
+    }
+    
+    // Confetti celebration
+    function triggerConfetti() {
+      if (typeof confetti === 'undefined') return;
+      
+      // Multiple confetti bursts over 2-3 seconds
+      const duration = 2000;
+      const animationEnd = Date.now() + duration;
+      
+      function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+      
+      const interval = setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+        
+        if (timeLeft <= 0) {
+          clearInterval(interval);
+          return;
+        }
+        
+        // Random confetti bursts
+        confetti({
+          particleCount: randomInRange(50, 100),
+          spread: randomInRange(50, 70),
+          origin: { y: randomInRange(0.6, 0.8) }
+        });
+      }, 200);
+    }
+    
     // Contact form submission handler
     function initContactForm() {
       const form = document.getElementById('contactForm');
@@ -226,6 +288,12 @@ import Section from "../components/base/Section.astro";
         buttonText.style.display = 'none';
         buttonLoading.style.display = 'inline';
         formMessage.style.display = 'none';
+        
+        // Clear any previous field highlighting
+        const fields = form.querySelectorAll('input, textarea');
+        fields.forEach(field => {
+          field.style.borderColor = '';
+        });
         
         // Get form data
         const formData = new FormData(form);
@@ -248,14 +316,24 @@ import Section from "../components/base/Section.astro";
           const result = await response.json();
           
           if (result.success) {
-            // Success
-            formMessage.textContent = result.message;
+            // Success - show custom message and trigger confetti
+            formMessage.textContent = "Thanks for reaching out! I'll get back to you soon.";
             formMessage.className = 'form-message success';
             formMessage.style.display = 'block';
             form.reset();
+            
+            // Reset character counter
+            const charCount = document.getElementById('charCount');
+            if (charCount) charCount.textContent = '0';
+            
+            // Trigger confetti celebration
+            triggerConfetti();
+            
+            // Announce success to screen readers
+            formMessage.setAttribute('aria-live', 'polite');
           } else {
-            // Error
-            formMessage.textContent = result.message;
+            // Error - show specific error message
+            formMessage.textContent = result.message || 'Please check your input and try again.';
             formMessage.className = 'form-message error';
             formMessage.style.display = 'block';
             
@@ -271,12 +349,16 @@ import Section from "../components/base/Section.astro";
                 }
               });
             }
+            
+            // Announce error to screen readers
+            formMessage.setAttribute('aria-live', 'assertive');
           }
         } catch (error) {
           console.error('Form submission error:', error);
           formMessage.textContent = 'Failed to send message. Please try again.';
           formMessage.className = 'form-message error';
           formMessage.style.display = 'block';
+          formMessage.setAttribute('aria-live', 'assertive');
         } finally {
           // Reset button state
           submitButton.disabled = false;
@@ -289,6 +371,7 @@ import Section from "../components/base/Section.astro";
     // Initialize when DOM is ready
     function init() {
       initFAQ();
+      initCharacterCounter();
       initContactForm();
     }
     
