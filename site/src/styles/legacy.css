@@ -7252,6 +7252,97 @@ body.modal-open {
   padding-right: var(--scrollbar-width, 0);
 }
 
+/* In-progress modal styles */
+.in-progress-modal {
+  text-align: center;
+  padding: 2rem 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.in-progress-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.in-progress-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.in-progress-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+}
+
+.in-progress-subtitle {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.in-progress-status {
+  margin-bottom: 2rem;
+}
+
+.status-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.status-message {
+  font-size: 0.9rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.in-progress-tech h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 1rem;
+}
+
+.in-progress-tech .tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+/* Dark mode styles for in-progress modal */
+body.dark-mode .in-progress-title {
+  color: #f9fafb;
+}
+
+body.dark-mode .in-progress-subtitle {
+  color: #9ca3af;
+}
+
+body.dark-mode .status-message {
+  color: #9ca3af;
+}
+
+body.dark-mode .in-progress-tech h3 {
+  color: #f3f4f6;
+}
+
 /* Light mode modal styles */
 body:not(.dark-mode) .modal__backdrop {
   background: rgba(255, 255, 255, 0.3); /* Safari-optimized: 30% opacity for visible blur composition */

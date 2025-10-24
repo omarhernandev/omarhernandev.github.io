@@ -751,7 +751,13 @@ function showProjectDetail(projectId) {
     projectModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
     
-    renderProjectModal();
+    // Check if project is in development (after first 3 projects)
+    const projectIndex = projectsData.findIndex(p => p.id === projectId);
+    if (projectIndex >= 3) {
+        renderInProgressModal();
+    } else {
+        renderProjectModal();
+    }
 }
 
 // Close project modal
@@ -834,6 +840,53 @@ function renderProjectModal() {
         
         <div class="tab-content">
             ${renderTabContent()}
+        </div>
+    `;
+}
+
+// Render in-progress modal
+function renderInProgressModal() {
+    if (!currentProject) return;
+    
+    const modalContent = projectModal.querySelector('.modal-content');
+    modalContent.innerHTML = `
+        <button class="modal-back-button" onclick="closeProjectModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Projects
+        </button>
+        
+        <div class="in-progress-modal">
+            <div class="in-progress-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+            </div>
+            <h2 class="in-progress-title">${currentProject.title}</h2>
+            <p class="in-progress-subtitle">${currentProject.shortDesc}</p>
+            <div class="in-progress-status">
+                <span class="status-badge">In Development</span>
+                <p class="status-message">This project is currently being developed. Check back soon for detailed information!</p>
+            </div>
+            <div class="in-progress-tech">
+                <h3>Technologies</h3>
+                <div class="tech-stack">
+                    ${currentProject.techStack.slice(0, 6).map(tech => {
+                        const iconUrl = getTechIcon(tech);
+                        return iconUrl ? 
+                            `<span class="tech-badge tech-badge--with-icon">
+                                <img src="${iconUrl}" alt="${tech}" class="tech-badge__icon" />
+                                <span class="tech-badge__text">${tech}</span>
+                            </span>` :
+                            `<span class="tech-badge">${tech}</span>`;
+                    }).join('')}
+                    ${currentProject.techStack.length > 6 ? 
+                        `<span class="tech-badge tech-badge-more">+${currentProject.techStack.length - 6} more</span>` : ''
+                    }
+                </div>
+            </div>
         </div>
     `;
 }
