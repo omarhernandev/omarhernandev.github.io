@@ -1554,6 +1554,13 @@ body.dark-mode .page {
   padding-top: 72px;
 }
 
+/* Projects page needs vertical scrolling on mobile */
+.main.projects-page {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
 .main__image {
   position: absolute;
   top: 0;
