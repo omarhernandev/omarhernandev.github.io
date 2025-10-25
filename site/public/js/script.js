@@ -1242,6 +1242,16 @@
         addEvent(document, 'mousemove', drag);
       }
       
+      // Wheel event listener for scroll direction detection
+      scrollContainer.addEventListener('wheel', function(e) {
+        // If scrolling vertically (deltaY), don't interfere
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+          // Let it bubble up to scroll the page
+          return;
+        }
+        // If scrolling horizontally, you can handle it here or let it scroll naturally
+      }, { passive: true });
+      
       // Enforce boundaries during scroll
       var lastCheck = 0;
       addEvent(scrollContainer, 'scroll', function() {
