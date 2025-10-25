@@ -4464,7 +4464,8 @@ body.dark-mode .projects {
   scroll-behavior: smooth;
   padding: 20px 0 12px 0;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: none; /* Prevent elastic bouncing on all axes */
+  overscroll-behavior-x: none; /* Prevent horizontal overscroll within container */
+  overscroll-behavior-y: contain; /* Allow page scrolling, prevent container overscroll */
   touch-action: pan-x pan-y;
   position: relative;
   max-width: 100%;
@@ -4473,6 +4474,7 @@ body.dark-mode .projects {
 /* Dragging state (mouse only) */
 .projects__scroll-container.dragging {
   cursor: grabbing;
+  -webkit-user-select: none;
   user-select: none;
   scroll-behavior: auto;
   -webkit-overflow-scrolling: auto;
