@@ -215,32 +215,73 @@ import Section from "../components/base/Section.astro";
       });
     }
     
-    // Enhanced email validation function
-    function isValidEmail(email) {
-      // More comprehensive regex
+    // Comprehensive spam domains list (same as server-side)
+    const SPAM_DOMAINS = new Set([
+      '10minutemail.com', 'guerrillamail.com', 'mailinator.com', 'tempmail.org',
+      'throwaway.email', 'temp-mail.org', 'maildrop.cc', 'sharklasers.com',
+      'guerrillamailblock.com', 'pokemail.net', 'spam4.me', 'bccto.me',
+      'chacuo.net', 'dispostable.com', 'mailnesia.com', 'mailcatch.com',
+      'mailmetrash.com', 'trashmail.net', 'trashmail.com', 'spamgourmet.com',
+      'spamgourmet.org', 'spamgourmet.net', 'spam.la', 'binkmail.com',
+      'bobmail.info', 'chammy.info', 'devnullmail.com', 'letthemeatspam.com',
+      'mailin8r.com', 'mailinator2.com', 'notmailinator.com', 'reallymymail.com',
+      'sogetthis.com', 'spamhereplease.com', 'superrito.com', 'thisisnotmyrealemail.com',
+      'tradermail.info', 'veryrealemail.com', 'wegwerfmail.de', 'wegwerfmail.net',
+      'wegwerfmail.org', 'wegwerpmailadres.nl', 'wetrainbayarea.com', 'wetrainbayarea.org',
+      'wh4f.org', 'whyspam.me', 'willselfdestruct.com', 'wuzup.net',
+      'wuzupmail.net', 'yeah.net', 'yopmail.com', 'yopmail.net',
+      'yopmail.org', 'ypmail.webarnak.fr.eu.org', 'cool.fr.nf', 'jetable.fr.nf',
+      'nospam.ze.tc', 'nomail.xl.cx', 'mega.zik.dj', 'speed.1s.fr',
+      'courriel.fr.nf', 'moncourrier.fr.nf', 'monemail.fr.nf', 'monmail.fr.nf',
+      'gm.com', 'gmai.com', 'gmail.co', 'gmail.cm', 'gmial.com', 'gmaiil.com'
+    ]);
+
+    // Check if domain is a known spam domain
+    function isSpamDomain(domain) {
+      return SPAM_DOMAINS.has(domain.toLowerCase());
+    }
+
+    // Enhanced email validation function with hybrid approach
+    async function validateEmail(email) {
+      // 1. Basic format validation
       const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
       
-      // Additional checks
-      if (!emailRegex.test(email)) return false;
+      if (!emailRegex.test(email)) {
+        return { valid: false, reason: 'format', message: 'Please enter a valid email address' };
+      }
       
-      // Check for common typos and invalid patterns
+      // Additional checks
       const invalidPatterns = [
-        /\.{2,}/,           // Multiple consecutive dots
-        /^\./,              // Starts with dot
-        /\.$/,              // Ends with dot
-        /@.*@/,             // Multiple @ symbols
-        /\.@/,               // Dot before @
-        /@\./,               // Dot after @
-        /^@/,                // Starts with @
-        /@$/,                // Ends with @
-        /\s/,                // Contains spaces
-        /[<>]/,              // Contains angle brackets
+        /\.{2,}/, /^\./, /\.$/, /@.*@/, /\.@/, /@\./, /^@/, /@$/, /\s/, /[<>]/
       ];
       
-      return !invalidPatterns.some(pattern => pattern.test(email));
+      if (invalidPatterns.some(pattern => pattern.test(email))) {
+        return { valid: false, reason: 'format', message: 'Please enter a valid email address' };
+      }
+      
+      // 2. Fast spam domain check
+      const domain = email.split('@')[1];
+      if (isSpamDomain(domain)) {
+        return { valid: false, reason: 'disposable', message: 'Disposable email addresses are not allowed' };
+      }
+      
+      // 3. Optional DNS validation (async, with graceful fallback)
+      try {
+        const response = await fetch(`/api/validate-domain?domain=${encodeURIComponent(domain)}`);
+        const result = await response.json();
+        
+        if (!result.valid) {
+          return { valid: false, reason: 'invalid_domain', message: 'Please enter a valid email domain' };
+        }
+      } catch (error) {
+        // Graceful fallback - don't block if DNS validation fails
+        console.warn('Domain validation failed:', error);
+      }
+      
+      return { valid: true };
     }
     
-    // Email validation functionality
+    // Email validation functionality with enhanced validation
     function initEmailValidation() {
       const emailField = document.getElementById('email');
       
@@ -255,35 +296,69 @@ import Section from "../components/base/Section.astro";
       emailError.style.marginTop = '0.25rem';
       emailError.setAttribute('aria-live', 'polite');
       
-      // Insert error message after the email field
+      // Create loading indicator
+      const loadingIndicator = document.createElement('div');
+      loadingIndicator.className = 'validation-loading';
+      loadingIndicator.style.display = 'none';
+      loadingIndicator.style.color = '#666';
+      loadingIndicator.style.fontSize = '0.8rem';
+      loadingIndicator.style.marginTop = '0.25rem';
+      loadingIndicator.textContent = 'Validating domain...';
+      
+      // Insert elements after the email field
       emailField.parentNode.insertBefore(emailError, emailField.nextSibling);
+      emailField.parentNode.insertBefore(loadingIndicator, emailError.nextSibling);
       
       function showEmailError(message) {
         emailError.textContent = message;
         emailError.style.display = 'block';
+        loadingIndicator.style.display = 'none';
         emailField.style.borderColor = '#ff4444';
         emailField.setAttribute('aria-invalid', 'true');
       }
       
       function clearEmailError() {
         emailError.style.display = 'none';
+        loadingIndicator.style.display = 'none';
         emailField.style.borderColor = '';
         emailField.setAttribute('aria-invalid', 'false');
       }
       
+      function showLoading() {
+        emailError.style.display = 'none';
+        loadingIndicator.style.display = 'block';
+        emailField.style.borderColor = '#ffa500'; // Orange for loading
+      }
+      
       // Validate email on blur (when user leaves the field)
-      emailField.addEventListener('blur', function() {
+      emailField.addEventListener('blur', async function() {
         const email = this.value.trim();
-        if (email && !isValidEmail(email)) {
-          showEmailError('Please enter a valid email address');
-        } else {
+        if (!email) {
+          clearEmailError();
+          return;
+        }
+        
+        // Show loading state for async validation
+        showLoading();
+        
+        try {
+          const validation = await validateEmail(email);
+          
+          if (!validation.valid) {
+            showEmailError(validation.message);
+          } else {
+            clearEmailError();
+          }
+        } catch (error) {
+          console.warn('Email validation error:', error);
+          // Graceful fallback - clear loading and don't show error
           clearEmailError();
         }
       });
       
       // Clear error on input (when user starts typing)
       emailField.addEventListener('input', function() {
-        if (this.style.borderColor === '#ff4444') {
+        if (this.style.borderColor === '#ff4444' || this.style.borderColor === '#ffa500') {
           clearEmailError();
         }
       });
