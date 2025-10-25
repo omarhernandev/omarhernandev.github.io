@@ -4471,6 +4471,13 @@ body.dark-mode .projects {
   max-width: 100%;
 }
 
+/* iOS Safari fix - restore smooth horizontal scrolling */
+@supports (-webkit-touch-callout: none) {
+  .projects__scroll-container {
+    overscroll-behavior-x: auto; /* Allow horizontal overscroll on iOS for smooth scrolling */
+  }
+}
+
 /* Dragging state (mouse only) */
 .projects__scroll-container.dragging {
   cursor: grabbing;
