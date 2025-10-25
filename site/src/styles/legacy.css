@@ -4474,7 +4474,7 @@ body.dark-mode .projects {
 /* iOS Safari fix - restore smooth horizontal scrolling */
 @supports (-webkit-touch-callout: none) {
   .projects__scroll-container {
-    overscroll-behavior-x: auto; /* Allow horizontal overscroll on iOS for smooth scrolling */
+    overscroll-behavior-x: contain; /* Prevent overscroll but allow momentum */
   }
 }
 
