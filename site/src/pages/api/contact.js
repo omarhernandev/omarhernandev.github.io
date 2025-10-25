@@ -7,6 +7,51 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 // Key: IP address, Value: Array of submission timestamps
 const rateLimitMap = new Map();
 
+// Security logging and monitoring
+const suspiciousActivityMap = new Map();
+
+// Enhanced logging for security monitoring
+function logSecurityEvent(event, data, clientIP) {
+  const logEntry = {
+    timestamp: new Date().toISOString(),
+    event,
+    clientIP,
+    userAgent: data.userAgent || 'unknown',
+    ...data
+  };
+  
+  // Log to console (in production, use proper logging service)
+  console.log('SECURITY_EVENT:', JSON.stringify(logEntry));
+  
+  // Track suspicious patterns
+  if (event === 'spam_detected' || event === 'rate_limited' || event === 'suspicious_behavior') {
+    trackSuspiciousActivity(clientIP, event);
+  }
+}
+
+function trackSuspiciousActivity(ip, event) {
+  const key = `suspicious_${ip}`;
+  const count = suspiciousActivityMap.get(key) || 0;
+  suspiciousActivityMap.set(key, count + 1);
+  
+  // If too many suspicious activities, consider blocking IP
+  if (count >= 5) {
+    console.warn(`IP ${ip} flagged for suspicious activity (${count + 1} events)`);
+    logSecurityEvent('ip_flagged', { ip, eventCount: count + 1 }, ip);
+  }
+}
+
+// Clean up suspicious activity tracking
+function cleanupSuspiciousActivity() {
+  const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+  
+  for (const [key, timestamp] of suspiciousActivityMap.entries()) {
+    if (timestamp < oneDayAgo) {
+      suspiciousActivityMap.delete(key);
+    }
+  }
+}
+
 // Clean up old rate limit entries (older than 1 hour)
 function cleanupRateLimit() {
   const oneHourAgo = Date.now() - (60 * 60 * 1000);
@@ -22,23 +67,53 @@ function cleanupRateLimit() {
   }
 }
 
-// Check rate limit for IP address
-function checkRateLimit(ip) {
+// Enhanced rate limiting with progressive delays
+function checkEnhancedRateLimit(ip) {
   cleanupRateLimit();
   
   const now = Date.now();
   const timestamps = rateLimitMap.get(ip) || [];
+  const recentTimestamps = timestamps.filter(timestamp => now - timestamp < 3600000); // 1 hour
   
-  // Allow maximum 3 submissions per hour
-  if (timestamps.length >= 3) {
-    return false;
+  // Progressive rate limiting
+  if (recentTimestamps.length >= 10) {
+    return { 
+      allowed: false, 
+      reason: 'Too many requests', 
+      retryAfter: 3600,
+      level: 'blocked'
+    };
+  } else if (recentTimestamps.length >= 5) {
+    return { 
+      allowed: false, 
+      reason: 'Rate limited', 
+      retryAfter: 300,
+      level: 'rate_limited'
+    };
+  } else if (recentTimestamps.length >= 3) {
+    return { 
+      allowed: false, 
+      reason: 'Please slow down', 
+      retryAfter: 60,
+      level: 'slow_down'
+    };
   }
   
   // Add current timestamp
-  timestamps.push(now);
-  rateLimitMap.set(ip, timestamps);
+  recentTimestamps.push(now);
+  rateLimitMap.set(ip, recentTimestamps);
   
-  return true;
+  return { 
+    allowed: true, 
+    level: 'normal',
+    remainingRequests: Math.max(0, 10 - recentTimestamps.length)
+  };
+}
+
+// Backward compatibility wrapper
+function checkRateLimit(ip) {
+  const result = checkEnhancedRateLimit(ip);
+  return result.allowed;
 }
 
 // Sanitize input to prevent XSS attacks
@@ -49,6 +124,157 @@ function sanitizeInput(input) {
     .trim()
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
+}
+
+// Comprehensive spam domains list for blocking disposable emails
+const SPAM_DOMAINS = new Set([
+  '10minutemail.com', 'guerrillamail.com', 'mailinator.com', 'tempmail.org',
+  'throwaway.email', 'temp-mail.org', 'maildrop.cc', 'sharklasers.com',
+  'guerrillamailblock.com', 'pokemail.net', 'spam4.me', 'bccto.me',
+  'chacuo.net', 'dispostable.com', 'mailnesia.com', 'mailcatch.com',
+  'mailmetrash.com', 'trashmail.net', 'trashmail.com', 'spamgourmet.com',
+  'spamgourmet.org', 'spamgourmet.net', 'spam.la', 'binkmail.com',
+  'bobmail.info', 'chammy.info', 'devnullmail.com', 'letthemeatspam.com',
+  'mailin8r.com', 'mailinator2.com', 'notmailinator.com', 'reallymymail.com',
+  'sogetthis.com', 'spamhereplease.com', 'superrito.com', 'thisisnotmyrealemail.com',
+  'tradermail.info', 'veryrealemail.com', 'wegwerfmail.de', 'wegwerfmail.net',
+  'wegwerfmail.org', 'wegwerpmailadres.nl', 'wetrainbayarea.com', 'wetrainbayarea.org',
+  'wh4f.org', 'whyspam.me', 'willselfdestruct.com', 'wuzup.net',
+  'wuzupmail.net', 'yeah.net', 'yopmail.com', 'yopmail.net',
+  'yopmail.org', 'ypmail.webarnak.fr.eu.org', 'cool.fr.nf', 'jetable.fr.nf',
+  'nospam.ze.tc', 'nomail.xl.cx', 'mega.zik.dj', 'speed.1s.fr',
+  'courriel.fr.nf', 'moncourrier.fr.nf', 'monemail.fr.nf', 'monmail.fr.nf',
+  'gm.com', 'gmai.com', 'gmail.co', 'gmail.cm', 'gmial.com', 'gmaiil.com'
+]);
+
+// Check if domain is a known spam domain
+function isSpamDomain(domain) {
+  return SPAM_DOMAINS.has(domain.toLowerCase());
+}
+
+// Suspicious behavior detection
+function detectSuspiciousBehavior(body, clientIP, userAgent) {
+  const suspiciousPatterns = [
+    // Very short messages (often spam)
+    body.message.length < 20,
+    
+    // Suspicious user agent patterns
+    /bot|crawler|spider|scraper|automated|headless/i.test(userAgent || ''),
+    
+    // Generic email patterns
+    /^[a-z]+\d+@/.test(body.email),
+    
+    // Generic names
+    /^(test|user|admin|support|info|contact|guest|visitor)$/i.test(body.name),
+    
+    // Suspicious domain patterns
+    /\.tk$|\.ml$|\.ga$|\.cf$/.test(body.email.split('@')[1] || ''),
+    
+    // Rapid submission patterns (would need timing data)
+    // This would be enhanced with actual timing data
+    
+    // Suspicious punctuation patterns
+    /[!]{3,}|[?]{3,}|[.]{3,}/.test(body.message),
+    
+    // All caps messages
+    body.message === body.message.toUpperCase() && body.message.length > 10,
+    
+    // Repeated characters
+    /(.)\1{4,}/.test(body.message),
+    
+    // Suspicious URL patterns
+    /https?:\/\/[^\s]+/.test(body.message),
+    
+    // Phone number patterns
+    /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/.test(body.message),
+  ];
+  
+  const suspiciousCount = suspiciousPatterns.filter(Boolean).length;
+  
+  return {
+    isSuspicious: suspiciousCount >= 2,
+    suspiciousPatterns: suspiciousPatterns.filter(Boolean),
+    score: suspiciousCount,
+    reasons: [
+      ...suspiciousPatterns.filter(Boolean).map((pattern, index) => {
+        const reasons = [
+          'short_message', 'bot_user_agent', 'generic_email', 'generic_name',
+          'suspicious_domain', 'rapid_submission', 'excessive_punctuation',
+          'all_caps', 'repeated_chars', 'suspicious_url', 'phone_number'
+        ];
+        return reasons[index];
+      })
+    ]
+  };
+}
+
+// Content-based spam detection
+function detectSpamContent(message, name, email) {
+  const spamPatterns = [
+    // Common spam keywords
+    /\b(viagra|cialis|casino|poker|lottery|winner|congratulations|free money|click here|act now|limited time|urgent|guaranteed|no risk)\b/i,
+    
+    // Excessive promotional language
+    /\b(amazing|incredible|unbelievable|shocking|secret|exclusive|revolutionary)\b.*\b(discover|revealed|exposed|leaked)\b/i,
+    
+    // Suspicious URLs
+    /https?:\/\/[^\s]+/g,
+    
+    // Excessive capitalization
+    /[A-Z]{5,}/,
+    
+    // Repeated characters
+    /(.)\1{4,}/,
+    
+    // Phone number patterns (often spam)
+    /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/,
+    
+    // Common spam phrases
+    /\b(work from home|make money|earn cash|get rich|investment opportunity|bitcoin|cryptocurrency|forex|trading)\b/i,
+    
+    // Suspicious punctuation patterns
+    /[!]{3,}|[?]{3,}|[.]{3,}/,
+    
+    // Excessive exclamation marks
+    /!{2,}/,
+  ];
+  
+  const text = `${message} ${name} ${email}`.toLowerCase();
+  
+  // Calculate spam score
+  const spamScore = spamPatterns.reduce((score, pattern) => {
+    const matches = text.match(pattern);
+    return score + (matches ? matches.length : 0);
+  }, 0);
+  
+  // Additional checks
+  const additionalChecks = [
+    // Very short messages (often spam)
+    message.length < 20,
+    
+    // Excessive special characters
+    (message.match(/[!@#$%^&*()_+={}[\]|\\:";'<>?,./]/g) || []).length > 10,
+    
+    // All caps messages
+    message === message.toUpperCase() && message.length > 10,
+    
+    // Repeated words
+    /\b(\w+)\b.*\b\1\b.*\b\1\b/i.test(message),
+  ];
+  
+  const additionalScore = additionalChecks.filter(Boolean).length;
+  const totalScore = spamScore + additionalScore;
+  
+  return {
+    isSpam: totalScore >= 3,
+    score: totalScore,
+    spamPatterns: spamPatterns.filter(pattern => pattern.test(text)),
+    additionalChecks: additionalChecks.filter(Boolean),
+    reasons: [
+      ...spamPatterns.filter(pattern => pattern.test(text)).map(pattern => 'spam_keyword'),
+      ...additionalChecks.filter(Boolean).map(() => 'suspicious_content')
+    ]
+  };
 }
 
 // Validate email format with enhanced validation
@@ -80,6 +306,9 @@ function isValidEmail(email) {
   const tld = domainParts[domainParts.length - 1];
   if (tld.length < 2) return false;
   
+  // Check for spam domains
+  if (isSpamDomain(domain)) return false;
+  
   // Check for common invalid patterns
   const invalidPatterns = [
     /\.{2,}/,           // Multiple consecutive dots
@@ -95,37 +324,94 @@ function isValidEmail(email) {
   return !invalidPatterns.some(pattern => pattern.test(email));
 }
 
-// Server-side validation
-function validateFormData(data) {
+// Advanced input validation with character pattern analysis
+function enhancedInputValidation(data) {
   const errors = {};
   
-  // Validate name
+  // Enhanced name validation
   if (!data.name || typeof data.name !== 'string') {
     errors.name = 'Name is required';
   } else {
     const name = data.name.trim();
     if (name.length < 2 || name.length > 100) {
       errors.name = 'Name must be between 2 and 100 characters';
+    } else if (!/^[a-zA-Z\s\-'\.]+$/.test(name)) {
+      errors.name = 'Name contains invalid characters';
+    } else if (name.split(' ').length > 5) {
+      errors.name = 'Name appears to be too long';
+    } else if (name.split(' ').length < 1) {
+      errors.name = 'Please provide a valid name';
+    } else if (/(.)\1{3,}/.test(name)) {
+      errors.name = 'Name contains repeated characters';
     }
   }
   
-  // Validate email
+  // Enhanced email validation (already handled by isValidEmail, but add additional checks)
   if (!data.email || typeof data.email !== 'string') {
     errors.email = 'Email is required';
   } else {
     const email = data.email.trim();
-    if (!isValidEmail(email)) {
-      errors.email = 'Please enter a valid email address';
+    if (email.length > 254) {
+      errors.email = 'Email address is too long';
+    } else if (email.includes('..')) {
+      errors.email = 'Email contains invalid characters';
+    } else if (email.startsWith('.') || email.endsWith('.')) {
+      errors.email = 'Email format is invalid';
     }
   }
   
-  // Validate message
+  // Enhanced message validation
   if (!data.message || typeof data.message !== 'string') {
     errors.message = 'Message is required';
   } else {
     const message = data.message.trim();
     if (message.length < 10 || message.length > 1000) {
       errors.message = 'Message must be between 10 and 1000 characters';
+    } else if (message.split(' ').length < 3) {
+      errors.message = 'Message appears to be too short';
+    } else if (message.split('\n').length > 20) {
+      errors.message = 'Message has too many line breaks';
+    } else if (/(.)\1{5,}/.test(message)) {
+      errors.message = 'Message contains excessive repeated characters';
+    } else if (message.match(/[!@#$%^&*()_+={}[\]|\\:";'<>?,./]/g)?.length > 20) {
+      errors.message = 'Message contains too many special characters';
+    } else if (message === message.toUpperCase() && message.length > 20) {
+      errors.message = 'Please avoid using all capital letters';
+    }
+  }
+  
+  return { isValid: Object.keys(errors).length === 0, errors };
+}
+
+// Server-side validation with spam detection
+function validateFormData(data) {
+  // Use enhanced input validation first
+  const enhancedValidation = enhancedInputValidation(data);
+  if (!enhancedValidation.isValid) {
+    return enhancedValidation;
+  }
+  
+  const errors = {};
+  
+  // Validate email format and spam domains
+  const email = data.email.trim();
+  if (!isValidEmail(email)) {
+    const domain = email.split('@')[1];
+    if (domain && isSpamDomain(domain)) {
+      errors.email = 'Disposable email addresses are not allowed';
+    } else {
+      errors.email = 'Please enter a valid email address';
+    }
+  }
+  
+  // Check for spam content if all basic validation passes
+  if (Object.keys(errors).length === 0) {
+    const spamDetection = detectSpamContent(data.message, data.name, data.email);
+    if (spamDetection.isSpam) {
+      errors.message = 'Message appears to be spam. Please provide a legitimate message.';
+      errors._spamDetected = true;
+      errors._spamScore = spamDetection.score;
+      errors._spamReasons = spamDetection.reasons;
     }
   }
   
@@ -133,6 +419,31 @@ function validateFormData(data) {
     isValid: Object.keys(errors).length === 0,
     errors
   };
+}
+
+// Enhanced validation with suspicious behavior detection
+function validateFormDataWithBehavior(data, clientIP, userAgent) {
+  const basicValidation = validateFormData(data);
+  
+  if (!basicValidation.isValid) {
+    return basicValidation;
+  }
+  
+  // Check for suspicious behavior
+  const behaviorDetection = detectSuspiciousBehavior(data, clientIP, userAgent);
+  if (behaviorDetection.isSuspicious) {
+    return {
+      isValid: false,
+      errors: {
+        message: 'Submission appears to be automated or suspicious. Please provide a legitimate message.',
+        _suspiciousDetected: true,
+        _suspiciousScore: behaviorDetection.score,
+        _suspiciousReasons: behaviorDetection.reasons
+      }
+    };
+  }
+  
+  return basicValidation;
 }
 
 // Astro API route handler
@@ -143,15 +454,25 @@ export async function POST({ request }) {
                      request.headers.get('x-real-ip') || 
                      'unknown';
 
-    // Check rate limit
-    if (!checkRateLimit(clientIP)) {
+    // Check enhanced rate limit
+    const rateLimitResult = checkEnhancedRateLimit(clientIP);
+    if (!rateLimitResult.allowed) {
+      // Log rate limiting events
+      logSecurityEvent('rate_limited', {
+        level: rateLimitResult.level,
+        reason: rateLimitResult.reason,
+        retryAfter: rateLimitResult.retryAfter
+      }, clientIP);
+      
       return new Response(JSON.stringify({
         success: false,
-        message: 'Too many requests. Please try again later.'
+        message: rateLimitResult.reason,
+        retryAfter: rateLimitResult.retryAfter
       }), {
         status: 429,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Retry-After': rateLimitResult.retryAfter.toString()
         }
       });
     }
@@ -159,9 +480,16 @@ export async function POST({ request }) {
     // Parse JSON request body
     const body = await request.json();
 
+    // Get user agent for suspicious behavior detection
+    const userAgent = request.headers.get('user-agent') || '';
+
     // Honeypot validation - reject if website field has any value
     if (body.website && body.website.trim() !== '') {
-      console.error('Honeypot triggered for IP:', clientIP);
+      logSecurityEvent('honeypot_triggered', {
+        website: body.website,
+        userAgent
+      }, clientIP);
+      
       return new Response(JSON.stringify({
         success: false,
         message: 'Invalid submission'
@@ -173,9 +501,30 @@ export async function POST({ request }) {
       });
     }
 
-    // Server-side validation
-    const validation = validateFormData(body);
+    // Enhanced validation with suspicious behavior detection
+    const validation = validateFormDataWithBehavior(body, clientIP, userAgent);
     if (!validation.isValid) {
+      // Log spam and suspicious behavior events using centralized logging
+      if (validation.errors._spamDetected) {
+        logSecurityEvent('spam_detected', {
+          email: body.email,
+          spamScore: validation.errors._spamScore,
+          spamReasons: validation.errors._spamReasons,
+          message: body.message.substring(0, 100) + '...',
+          userAgent
+        }, clientIP);
+      }
+      
+      if (validation.errors._suspiciousDetected) {
+        logSecurityEvent('suspicious_behavior', {
+          email: body.email,
+          suspiciousScore: validation.errors._suspiciousScore,
+          suspiciousReasons: validation.errors._suspiciousReasons,
+          message: body.message.substring(0, 100) + '...',
+          userAgent
+        }, clientIP);
+      }
+      
       return new Response(JSON.stringify({
         success: false,
         message: 'Please check your input',
@@ -212,6 +561,14 @@ export async function POST({ request }) {
       });
 
       console.log('Email sent successfully:', emailData.id);
+
+      // Log successful submission
+      logSecurityEvent('submission_success', {
+        email: sanitizedData.email,
+        name: sanitizedData.name,
+        messageLength: sanitizedData.message.length,
+        userAgent
+      }, clientIP);
 
       return new Response(JSON.stringify({
         success: true,
