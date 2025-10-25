@@ -42,6 +42,7 @@ const techIconMap = {
   
   // Data Analysis
   'MATLAB': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matlab/matlab-original.svg',
+  'FSL': 'assets/icons/fsl.png',
   'Jupyter': 'https://cdn.simpleicons.org/jupyter',
   'R Statistics': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/r/r-original.svg',
   'Statistical Analysis': 'https://cdn.simpleicons.org/r',
