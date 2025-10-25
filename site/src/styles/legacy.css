@@ -1554,11 +1554,39 @@ body.dark-mode .page {
   padding-top: 72px;
 }
 
-/* Projects page needs vertical scrolling on mobile */
-.main.projects-page {
+/* Projects page needs vertical scrolling on mobile - target the main HTML element */
+main.projects-page {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  touch-action: pan-y; /* Allow vertical touch scrolling */
+  height: 100vh; /* Ensure defined height for scrolling container */
+  height: 100dvh; /* Dynamic viewport height for mobile */
+}
+
+/* Also ensure the nested page element inside projects-page allows scrolling */
+main.projects-page .page {
+  overflow: visible;
+  min-height: 100%;
+}
+
+/* Ensure projects wrapper and container allow content to flow */
+main.projects-page .wrapper {
+  min-height: 100%;
+  overflow: visible;
+}
+
+main.projects-page .projects-section {
+  overflow: visible;
+}
+
+/* Mobile-specific fix for touch scrolling on phones */
+@media (max-width: 768px) and (pointer: coarse) {
+  main.projects-page {
+    overflow-y: scroll !important; /* Force scroll on touch devices */
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior-y: contain; /* Prevent overscroll from triggering browser actions */
+  }
 }
 
 .main__image {
