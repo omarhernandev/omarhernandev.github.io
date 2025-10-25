@@ -4425,11 +4425,12 @@ body.dark-mode .projects {
 
 /* Horizontal Scroll Container */
 .projects__scroll-container {
-  overflow: auto; /* Consolidated overflow-x and overflow-y */
+  overflow-x: auto;
+  overflow-y: visible;
   scroll-behavior: smooth;
   padding: 20px 0 12px 0;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: none; /* Prevent elastic bouncing on all axes */
+  overscroll-behavior-x: contain;
   touch-action: pan-x pan-y;
   position: relative;
   max-width: 100%;
