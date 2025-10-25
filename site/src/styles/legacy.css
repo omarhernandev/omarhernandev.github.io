@@ -4460,15 +4460,15 @@ body.dark-mode .projects {
 
 /* Horizontal Scroll Container */
 .projects__scroll-container {
-  overflow: auto; /* Consolidated overflow-x and overflow-y */
-  scroll-behavior: smooth;
+  overflow-x: auto;
+  overflow-y: hidden;
   padding: 20px 0 12px 0;
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior-x: none; /* Prevent horizontal overscroll within container */
-  overscroll-behavior-y: auto; /* Allow normal page scrolling */
-  touch-action: pan-x pan-y;
+  /* Avoid overscroll-behavior on iOS to preserve momentum */
+  touch-action: pan-x; /* horizontal gestures; allow vertical to bubble to page */
   position: relative;
   max-width: 100%;
+  transform: translateZ(0);
 }
 
 /* Dragging state (mouse only) */
