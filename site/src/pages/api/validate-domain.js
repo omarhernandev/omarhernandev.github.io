@@ -68,17 +68,29 @@ async function checkDomainExistsEnhanced(domain) {
       };
     }
     
-    // Set timeout for DNS operations
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('DNS lookup timeout')), 5000);
-    });
-    
-    // Try multiple DNS record types with better error handling
-    const checks = await Promise.allSettled([
+    // Set timeout for DNS operations using Promise.race
+    const dnsChecks = Promise.allSettled([
       resolveMx(domain),
       resolve4(domain),
       resolve6(domain)
     ]);
+    
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('DNS lookup timeout')), 5000);
+    });
+    
+    // Race the DNS checks against the timeout
+    let checks;
+    try {
+      checks = await Promise.race([dnsChecks, timeoutPromise]);
+    } catch (timeoutError) {
+      // If timeout occurred, all DNS lookups are considered failed
+      checks = [
+        { status: 'rejected', reason: timeoutError.message },
+        { status: 'rejected', reason: timeoutError.message },
+        { status: 'rejected', reason: timeoutError.message }
+      ];
+    }
     
     const results = {
       mx: checks[0].status === 'fulfilled' && checks[0].value?.length > 0,
