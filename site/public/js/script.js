@@ -974,19 +974,14 @@
         "Neuroscience Researcher",
         "Python Developer",
         "ETL Architect",
-        "Cybersecurity Analyst",
         "Data Analyst",
         "R&D Engineer",
         "Product Engineer",
-        "Healthcare Technologist",
         "Backend Developer",
-        "Prompt Engineer",
         "Agentic Developer",
         "Product Manager",
         "Consultant",
-        "Front End Developer",
-        "API Developer",  
-        "Context Engineer",
+        "API Developer",
       ];
 
       // Fisher-Yates shuffle algorithm for randomizing array
