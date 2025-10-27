@@ -747,16 +747,32 @@ body.dark-mode .button:hover {
   transform: translateY(-2px);
 }
 
-/* === ABOUT SECTION MODAL BUTTONS - TEAL OUTLINED STYLE === */
-/* Match modal text teal color with outlined buttons in dark mode */
-body.dark-mode .about__toggle-button.button {
+/* === ABOUT SECTION MODAL BUTTONS - BLUE GRADIENT STYLE IN LIGHT MODE === */
+/* Light mode: blue gradient matching "View Project" button */
+.about__toggle-button.btn {
+  background: linear-gradient(90deg, #00bfff, #0080ff) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.about__toggle-button.btn:hover {
+  background: linear-gradient(90deg, #0080ff, #0040ff) !important;
+  box-shadow: 0 8px 20px rgba(0, 191, 255, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+/* Dark mode: teal outlined style */
+body.dark-mode .about__toggle-button.btn {
+  background: none !important;
   background-color: transparent !important;
   border: 1px solid #2EB1A7 !important;
   color: #2EB1A7 !important;
   box-shadow: none !important;
 }
 
-body.dark-mode .about__toggle-button.button:hover {
+body.dark-mode .about__toggle-button.btn:hover {
+  background: none !important;
   background-color: rgba(46, 177, 167, 0.1) !important;
   border-color: #2EB1A7 !important;
   color: #2EB1A7 !important;
@@ -3990,6 +4006,49 @@ body.dark-mode .main__caption {
   text-align: center;
   margin-top: 1rem;
   line-height: 1.5;
+}
+
+/* Resume Download Button */
+.main__resume-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.resume-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 2rem;
+  background: linear-gradient(90deg, #00bfff, #0080ff);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  box-shadow: none;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.resume-download-btn:hover {
+  background: linear-gradient(90deg, #0080ff, #0040ff);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 191, 255, 0.3);
+}
+
+body.dark-mode .resume-download-btn {
+  background: none !important;
+  background-color: transparent !important;
+  border: 1px solid #2EB1A7 !important;
+  color: #2EB1A7 !important;
+  box-shadow: none !important;
+}
+
+body.dark-mode .resume-download-btn:hover {
+  background: none !important;
+  background-color: rgba(46, 177, 167, 0.1) !important;
+  box-shadow: 0 0 15px rgba(46, 177, 167, 0.3) !important;
 }
 
 /* Main Title "OMAR HERNANDEZ" */
