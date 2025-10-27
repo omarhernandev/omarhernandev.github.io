@@ -43,6 +43,7 @@ const techIconMap = {
   // Data Analysis
   'MATLAB': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matlab/matlab-original.svg',
   'FSL': 'assets/icons/fsl.png',
+  'Xquartz': 'assets/icons/xquartz.png',
   'Jupyter': 'https://cdn.simpleicons.org/jupyter',
   'R Statistics': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/r/r-original.svg',
   'Statistical Analysis': 'https://cdn.simpleicons.org/r',
@@ -81,6 +82,7 @@ const techIconMap = {
   'D3.js': 'https://cdn.simpleicons.org/d3dotjs',
   'Tableau': 'https://cdn.simpleicons.org/tableau',
   'Power BI': 'https://cdn.simpleicons.org/powerbi',
+  'LeadTrac': 'assets/icons/leadtrac.png',
   
   // Security
   'JWT': 'https://cdn.simpleicons.org/jsonwebtokens',
@@ -109,7 +111,6 @@ const techIconMap = {
   // Specialized Tools
   'FSL': 'https://cdn.simpleicons.org/fsl',
   'AFNI': 'https://cdn.simpleicons.org/afni',
-  'Xquartz': 'https://cdn.simpleicons.org/xquartz',
   'GNU Emacs': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/emacs/emacs-original.svg',
   'Vim': 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vim/vim-original.svg',
   'Apache Airflow': 'https://cdn.simpleicons.org/apacheairflow',
@@ -181,7 +182,7 @@ const projectsData = [
         shortDesc: 'Advanced functional neuroimaging analysis to assess brain-computer interface viability for next-generation prosthetic control systems and neural rehabilitation.',
         icon: '🧠',
         tags: ['RESEARCH', 'fMRI', 'Data Analysis'],
-        techStack: ['Python', 'MATLAB', 'FSL', 'AFNI', 'R', 'Statistical Analysis'],
+        techStack: ['Python', 'MATLAB', 'Xquartz', 'AFNI', 'R', 'Statistical Analysis'],
         category: 'RESEARCH',
         timeIndicator: 'Research Study',
         primaryMetric: 'BCI Feasibility Assessment',
@@ -208,7 +209,7 @@ const projectsData = [
         ],
         architecture: {
             analysis: ['Python', 'MATLAB', 'R'],
-            imaging: ['FSL', 'AFNI', 'SPM'],
+            imaging: ['Xquartz', 'AFNI', 'SPM'],
             ml: ['scikit-learn', 'TensorFlow', 'PyTorch'],
             stats: ['R', 'SciPy', 'Statistical Modeling']
         },
@@ -217,10 +218,10 @@ const projectsData = [
     {
         id: 'neuroplasticity-stroke',
         title: 'Neuroplasticity: Stroke Recovery',
-        shortDesc: 'A comprehensive data analysis and predictive modeling system for stroke recovery patterns and patient outcomes.',
+        shortDesc: 'Predictive modeling platform analyzing longitudinal stroke recovery data and neuroplasticity outcomes.',
         icon: '🧠',
         tags: ['RESEARCH', 'Data Analysis', 'Healthcare'],
-        techStack: ['Python', 'R', 'MATLAB', 'Statistical Analysis', 'Machine Learning'],
+        techStack: ['Python', 'GNU Emacs', 'MATLAB', 'Statistical Analysis', 'Machine Learning'],
         category: 'RESEARCH',
         timeIndicator: 'Research Study',
         primaryMetric: 'Stroke Recovery Modeling',
@@ -239,7 +240,7 @@ const projectsData = [
         challenge: 'Develop predictive models to understand neuroplasticity patterns in stroke recovery and optimize rehabilitation strategies for better patient outcomes.',
         solution: 'Built comprehensive data analysis pipeline combining neuroimaging data, clinical assessments, and behavioral metrics to predict recovery trajectories and personalize treatment plans.',
         features: [
-            'DTI brain imaging analysis',
+            'time-series analysis',
             'Predictive recovery modeling',
             'Statistical pattern recognition',
             'Clinical outcome correlation',
@@ -258,7 +259,7 @@ const projectsData = [
         shortDesc: 'Reduced processing time by 98% for client financial ledgers',
         icon: '📊',
         tags: ['PRODUCTION', 'FinTech', 'Automation'],
-        techStack: ['React', 'Flask', 'PostgreSQL', 'Redis', 'Docker', 'AWS'],
+        techStack: ['Selenium', 'LeadTrac', 'Python', 'Redis', 'Docker', 'AWS'],
         category: 'PRODUCTION',
         timeIndicator: '1 min',
         primaryMetric: 'processing time by 98%',
@@ -286,9 +287,9 @@ const projectsData = [
             '85% test coverage'
         ],
         architecture: {
-            frontend: ['React 18.2', 'Redux', 'Material-UI', 'WebSockets'],
-            backend: ['Flask 2.3', 'Celery', 'Pandas', 'SQLAlchemy'],
-            database: ['PostgreSQL', 'Redis'],
+            frontend: ['Selenium', 'Redux', 'Material-UI', 'WebSockets'],
+            backend: ['LeadTrac', 'Celery', 'Pandas', 'SQLAlchemy'],
+            database: ['Python', 'Redis'],
             devops: ['Docker', 'AWS EC2', 'Nginx', 'CI/CD']
         },
         codeSnippet: `class LedgerCalculator:
@@ -314,6 +315,83 @@ const projectsData = [
             { problem: 'API rate limits', solution: 'Redis caching layer', result: '60% fewer API calls' },
             { problem: 'Complex financial calculations', solution: 'Custom SQL queries', result: '5x query performance' }
         ]
+    },
+    {
+        id: 'keystone-sentiment',
+        title: 'Keystone Sentiment Analysis Tool',
+        shortDesc: 'VADER and NLTK-based sentiment analysis platform for unstructured SMS data',
+        icon: '🧠',
+        tags: ['AI/ML', 'AI/ML', 'Analytics'],
+        techStack: ['Python', 'AWS', 'PostgreSQL', 'PostgreSQL', 'Apache Airflow'],
+        category: 'AI/ML',
+        timeIndicator: '92% accuracy',
+        primaryMetric: '92% sentiment accuracy',
+        impact: {
+            before: {
+                review: 'Manual feedback review',
+                insights: 'Limited insights',
+                analysis: 'Time-consuming analysis'
+            },
+            after: {
+                accuracy: '92% sentiment accuracy',
+                dataPoints: '1.8M data points analyzed',
+                insights: '300+ actionable insights'
+            }
+        },
+        challenge: 'Organizations struggled to analyze large volumes of customer feedback efficiently, missing valuable insights that could improve product quality and customer satisfaction.',
+        solution: 'Developed a comprehensive sentiment analysis platform that processes customer feedback in real-time, provides actionable insights, and integrates with existing business workflows.',
+        features: [
+            'Real-time sentiment analysis',
+            'Automated insight generation',
+            'Interactive dashboard',
+            'API integration capabilities',
+            'Custom reporting tools'
+        ],
+        architecture: {
+            frontend: ['React', 'Chart.js', 'Material-UI'],
+            backend: ['Python', 'FastAPI', 'Apache Airflow'],
+            database: ['PostgreSQL', 'Redis'],
+            cloud: ['AWS Lambda', 'S3', 'CloudWatch']
+        }
+    },
+    {
+        id: 'lead-tracking',
+        title: 'Lead Tracking',
+        shortDesc: 'Apache-orchestrated CRM platform integrating automated lead tracking, conversion analytics, and dynamic sales performance reporting.',
+        icon: '📊',
+        tags: ['PRODUCTION', 'Sales', 'Automation'],
+        techStack: ['Apache Airflow', 'Flask', 'PostgreSQL', 'Redis', 'AWS'],
+        category: 'PRODUCTION',
+        timeIndicator: 'CRM System',
+        primaryMetric: 'Lead conversion optimization',
+        impact: {
+            before: {
+                management: 'Manual lead management',
+                tracking: 'Poor conversion tracking',
+                followUps: 'Inconsistent follow-ups'
+            },
+            after: {
+                conversion: '35% increase in conversions',
+                leads: '5,000+ leads managed',
+                automation: '80% automated follow-ups'
+            }
+        },
+        challenge: 'Sales teams needed a comprehensive system to track leads, manage conversion pipelines, and automate follow-up processes to improve conversion rates.',
+        solution: 'Developed a full-stack CRM platform with advanced lead scoring, automated workflows, and real-time analytics to optimize sales pipeline management.',
+        features: [
+            'Lead scoring algorithms',
+            'Automated follow-up workflows',
+            'Conversion tracking analytics',
+            'Pipeline visualization',
+            'Integration with marketing tools',
+            'Real-time dashboard reporting'
+        ],
+        architecture: {
+            frontend: ['Apache Airflow', 'Redux', 'Material-UI'],
+            backend: ['Flask', 'Express', 'JWT Auth'],
+            database: ['PostgreSQL', 'Redis Cache'],
+            cloud: ['AWS EC2', 'S3', 'Lambda']
+        }
     },
     {
         id: 'medical-dashboard',
@@ -430,50 +508,12 @@ const projectsData = [
         }
     },
     {
-        id: 'keystone-sentiment',
-        title: 'Keystone Sentiment Analysis Tool',
-        shortDesc: 'Full-stack sentiment analysis platform for customer feedback',
-        icon: '🧠',
-        tags: ['AI/ML', 'AI/ML', 'Analytics'],
-        techStack: ['Python', 'AWS', 'TensorFlow', 'PostgreSQL', 'Apache Airflow'],
-        category: 'AI/ML',
-        timeIndicator: '92% accuracy',
-        primaryMetric: '92% sentiment accuracy',
-        impact: {
-            before: {
-                review: 'Manual feedback review',
-                insights: 'Limited insights',
-                analysis: 'Time-consuming analysis'
-            },
-            after: {
-                accuracy: '92% sentiment accuracy',
-                dataPoints: '1.8M data points analyzed',
-                insights: '300+ actionable insights'
-            }
-        },
-        challenge: 'Organizations struggled to analyze large volumes of customer feedback efficiently, missing valuable insights that could improve product quality and customer satisfaction.',
-        solution: 'Developed a comprehensive sentiment analysis platform that processes customer feedback in real-time, provides actionable insights, and integrates with existing business workflows.',
-        features: [
-            'Real-time sentiment analysis',
-            'Automated insight generation',
-            'Interactive dashboard',
-            'API integration capabilities',
-            'Custom reporting tools'
-        ],
-        architecture: {
-            frontend: ['React', 'Chart.js', 'Material-UI'],
-            backend: ['Python', 'FastAPI', 'Apache Airflow'],
-            database: ['PostgreSQL', 'Redis'],
-            cloud: ['AWS Lambda', 'S3', 'CloudWatch']
-        }
-    },
-    {
         id: 'data-privacy',
         title: 'Data Privacy',
         shortDesc: 'Comprehensive data privacy and security framework ensuring TCPA compliance, HIPAA protections, and robust IPv4/IPv6 network security protocols.',
         icon: '🔒',
         tags: ['ENTERPRISE', 'Privacy', 'Compliance'],
-        techStack: ['Security Framework', 'HIPAA', 'TCPA', 'Network Security', 'Encryption'],
+        techStack: ['Notion', 'HIPAA', 'TCPA', 'Network Security', 'Encryption'],
         category: 'ENTERPRISE',
         timeIndicator: 'Framework',
         primaryMetric: 'Multi-compliance security',
@@ -504,45 +544,6 @@ const projectsData = [
             compliance: ['HIPAA', 'TCPA', 'SOC 2'],
             network: ['IPv4/IPv6', 'Firewall', 'VPN'],
             monitoring: ['SIEM', 'Log Analysis', 'Threat Detection']
-        }
-    },
-    {
-        id: 'lead-tracking',
-        title: 'Lead Tracking',
-        shortDesc: 'Comprehensive custom CRM system for lead management, conversion tracking, and sales pipeline optimization with automated follow-up workflows.',
-        icon: '📊',
-        tags: ['PRODUCTION', 'Sales', 'Automation'],
-        techStack: ['React', 'Node.js', 'PostgreSQL', 'Redis', 'AWS'],
-        category: 'PRODUCTION',
-        timeIndicator: 'CRM System',
-        primaryMetric: 'Lead conversion optimization',
-        impact: {
-            before: {
-                management: 'Manual lead management',
-                tracking: 'Poor conversion tracking',
-                followUps: 'Inconsistent follow-ups'
-            },
-            after: {
-                conversion: '35% increase in conversions',
-                leads: '5,000+ leads managed',
-                automation: '80% automated follow-ups'
-            }
-        },
-        challenge: 'Sales teams needed a comprehensive system to track leads, manage conversion pipelines, and automate follow-up processes to improve conversion rates.',
-        solution: 'Developed a full-stack CRM platform with advanced lead scoring, automated workflows, and real-time analytics to optimize sales pipeline management.',
-        features: [
-            'Lead scoring algorithms',
-            'Automated follow-up workflows',
-            'Conversion tracking analytics',
-            'Pipeline visualization',
-            'Integration with marketing tools',
-            'Real-time dashboard reporting'
-        ],
-        architecture: {
-            frontend: ['React', 'Redux', 'Material-UI'],
-            backend: ['Node.js', 'Express', 'JWT Auth'],
-            database: ['PostgreSQL', 'Redis Cache'],
-            cloud: ['AWS EC2', 'S3', 'Lambda']
         }
     }
 ];
@@ -827,14 +828,7 @@ function renderProjectModal() {
                         </svg>
                         Live Demo
                     </a>
-                ` : `
-                    <button class="btn btn-primary">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
-                        </svg>
-                        Live Demo
-                    </button>
-                `}
+                ` : ''}
             </div>
         </div>
         
