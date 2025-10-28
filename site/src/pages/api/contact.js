@@ -169,8 +169,8 @@ function detectSuspiciousBehavior(body, clientIP, userAgent) {
     // Suspicious user agent patterns
     /bot|crawler|spider|scraper|automated|headless/i.test(userAgent || ''),
     
-    // Generic email patterns
-    /^[a-z]+\d+@/.test(body.email),
+    // Generic email patterns - only flag very generic patterns (e.g., test123@, user456@)
+    /^(test|user|admin|guest)\d+@/i.test(body.email),
     
     // Generic names
     /^(test|user|admin|support|info|contact|guest|visitor)$/i.test(body.name),
@@ -181,8 +181,8 @@ function detectSuspiciousBehavior(body, clientIP, userAgent) {
     // Rapid submission patterns (would need timing data)
     // This would be enhanced with actual timing data
     
-    // Suspicious punctuation patterns
-    /[!]{3,}|[?]{3,}|[.]{3,}/.test(body.message),
+    // Suspicious punctuation patterns - increased threshold to 5+ dots
+    /[!]{3,}|[?]{3,}|[.]{5,}/.test(body.message),
     
     // All caps messages
     body.message === body.message.toUpperCase() && body.message.length > 10,
@@ -200,7 +200,7 @@ function detectSuspiciousBehavior(body, clientIP, userAgent) {
   const suspiciousCount = suspiciousPatterns.filter(Boolean).length;
   
   return {
-    isSuspicious: suspiciousCount >= 2,
+    isSuspicious: suspiciousCount >= 4,
     suspiciousPatterns: suspiciousPatterns.filter(Boolean),
     score: suspiciousCount,
     reasons: [
