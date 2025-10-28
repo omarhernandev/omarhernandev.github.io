@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "",
+  "outputDirectory": ".",
   "routes": [
     { "src": "/api/contact", "dest": "/functions/contact.js" },
     { "src": "/api/validate-domain", "dest": "/functions/validate-domain.js" }

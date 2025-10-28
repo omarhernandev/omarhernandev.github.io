@@ -178,6 +178,20 @@ import Section from "../components/base/Section.astro";
   (function() {
     'use strict';
     
+    // API base URL configuration
+    function getApiBase() {
+      // Check for environment override
+      if (typeof import !== 'undefined' && import.meta?.env?.VITE_API_URL) {
+        return import.meta.env.VITE_API_URL;
+      }
+      // Production: use Vercel API deployment
+      if (window.location.hostname === 'omarhernandev.github.io') {
+        return 'https://api-serverless-nine.vercel.app';
+      }
+      // Local dev
+      return 'http://localhost:3000';
+    }
+    
     // Initialize FAQ functionality
     function initFAQ() {
       const faqQuestions = document.querySelectorAll('.faq-question');
@@ -267,7 +281,7 @@ import Section from "../components/base/Section.astro";
       
       // 3. Optional DNS validation (async, with graceful fallback)
       try {
-        const response = await fetch(`/api/validate-domain?domain=${encodeURIComponent(domain)}`);
+        const response = await fetch(`${getApiBase()}/api/validate-domain?domain=${encodeURIComponent(domain)}`);
         const result = await response.json();
         
         if (!result.valid) {
@@ -454,7 +468,7 @@ import Section from "../components/base/Section.astro";
         };
         
         try {
-          const response = await fetch('/api/contact', {
+          const response = await fetch(`${getApiBase()}/api/contact`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -504,7 +518,12 @@ import Section from "../components/base/Section.astro";
           }
         } catch (error) {
           console.error('Form submission error:', error);
-          formMessage.textContent = 'Failed to send message. Please try again.';
+          // Network/CORS error
+          if (error.name === 'TypeError' || !error.response) {
+            formMessage.textContent = 'Network error. Please check your connection and try again.';
+          } else {
+            formMessage.textContent = 'Failed to send message. Please try again.';
+          }
           formMessage.className = 'form-message error';
           formMessage.style.display = 'block';
           formMessage.setAttribute('aria-live', 'assertive');
