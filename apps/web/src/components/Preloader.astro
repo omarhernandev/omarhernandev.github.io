@@ -133,62 +133,30 @@
     
     // Function to determine if this is a genuine page load (not internal navigation)
     function shouldShowPreloader() {
-      // Check if we have a referrer from the same domain
-      const referrer = document.referrer;
-      const currentHost = window.location.host;
+      // Check if user has ever visited the site before
+      const hasEverVisited = localStorage.getItem('has_visited_site');
+      const currentPath = window.location.pathname;
       
-      console.log('Preloader: Referrer:', referrer);
-      console.log('Preloader: Current host:', currentHost);
+      // Check if this is the homepage (/ or /home)
+      const isHomepage = currentPath === '/' || currentPath === '/home';
       
-      // If referrer exists and contains our current host, it's likely internal navigation
-      if (referrer && referrer.includes(currentHost)) {
-        // Additional check: if the referrer is exactly another page on our site
-        const referrerPath = referrer.replace(window.location.origin, '');
-        console.log('Preloader: Referrer path:', referrerPath);
-        
-        // If coming from another page on our site (not the same page), hide preloader
-        if (referrerPath && referrerPath !== window.location.pathname) {
-          console.log('Preloader: Internal navigation from different page - hiding preloader');
-          return false;
-        }
-      }
-      
-      // Check performance API for reload detection
-      if (typeof performance !== 'undefined' && performance.navigation) {
-        const navType = performance.navigation.type;
-        console.log('Preloader: Navigation type:', navType);
-        
-        // 1 = reload - always show preloader for manual refresh
-        if (navType === 1) {
-          console.log('Preloader: Manual refresh detected - showing preloader');
-          return true;
-        }
-      }
-      
-      // Modern Navigation API
-      if (performance && performance.getEntriesByType) {
-        const navEntries = performance.getEntriesByType('navigation');
-        if (navEntries.length > 0) {
-          const navEntry = navEntries[0];
-          console.log('Preloader: Navigation entry type:', navEntry.type);
-          
-          // Always show for reload
-          if (navEntry.type === 'reload') {
-            console.log('Preloader: Reload detected - showing preloader');
-            return true;
-          }
-        }
-      }
-      
-      // If no referrer at all, it's likely a direct load or first visit
-      if (!referrer) {
-        console.log('Preloader: No referrer - showing preloader (direct load/first visit)');
+      // First-time visitor - always show preloader on any page
+      if (!hasEverVisited) {
+        console.log('Preloader: First-time visitor - showing preloader');
+        localStorage.setItem('has_visited_site', 'true');
         return true;
       }
       
-      // Default to showing preloader for safety (better to show when not needed than miss genuine loads)
-      console.log('Preloader: Defaulting to show preloader');
-      return true;
+      // Returning visitor
+      // Show preloader ONLY on homepage, skip on other pages
+      if (isHomepage) {
+        console.log('Preloader: Returning visitor on homepage - showing preloader');
+        return true;
+      }
+      
+      // Returning visitor on non-homepage - skip preloader
+      console.log('Preloader: Returning visitor on other page - skipping preloader');
+      return false;
     }
     
     // Check if we should show the preloader
