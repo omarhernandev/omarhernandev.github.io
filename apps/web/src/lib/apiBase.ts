@@ -12,7 +12,7 @@ export function getApiBase(): string {
   
   // 2. Detect GitHub Pages deployment
   if (typeof window !== 'undefined' && window.location.hostname.includes('github.io')) {
-    return 'https://omarhernandez-github-76qtzbk06.vercel.app';
+    return 'https://omarhernandez-github-io.vercel.app';
   }
   
   // 3. Default to localhost for dev
