@@ -9,7 +9,7 @@
     <video 
       id="preloader-video" 
       class="preloader__video"
-      preload="metadata"
+      preload="auto"
       muted
       playsinline
       autoplay
@@ -225,6 +225,17 @@
     // Handle video
     if (video) {
       console.log('Preloader: Video element found, src:', video.src || 'no src');
+      
+      // Explicitly play the video for reliable autoplay
+      const playPromise = video.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          console.log('Preloader: Video autoplay successful');
+        }).catch(error => {
+          console.error('Preloader: Video autoplay failed:', error);
+        });
+      }
       
       video.addEventListener('error', function(e) {
         console.error('Preloader: Video error:', e, video.error);
