@@ -1,16 +1,4 @@
 {
-  "version": 2,
-  "buildCommand": "echo 'No build step required for serverless functions'",
-  "outputDirectory": ".",
-  "rewrites": [
-    {
-      "source": "/api/contact",
-      "destination": "/api/contact.js"
-    },
-    {
-      "source": "/api/validate-domain",
-      "destination": "/api/validate-domain.js"
-    }
-  ]
+  "version": 2
 }
 
