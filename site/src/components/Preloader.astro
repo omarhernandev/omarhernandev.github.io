@@ -9,12 +9,13 @@
     <video 
       id="preloader-video" 
       class="preloader__video"
-      preload="metadata"
+      preload="auto"
       muted
       playsinline
       autoplay
       disablePictureInPicture
-      webkit-playsinline>
+      webkit-playsinline
+      poster="/images/Home/Home-About-now.jpg">
       <source src="/videos/preloader.mp4" type="video/mp4">
       <source src="/videos/preloader.mp4" type="video/quicktime">
       Your browser does not support the video tag.
@@ -75,6 +76,13 @@
     height: auto;
     object-fit: contain;
     display: block;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+  }
+
+  /* Fade in video when ready to play */
+  .preloader__video.is-ready {
+    opacity: 1;
   }
 
   /* Disable scrolling when preloader is active */
@@ -118,6 +126,40 @@
 </style>
 
 <script>
+  // iPhone Safari-safe autoplay utility (inline to avoid Astro bundling issues)
+  function initHeroVideo(selector) {
+    const v = document.querySelector(selector);
+    if (!v) return;
+    
+    v.muted = true;
+    v.playsInline = true;
+    v.setAttribute('playsinline', '');
+    v.setAttribute('webkit-playsinline', '');
+    
+    let tried = false;
+    const tryPlay = async () => {
+      if (tried) return;
+      tried = true;
+      try {
+        await v.play();
+        v.classList.add('is-ready');
+      } catch {
+        const once = () => {
+          v.play().then(() => v.classList.add('is-ready')).catch(() => {});
+        };
+        window.addEventListener('touchend', once, { once: true, passive: true });
+        window.addEventListener('click', once, { once: true, passive: true });
+      }
+    };
+    
+    v.addEventListener('canplay', tryPlay, { once: true });
+    v.addEventListener('loadedmetadata', () => setTimeout(tryPlay, 150), { once: true });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') tryPlay();
+    });
+    setTimeout(tryPlay, 800);
+  }
+  
   // Preloader JavaScript for Astro
   document.addEventListener('DOMContentLoaded', function() {
     console.log('Preloader: DOM loaded');
@@ -222,9 +264,12 @@
       }, 800);
     }
     
-    // Handle video
+    // Handle video with iPhone Safari-safe autoplay
     if (video) {
       console.log('Preloader: Video element found, src:', video.src || 'no src');
+      
+      // Initialize iPhone Safari-safe autoplay
+      initHeroVideo('#preloader-video');
       
       video.addEventListener('error', function(e) {
         console.error('Preloader: Video error:', e, video.error);

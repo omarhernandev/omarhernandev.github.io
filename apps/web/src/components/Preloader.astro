@@ -9,7 +9,7 @@
     <video 
       id="preloader-video" 
       class="preloader__video"
-      preload="metadata"
+      preload="auto"
       muted
       playsinline
       autoplay
@@ -226,14 +226,45 @@
     if (video) {
       console.log('Preloader: Video element found, src:', video.src || 'no src');
       
+      // Function to attempt playing the video
+      function attemptVideoPlay() {
+        const playPromise = video.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            console.log('Preloader: Video autoplay successful');
+          }).catch(error => {
+            console.error('Preloader: Video autoplay failed:', error);
+          });
+        }
+      }
+      
       video.addEventListener('error', function(e) {
         console.error('Preloader: Video error:', e, video.error);
         hidePreloader();
       });
       
-      video.addEventListener('loadeddata', function() {
-        console.log('Preloader: Video loaded successfully');
+      // Try to play when video has loaded metadata
+      video.addEventListener('loadedmetadata', function() {
+        console.log('Preloader: Video metadata loaded');
+        attemptVideoPlay();
       });
+      
+      // Also try to play when video can start playing
+      video.addEventListener('canplay', function() {
+        console.log('Preloader: Video can play');
+        if (video.paused) {
+          attemptVideoPlay();
+        }
+      });
+      
+      // Fallback: try playing after a short delay
+      setTimeout(function() {
+        if (video.paused) {
+          console.log('Preloader: Attempting fallback video play');
+          attemptVideoPlay();
+        }
+      }, 500);
     }
     
     // Hide preloader when page is fully loaded
