@@ -1,11 +1,8 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "*.js", "use": "@vercel/node" }
-  ],
   "routes": [
-    { "src": "/api/contact", "dest": "/contact.js" },
-    { "src": "/api/validate-domain", "dest": "/validate-domain.js" }
+    { "src": "/api/contact", "dest": "/functions/contact.js" },
+    { "src": "/api/validate-domain", "dest": "/functions/validate-domain.js" }
   ]
 }
 

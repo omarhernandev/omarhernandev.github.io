@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import { corsHeaders } from '../util/cors.js';
+import { corsHeaders } from '../../util/cors.js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
