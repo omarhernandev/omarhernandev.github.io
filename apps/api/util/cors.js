@@ -1,42 +1,43 @@
-// CORS configuration utility for Vercel serverless functions
+// CORS utility for Vercel API functions with strict origin checking
 
-// Allowed origin for CORS
-// Can be configured via environment variable CORS_ALLOWED_ORIGINS
-const ALLOWED_ORIGIN = process.env.CORS_ALLOWED_ORIGINS || 'https://omarhernandev.github.io';
+const BASE_ALLOWED_ORIGINS = [
+  'https://omarhernandev.github.io'
+];
 
-// CORS headers to be included in all responses
-export const corsHeaders = {
-  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Max-Age': '86400'
-};
+// Parse additional origins from env (comma-separated)
+const extraOrigins = process.env.CORS_EXTRA_ORIGINS 
+  ? process.env.CORS_EXTRA_ORIGINS.split(',').map(o => o.trim())
+  : [];
 
-/**
- * Handle preflight OPTIONS requests
- * @param {Object} event - Vercel request event
- * @returns {Object} Response object with CORS headers
- */
-export function handleOptions(event) {
-  return {
-    statusCode: 200,
-    headers: corsHeaders,
-    body: ''
-  };
-}
+const ALLOWED_ORIGINS = [...BASE_ALLOWED_ORIGINS, ...extraOrigins];
 
 /**
- * Add CORS headers to any response object
- * @param {Object} response - Existing response object
- * @returns {Object} Response with CORS headers added
+ * Wraps a handler with CORS support
+ * @param {Function} handler - async function(req, res)
+ * @returns {Function} Wrapped handler with CORS
  */
-export function addCorsHeaders(response) {
-  return {
-    ...response,
-    headers: {
-      ...response.headers,
-      ...corsHeaders
+export function withCORS(handler) {
+  return async function(req, res) {
+    const origin = req.headers.origin || '';
+    
+    // Set Vary header for proper caching
+    res.setHeader('Vary', 'Origin');
+    
+    // Check if origin is allowed
+    if (ALLOWED_ORIGINS.includes(origin)) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
     }
+    
+    res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    
+    // Handle OPTIONS preflight
+    if (req.method === 'OPTIONS') {
+      res.status(204).end();
+      return;
+    }
+    
+    // Call the actual handler
+    return handler(req, res);
   };
 }
-
