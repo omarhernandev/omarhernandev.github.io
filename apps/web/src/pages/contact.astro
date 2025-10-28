@@ -4,8 +4,9 @@ import Container from "../components/base/Container.astro";
 import Section from "../components/base/Section.astro";
 
 // API URL - defaults to Vercel deployment URL
-// Set VERCEL_API_URL environment variable at build time if needed
-const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'https://omarhernandez-github-io.vercel.app';
+// Set PUBLIC_API_URL environment variable at build time if needed
+// This should match your Vercel deployment URL where the site directory is deployed
+const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'https://site-kxtbs9aha-omar-hernandezs-projects-9a1ec610.vercel.app';
 ---
 
 <Base title="Connect | Omar Hernandez">
