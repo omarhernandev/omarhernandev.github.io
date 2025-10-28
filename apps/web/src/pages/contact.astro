@@ -2,10 +2,6 @@
 import Base from "../layouts/Base.astro";
 import Container from "../components/base/Container.astro";
 import Section from "../components/base/Section.astro";
-
-// Import API base resolver
-import { getApiBase } from '../lib/apiBase';
-const API_BASE_URL = getApiBase();
 ---
 
 <Base title="Connect | Omar Hernandez">
@@ -181,6 +177,9 @@ const API_BASE_URL = getApiBase();
 <script is:inline>
   (function() {
     'use strict';
+    
+    // Define API base URL for GitHub Pages
+    const API_BASE_URL = 'https://omarhernandez-github-io.vercel.app';
     
     // Initialize FAQ functionality
     function initFAQ() {
