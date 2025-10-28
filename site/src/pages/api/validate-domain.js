@@ -6,6 +6,14 @@ const resolveMx = promisify(dns.resolveMx);
 const resolve4 = promisify(dns.resolve4);
 const resolve6 = promisify(dns.resolve6);
 
+// CORS headers for cross-origin requests from GitHub Pages
+const corsHeaders = {
+  'Access-Control-Allow-Origin': 'https://omarhernandev.github.io',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Max-Age': '86400'
+};
+
 // Rate limiting storage for DNS validation
 const dnsRateLimitMap = new Map();
 
@@ -156,6 +164,14 @@ async function checkDomainExists(domain) {
   return result.valid;
 }
 
+// Astro API route handler - handle OPTIONS for CORS preflight
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: corsHeaders
+  });
+}
+
 // Astro API route handler for domain validation
 export async function GET({ url, request }) {
   try {
@@ -174,7 +190,8 @@ export async function GET({ url, request }) {
         status: 429,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache'
+          'Cache-Control': 'no-cache',
+          ...corsHeaders
         }
       });
     }
@@ -189,7 +206,8 @@ export async function GET({ url, request }) {
       }), {
         status: 400,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...corsHeaders
         }
       });
     }
@@ -203,7 +221,8 @@ export async function GET({ url, request }) {
       }), {
         status: 400,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...corsHeaders
         }
       });
     }
@@ -221,7 +240,8 @@ export async function GET({ url, request }) {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=3600' // Cache for 1 hour
+        'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
+        ...corsHeaders
       }
     });
 
@@ -234,7 +254,8 @@ export async function GET({ url, request }) {
     }), {
       status: 500,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...corsHeaders
       }
     });
   }
