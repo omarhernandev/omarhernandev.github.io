@@ -2,11 +2,6 @@
 import Base from "../layouts/Base.astro";
 import Container from "../components/base/Container.astro";
 import Section from "../components/base/Section.astro";
-
-// API URL - defaults to Vercel deployment URL
-// Set PUBLIC_API_URL environment variable at build time if needed
-// This should match your Vercel deployment URL where the site directory is deployed
-const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'https://site-kxtbs9aha-omar-hernandezs-projects-9a1ec610.vercel.app';
 ---
 
 <Base title="Connect | Omar Hernandez">
@@ -272,7 +267,7 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'https://site-kxtbs9aha-o
       
       // 3. Optional DNS validation (async, with graceful fallback)
       try {
-        const response = await fetch(`${API_BASE_URL}/api/validate-domain?domain=${encodeURIComponent(domain)}`);
+        const response = await fetch(`/api/validate-domain?domain=${encodeURIComponent(domain)}`);
         const result = await response.json();
         
         if (!result.valid) {
@@ -459,7 +454,7 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'https://site-kxtbs9aha-o
         };
         
         try {
-          const response = await fetch(`${API_BASE_URL}/api/contact`, {
+          const response = await fetch('/api/contact', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
