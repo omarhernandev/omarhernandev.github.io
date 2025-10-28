@@ -5,8 +5,7 @@
   "description": "Serverless API functions for contact form and domain validation",
   "main": "index.js",
   "scripts": {
-    "dev": "vercel dev",
-    "build": "echo 'No build step required for serverless functions'"
+    "dev": "vercel dev"
   },
   "dependencies": {
     "resend": "^6.2.2"
