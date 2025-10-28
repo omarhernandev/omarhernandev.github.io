@@ -1,17 +1,5 @@
 {
-  "name": "api-serverless",
-  "version": "0.0.1",
-  "type": "module",
-  "description": "Serverless API functions for contact form and domain validation",
-  "main": "index.js",
-  "scripts": {
-    "dev": "vercel dev"
-  },
-  "dependencies": {
-    "resend": "^6.2.2"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  }
+  "name": "api",
+  "private": true,
+  "type": "module"
 }
-

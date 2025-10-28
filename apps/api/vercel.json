@@ -1,8 +1,4 @@
 {
-  "version": 2,
-  "routes": [
-    { "src": "/api/contact", "dest": "/functions/contact.js" },
-    { "src": "/api/validate-domain", "dest": "/functions/validate-domain.js" }
-  ]
+  "buildCommand": "",
+  "outputDirectory": "."
 }
-
