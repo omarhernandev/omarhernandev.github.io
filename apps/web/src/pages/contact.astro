@@ -470,7 +470,7 @@ const API_BASE_URL = getApiBase();
           const result = await response.json();
           const debugHeader = response.headers.get('X-Debug');
           
-          if (result.ok) {
+          if (result.success) {
             // Success - show custom message and trigger confetti
             formMessage.textContent = "Thanks for reaching out! I'll get back to you soon.";
             formMessage.className = 'form-message success';
@@ -488,13 +488,13 @@ const API_BASE_URL = getApiBase();
             formMessage.setAttribute('aria-live', 'polite');
           } else {
             // Error - show specific error message
-            formMessage.textContent = 'Please check your input and try again.';
+            formMessage.textContent = result.message || 'Please check your input and try again.';
             formMessage.className = 'form-message error';
             formMessage.style.display = 'block';
             
             // Show field-specific errors if available
-            if (result.fields) {
-              Object.keys(result.fields).forEach(fieldName => {
+            if (result.errors) {
+              Object.keys(result.errors).forEach(fieldName => {
                 const field = form.querySelector(`[name="${fieldName}"]`);
                 if (field) {
                   field.style.borderColor = '#ff4444';
