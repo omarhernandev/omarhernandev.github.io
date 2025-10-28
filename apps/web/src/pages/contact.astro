@@ -3,10 +3,9 @@ import Base from "../layouts/Base.astro";
 import Container from "../components/base/Container.astro";
 import Section from "../components/base/Section.astro";
 
-// API URL - defaults to Vercel deployment URL
-// Set PUBLIC_API_URL environment variable at build time if needed
-// This should match your Vercel deployment URL where the site directory is deployed
-const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'https://site-kxtbs9aha-omar-hernandezs-projects-9a1ec610.vercel.app';
+// Import API base resolver
+import { getApiBase } from '../lib/apiBase';
+const API_BASE_URL = getApiBase();
 ---
 
 <Base title="Connect | Omar Hernandez">
@@ -464,12 +463,14 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'https://site-kxtbs9aha-o
             headers: {
               'Content-Type': 'application/json',
             },
+            mode: 'cors',
             body: JSON.stringify(data)
           });
           
           const result = await response.json();
+          const debugHeader = response.headers.get('X-Debug');
           
-          if (result.success) {
+          if (result.ok) {
             // Success - show custom message and trigger confetti
             formMessage.textContent = "Thanks for reaching out! I'll get back to you soon.";
             formMessage.className = 'form-message success';
@@ -487,13 +488,13 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'https://site-kxtbs9aha-o
             formMessage.setAttribute('aria-live', 'polite');
           } else {
             // Error - show specific error message
-            formMessage.textContent = result.message || 'Please check your input and try again.';
+            formMessage.textContent = 'Please check your input and try again.';
             formMessage.className = 'form-message error';
             formMessage.style.display = 'block';
             
             // Show field-specific errors if available
-            if (result.errors) {
-              Object.keys(result.errors).forEach(fieldName => {
+            if (result.fields) {
+              Object.keys(result.fields).forEach(fieldName => {
                 const field = form.querySelector(`[name="${fieldName}"]`);
                 if (field) {
                   field.style.borderColor = '#ff4444';
@@ -503,6 +504,9 @@ const API_BASE_URL = import.meta.env.PUBLIC_API_URL || 'https://site-kxtbs9aha-o
                 }
               });
             }
+            
+            // Log debug info
+            if (debugHeader) console.log('API Debug:', debugHeader);
             
             // Announce error to screen readers
             formMessage.setAttribute('aria-live', 'assertive');
