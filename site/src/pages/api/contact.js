@@ -3,6 +3,14 @@ import { Resend } from 'resend';
 // Initialize Resend with API key from environment variables
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// CORS headers for cross-origin requests from GitHub Pages
+const corsHeaders = {
+  'Access-Control-Allow-Origin': 'https://omarhernandev.github.io',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Max-Age': '86400'
+};
+
 // Rate limiting storage - in-memory Map
 // Key: IP address, Value: Array of submission timestamps
 const rateLimitMap = new Map();
@@ -446,6 +454,14 @@ function validateFormDataWithBehavior(data, clientIP, userAgent) {
   return basicValidation;
 }
 
+// Astro API route handler - handle OPTIONS for CORS preflight
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: corsHeaders
+  });
+}
+
 // Astro API route handler
 export async function POST({ request }) {
   try {
@@ -472,7 +488,8 @@ export async function POST({ request }) {
         status: 429,
         headers: {
           'Content-Type': 'application/json',
-          'Retry-After': rateLimitResult.retryAfter.toString()
+          'Retry-After': rateLimitResult.retryAfter.toString(),
+          ...corsHeaders
         }
       });
     }
@@ -496,7 +513,8 @@ export async function POST({ request }) {
       }), {
         status: 400,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...corsHeaders
         }
       });
     }
@@ -532,7 +550,8 @@ export async function POST({ request }) {
       }), {
         status: 400,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...corsHeaders
         }
       });
     }
@@ -576,7 +595,8 @@ export async function POST({ request }) {
       }), {
         status: 200,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...corsHeaders
         }
       });
 
@@ -588,7 +608,8 @@ export async function POST({ request }) {
       }), {
         status: 500,
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...corsHeaders
         }
       });
     }
@@ -601,7 +622,8 @@ export async function POST({ request }) {
     }), {
       status: 500,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        ...corsHeaders
       }
     });
   }

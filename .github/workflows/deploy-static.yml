@@ -31,13 +31,10 @@ jobs:
         working-directory: apps/web
         run: npm install
 
-      - name: Set API URL environment variable
-        working-directory: apps/web
-        run: |
-          echo "PUBLIC_API_URL=${{ secrets.VERCEL_API_URL || 'https://omarhernandev-api.vercel.app' }}" >> $GITHUB_ENV
-
       - name: Build static site
         working-directory: apps/web
+        env:
+          PUBLIC_API_URL: ${{ secrets.VERCEL_API_URL || 'https://site-kxtbs9aha-omar-hernandezs-projects-9a1ec610.vercel.app' }}
         run: npm run build
 
       - name: Setup Pages
