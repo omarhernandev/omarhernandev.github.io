@@ -1,0 +1,34 @@
+---
+const { hook = '[data-hook="nav"]' } = Astro.props;
+---
+<div data-hook="nav">
+  <slot />
+</div>
+
+<script>
+  // Reattach the exact listeners used by the vanilla nav.js
+  // Preserve selectors and behavior. No redesign.
+  
+  document.addEventListener('DOMContentLoaded', function() {
+    const menuIcon = document.querySelector('.icon-menu');
+    const menuBody = document.querySelector('.menu__body');
+    const menuCloseButton = document.querySelector('.menu-close-button');
+    
+    if (menuIcon && menuBody) {
+      menuIcon.addEventListener('click', function() {
+        menuBody.classList.add('active');
+        document.body.classList.add('menu-open');
+      });
+    }
+    
+    if (menuCloseButton && menuBody) {
+      menuCloseButton.addEventListener('click', function() {
+        menuBody.classList.remove('active');
+        document.body.classList.remove('menu-open');
+      });
+    }
+    
+    // Theme toggle functionality is handled by script.js globally
+    // Removed duplicate handler to prevent conflicts
+  });
+</script>

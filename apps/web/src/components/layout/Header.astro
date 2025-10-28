@@ -1,0 +1,30 @@
+---
+import NavIsland from '../NavIsland.astro';
+import Navigation from './Navigation.astro';
+---
+
+<header class="header">
+  <div class="header__container">
+    <a href="/" class="header__logo logo">
+      <img src="/images/favicon.ico?v=1.4" alt="Omar Hernandez" />
+    </a>
+    <div class="header__navigation">
+      <NavIsland client:idle>
+        <div class="header__menu menu">
+          <nav class="menu__body">
+            <a href="/" class="menu-logo" id="mobile-menu-logo" title="Return to Home">
+              <img src="/images/favicon.ico?v=1.4" alt="Omar Hernandez" />
+            </a>
+            <Navigation />
+          </nav>
+        </div>
+      </NavIsland>
+      <div class="header__actions actions-header">
+        <button type="button" class="theme-toggle-button" aria-label="Toggle night vision mode">
+          <img src="/assets/goggle.png" alt="Night Vision Goggles Icon" />
+        </button>
+        <button type="button" class="menu__icon icon-menu" title="Open navigation menu"><span></span></button>
+      </div>
+    </div>
+  </div>
+</header>
