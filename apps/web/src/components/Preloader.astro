@@ -194,6 +194,11 @@
     if (video) {
       console.log('Preloader: Video element found, src:', video.src || 'no src');
       
+      // Mobile-specific autoplay fix
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        video.play().catch(() => {});
+      }
+      
       // Function to attempt playing the video
       function attemptVideoPlay() {
         const playPromise = video.play();
