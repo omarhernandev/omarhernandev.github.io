@@ -126,38 +126,106 @@
 </style>
 
 <script>
-  // iPhone Safari-safe autoplay utility (inline to avoid Astro bundling issues)
+  // Mobile phone detection (not tablets)
+  function isMobilePhone() {
+    const ua = navigator.userAgent;
+    const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    const isTablet = /iPad|Android(?!.*Mobile)/i.test(ua);
+    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isSmallScreen = window.innerWidth <= 768;
+    
+    // Mobile phone: has touch, small screen, and is not a tablet
+    return isMobile && !isTablet && hasTouch && isSmallScreen;
+  }
+
+  // Enhanced iPhone Safari-safe autoplay utility with mobile phone detection
   function initHeroVideo(selector) {
     const v = document.querySelector(selector);
     if (!v) return;
     
+    const isMobile = isMobilePhone();
+    console.log('Preloader: Is mobile phone:', isMobile);
+    
+    // Force set all required properties programmatically
     v.muted = true;
+    v.defaultMuted = true;
     v.playsInline = true;
+    v.autoplay = true;
+    v.preload = 'auto';
+    v.volume = 0;
+    
+    // Ensure attributes are also set
+    v.setAttribute('muted', '');
     v.setAttribute('playsinline', '');
     v.setAttribute('webkit-playsinline', '');
+    v.setAttribute('autoplay', '');
+    v.setAttribute('preload', 'auto');
     
     let tried = false;
     const tryPlay = async () => {
       if (tried) return;
       tried = true;
+      
+      console.log('Preloader: Attempting to play video');
+      
       try {
+        // For mobile, ensure properties are set again right before play
+        if (isMobile) {
+          v.muted = true;
+          v.playsInline = true;
+          v.volume = 0;
+        }
+        
         await v.play();
         v.classList.add('is-ready');
-      } catch {
+        console.log('Preloader: Video autoplay successful');
+      } catch (error) {
+        console.warn('Preloader: Video autoplay blocked:', error);
+        
+        // Set up user interaction handlers with more event types for mobile
         const once = () => {
-          v.play().then(() => v.classList.add('is-ready')).catch(() => {});
+          v.play()
+            .then(() => {
+              v.classList.add('is-ready');
+              console.log('Preloader: Video started after user interaction');
+            })
+            .catch((err) => {
+              console.warn('Preloader: Play failed after interaction:', err);
+            });
         };
-        window.addEventListener('touchend', once, { once: true, passive: true });
-        window.addEventListener('click', once, { once: true, passive: true });
+        
+        // Listen for multiple interaction types for better mobile compatibility
+        ['touchstart', 'touchend', 'click'].forEach(eventType => {
+          window.addEventListener(eventType, once, { once: true, passive: true });
+        });
       }
     };
     
+    // Multiple trigger points for maximum compatibility
     v.addEventListener('canplay', tryPlay, { once: true });
-    v.addEventListener('loadedmetadata', () => setTimeout(tryPlay, 150), { once: true });
+    v.addEventListener('loadedmetadata', () => {
+      setTimeout(tryPlay, isMobile ? 300 : 150);
+    }, { once: true });
+    v.addEventListener('loadeddata', () => {
+      setTimeout(tryPlay, 100);
+    }, { once: true });
+    
+    // Visibility change handler
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') tryPlay();
+      if (document.visibilityState === 'visible' && !tried) {
+        tryPlay();
+      }
     });
-    setTimeout(tryPlay, 800);
+    
+    // Final fallback with longer delay for mobile
+    setTimeout(() => {
+      if (!tried || v.paused) {
+        tryPlay();
+      }
+    }, isMobile ? 1000 : 800);
+    
+    // Force load start
+    v.load();
   }
   
   // Preloader JavaScript for Astro

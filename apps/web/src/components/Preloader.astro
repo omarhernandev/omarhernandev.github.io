@@ -118,6 +118,114 @@
 </style>
 
 <script>
+  // Mobile phone detection (not tablets)
+  function isMobilePhone() {
+    const ua = navigator.userAgent;
+    const isMobile = /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    const isTablet = /iPad|Android(?!.*Mobile)/i.test(ua);
+    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isSmallScreen = window.innerWidth <= 768;
+    
+    // Mobile phone: has touch, small screen, and is not a tablet
+    return isMobile && !isTablet && hasTouch && isSmallScreen;
+  }
+
+  // Enhanced video autoplay function for mobile compatibility
+  function initVideoAutoplay(videoElement) {
+    if (!videoElement) return;
+    
+    const isMobile = isMobilePhone();
+    console.log('Preloader: Is mobile phone:', isMobile);
+    
+    // Force set all required properties programmatically (not just attributes)
+    videoElement.muted = true;
+    videoElement.defaultMuted = true;
+    videoElement.playsInline = true;
+    videoElement.autoplay = true;
+    videoElement.preload = 'auto';
+    
+    // Ensure attributes are also set
+    videoElement.setAttribute('muted', '');
+    videoElement.setAttribute('playsinline', '');
+    videoElement.setAttribute('webkit-playsinline', '');
+    videoElement.setAttribute('autoplay', '');
+    videoElement.setAttribute('preload', 'auto');
+    
+    // Set volume to 0 as an extra precaution
+    videoElement.volume = 0;
+    
+    let playAttempted = false;
+    
+    const attemptPlay = async () => {
+      if (playAttempted) return;
+      playAttempted = true;
+      
+      console.log('Preloader: Attempting to play video');
+      
+      try {
+        // For mobile, ensure properties are set again right before play
+        if (isMobile) {
+          videoElement.muted = true;
+          videoElement.playsInline = true;
+          videoElement.volume = 0;
+        }
+        
+        await videoElement.play();
+        console.log('Preloader: Video autoplay successful');
+      } catch (error) {
+        console.warn('Preloader: Video autoplay blocked:', error);
+        
+        // On mobile, set up user interaction handlers
+        if (isMobile) {
+          const playOnInteraction = () => {
+            videoElement.play()
+              .then(() => console.log('Preloader: Video started after user interaction'))
+              .catch(err => console.warn('Preloader: Play failed after interaction:', err));
+          };
+          
+          // Listen for any user interaction
+          ['touchstart', 'touchend', 'click'].forEach(eventType => {
+            window.addEventListener(eventType, playOnInteraction, { once: true, passive: true });
+          });
+        }
+      }
+    };
+    
+    // Multiple trigger points for maximum compatibility
+    videoElement.addEventListener('loadedmetadata', () => {
+      console.log('Preloader: Video metadata loaded');
+      setTimeout(attemptPlay, isMobile ? 300 : 150);
+    }, { once: true });
+    
+    videoElement.addEventListener('canplay', () => {
+      console.log('Preloader: Video can play');
+      attemptPlay();
+    }, { once: true });
+    
+    videoElement.addEventListener('loadeddata', () => {
+      console.log('Preloader: Video data loaded');
+      setTimeout(attemptPlay, 100);
+    }, { once: true });
+    
+    // Visibility change handler (important for mobile)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && videoElement.paused && !playAttempted) {
+        attemptPlay();
+      }
+    });
+    
+    // Final fallback with longer delay for mobile
+    setTimeout(() => {
+      if (!playAttempted || videoElement.paused) {
+        console.log('Preloader: Fallback play attempt');
+        attemptPlay();
+      }
+    }, isMobile ? 1000 : 500);
+    
+    // Force load start
+    videoElement.load();
+  }
+  
   // Preloader JavaScript for Astro
   document.addEventListener('DOMContentLoaded', function() {
     console.log('Preloader: DOM loaded');
@@ -190,49 +298,17 @@
       }, 800);
     }
     
-    // Handle video
+    // Handle video with enhanced mobile autoplay
     if (video) {
-      console.log('Preloader: Video element found, src:', video.src || 'no src');
-      
-      // Function to attempt playing the video
-      function attemptVideoPlay() {
-        const playPromise = video.play();
-        
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            console.log('Preloader: Video autoplay successful');
-          }).catch(error => {
-            console.error('Preloader: Video autoplay failed:', error);
-          });
-        }
-      }
+      console.log('Preloader: Video element found, initializing autoplay');
       
       video.addEventListener('error', function(e) {
         console.error('Preloader: Video error:', e, video.error);
         hidePreloader();
       });
       
-      // Try to play when video has loaded metadata
-      video.addEventListener('loadedmetadata', function() {
-        console.log('Preloader: Video metadata loaded');
-        attemptVideoPlay();
-      });
-      
-      // Also try to play when video can start playing
-      video.addEventListener('canplay', function() {
-        console.log('Preloader: Video can play');
-        if (video.paused) {
-          attemptVideoPlay();
-        }
-      });
-      
-      // Fallback: try playing after a short delay
-      setTimeout(function() {
-        if (video.paused) {
-          console.log('Preloader: Attempting fallback video play');
-          attemptVideoPlay();
-        }
-      }, 500);
+      // Initialize enhanced video autoplay
+      initVideoAutoplay(video);
     }
     
     // Hide preloader when page is fully loaded
